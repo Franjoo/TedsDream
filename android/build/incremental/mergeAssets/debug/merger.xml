@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="main" >
+        <source path="D:\Dropbox\_DEV\_medienprojekt\Teds Dream\android\assets" >
+            <file
+                name="badlogic.jpg"
+                path="D:\Dropbox\_DEV\_medienprojekt\Teds Dream\android\assets\badlogic.jpg" />
+        </source>
+    </dataSet>
+    <dataSet config="debug" >
+        <source path="D:\Dropbox\_DEV\_medienprojekt\Teds Dream\android\src\debug\assets" />
+    </dataSet>
+
+</merger>

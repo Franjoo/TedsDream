@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="D:\Dropbox\_DEV\_medienprojekt\Teds Dream\android\build\pre-dexed\debug\gdx-backend-android-1.0.2-SNAPSHOT-869549af323eeee775e30a45b8e8f78c675442bd.jar"
+        jar="C:\Users\Franjo\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.0.2-SNAPSHOT\66ab12428d9db723a870bc5fee24820559e885c\gdx-backend-android-1.0.2-SNAPSHOT.jar"
+        jumboMode="false"
+        revision="19.0.3"
+        sha1="066ab12428d9db723a870bc5fee24820559e885c"/>
+    <item
+        dex="D:\Dropbox\_DEV\_medienprojekt\Teds Dream\android\build\pre-dexed\debug\core-1.0-f024788d544cb3588e4b14011d7bad392d5032c0.jar"
+        jar="D:\Dropbox\_DEV\_medienprojekt\Teds Dream\core\build\libs\core-1.0.jar"
+        jumboMode="false"
+        revision="19.0.3"
+        sha1="c3309ce90933a7b2214143fca20cfb9de4d1e1f1"/>
+    <item
+        dex="D:\Dropbox\_DEV\_medienprojekt\Teds Dream\android\build\pre-dexed\debug\gdx-1.0.2-SNAPSHOT-9a798a5bc84bcbb30fea096977dae7e326971c10.jar"
+        jar="C:\Users\Franjo\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.0.2-SNAPSHOT\125ce2e5750a731b916a522e5d7bb1784eff1d92\gdx-1.0.2-SNAPSHOT.jar"
+        jumboMode="false"
+        revision="19.0.3"
+        sha1="125ce2e5750a731b916a522e5d7bb1784eff1d92"/>
+
+</pre-dex-items>
