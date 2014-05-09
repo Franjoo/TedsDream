@@ -17,6 +17,7 @@ public class Main extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
 	}
+    public void test(){};
 
 	@Override
 	public void render () {
