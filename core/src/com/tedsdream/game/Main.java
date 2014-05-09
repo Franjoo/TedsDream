@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
+
+    // test gradle push
 	
 	@Override
 	public void create () {
