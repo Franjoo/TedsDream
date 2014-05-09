@@ -1,5 +1,12 @@
 ## Java
 
+# Intellij
+.idea/
+*.iws
+.idea/workspace.xml
+*.iml
+out/
+
 *.class
 *.war
 *.ear
