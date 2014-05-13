@@ -17,7 +17,7 @@ allprojects {
 
     version = '1.0'
     ext {
-        appName = 'Teds Dream'
+        appName = 'GameDemo'
         gdxVersion = '1.0.2-SNAPSHOT'
         roboVMVersion = '0.0.12'
     }
@@ -89,6 +89,10 @@ project(":core") {
 
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+        compile files("libs/gdx.jar")
+        compile files("libs/gdx-controllers.jar")
+        compile files("libs/tween-engine-api.jar")
+
     }
 }
 

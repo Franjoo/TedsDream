@@ -1,0 +1,66 @@
+
+spinne-1.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+spinne/bein_02
+  rotate: true
+  xy: 733, 491
+  size: 136, 270
+  orig: 249, 340
+  offset: 61, 36
+  index: -1
+spinne/bein_03
+  rotate: true
+  xy: 311, 115
+  size: 362, 706
+  orig: 475, 809
+  offset: 42, 44
+  index: -1
+spinne/bein_04
+  rotate: true
+  xy: 733, 629
+  size: 393, 246
+  orig: 501, 310
+  offset: 60, 39
+  index: -1
+spinne/bein_06
+  rotate: false
+  xy: 2, 2
+  size: 307, 475
+  orig: 397, 605
+  offset: 31, 69
+  index: -1
+spinne/koerper
+  rotate: false
+  xy: 2, 479
+  size: 729, 543
+  orig: 894, 644
+  offset: 123, 58
+  index: -1
+
+spinne-2.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+spinne/bein_01
+  rotate: false
+  xy: 680, 364
+  size: 297, 198
+  orig: 394, 256
+  offset: 53, 26
+  index: -1
+spinne/bein_05
+  rotate: false
+  xy: 2, 356
+  size: 676, 206
+  orig: 784, 272
+  offset: 45, 42
+  index: -1
+spinne/kopf
+  rotate: false
+  xy: 2, 2
+  size: 408, 352
+  orig: 537, 458
+  offset: 74, 66
+  index: -1
