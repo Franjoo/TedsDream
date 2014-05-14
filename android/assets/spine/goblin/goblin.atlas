@@ -1,0 +1,205 @@
+goblin-1.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+goblin/brust
+  rotate: true
+  xy: 295, 290
+  size: 267, 247
+  orig: 277, 273
+  offset: 5, 19
+  index: -1
+goblin/hand_02
+  rotate: false
+  xy: 914, 219
+  size: 93, 120
+  orig: 142, 144
+  offset: 29, 8
+  index: -1
+goblin/kopf
+  rotate: false
+  xy: 2, 213
+  size: 291, 344
+  orig: 374, 377
+  offset: 44, 11
+  index: -1
+goblin/oberarm links
+  rotate: true
+  xy: 523, 565
+  size: 125, 206
+  orig: 163, 230
+  offset: 31, 6
+  index: -1
+goblin/oberarm rechts
+  rotate: false
+  xy: 2, 9
+  size: 176, 202
+  orig: 224, 229
+  offset: 28, 13
+  index: -1
+goblin/oberschenkel links
+  rotate: false
+  xy: 560, 2
+  size: 173, 151
+  orig: 219, 177
+  offset: 29, 17
+  index: -1
+goblin/oberschenkel rechts
+  rotate: false
+  xy: 722, 340
+  size: 154, 187
+  orig: 194, 205
+  offset: 22, 17
+  index: -1
+goblin/rumpf
+  rotate: true
+  xy: 879, 757
+  size: 261, 104
+  orig: 340, 126
+  offset: 45, 0
+  index: -1
+goblin/schuh links
+  rotate: true
+  xy: 560, 155
+  size: 204, 158
+  orig: 219, 177
+  offset: 9, 7
+  index: -1
+goblin/schuh rechts
+  rotate: true
+  xy: 720, 185
+  size: 153, 192
+  orig: 181, 210
+  offset: 21, 6
+  index: -1
+goblin/unterarm links
+  rotate: false
+  xy: 180, 30
+  size: 95, 181
+  orig: 163, 230
+  offset: 35, 16
+  index: -1
+goblin/unterarm rechts
+  rotate: true
+  xy: 735, 48
+  size: 135, 189
+  orig: 224, 229
+  offset: 56, 21
+  index: -1
+goblin/waffe
+  rotate: false
+  xy: 804, 529
+  size: 73, 489
+  orig: 118, 504
+  offset: 15, 10
+  index: -1
+zauberer gobbo/brust (2)
+  rotate: false
+  xy: 295, 23
+  size: 263, 265
+  orig: 300, 279
+  offset: 24, 8
+  index: -1
+zauberer gobbo/giesskanne
+  rotate: false
+  xy: 523, 692
+  size: 279, 326
+  orig: 346, 378
+  offset: 38, 39
+  index: -1
+zauberer gobbo/kopf
+  rotate: false
+  xy: 2, 559
+  size: 519, 459
+  orig: 584, 495
+  offset: 44, 13
+  index: -1
+zauberer gobbo/oberarm links
+  rotate: false
+  xy: 879, 549
+  size: 125, 206
+  orig: 201, 236
+  offset: 42, 12
+  index: -1
+zauberer gobbo/oberarm rechts
+  rotate: false
+  xy: 544, 361
+  size: 176, 202
+  orig: 212, 245
+  offset: 15, 25
+  index: -1
+zauberer gobbo/tropfen_01
+  rotate: false
+  xy: 878, 341
+  size: 133, 186
+  orig: 164, 240
+  offset: 31, 31
+  index: -1
+zauberer gobbo/tropfen_03
+  rotate: false
+  xy: 926, 38
+  size: 87, 179
+  orig: 164, 240
+  offset: 17, 52
+  index: -1
+
+goblin-2.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+goblin/hand_01
+  rotate: false
+  xy: 636, 100
+  size: 111, 111
+  orig: 168, 135
+  offset: 22, 12
+  index: -1
+goblin/unterschenkel links
+  rotate: false
+  xy: 139, 2
+  size: 113, 79
+  orig: 183, 115
+  offset: 49, 17
+  index: -1
+goblin/unterschenkel rechts
+  rotate: false
+  xy: 862, 121
+  size: 103, 90
+  orig: 140, 121
+  offset: 17, 24
+  index: -1
+zauberer gobbo/hand_01
+  rotate: true
+  xy: 514, 118
+  size: 93, 120
+  orig: 128, 163
+  offset: 27, 26
+  index: -1
+zauberer gobbo/hand_02
+  rotate: false
+  xy: 749, 100
+  size: 111, 111
+  orig: 132, 121
+  offset: 7, 6
+  index: -1
+zauberer gobbo/tropfen_02
+  rotate: true
+  xy: 139, 83
+  size: 128, 190
+  orig: 164, 240
+  offset: 6, 42
+  index: -1
+zauberer gobbo/unterarm links
+  rotate: true
+  xy: 331, 116
+  size: 95, 181
+  orig: 167, 277
+  offset: 54, 57
+  index: -1
+zauberer gobbo/unterarm rechts
+  rotate: false
+  xy: 2, 22
+  size: 135, 189
+  orig: 201, 236
+  offset: 30, 39
+  index: -1

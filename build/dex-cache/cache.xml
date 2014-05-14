@@ -2,8 +2,32 @@
 <pre-dex-items>
 
     <item
+<<<<<<< HEAD
         dex="C:\Users\Tim\TedsDream\android\build\pre-dexed\debug\gdx-1.0.2-SNAPSHOT-db054f7282eb03a6e0d51108e0921d905e13f070.jar"
         jar="C:\Users\Tim\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.0.2-SNAPSHOT\8b90287691787370fe87280408ca942581f8b106\gdx-1.0.2-SNAPSHOT.jar"
+=======
+<<<<<<< HEAD
+        dex="C:\Users\Sebastian\TedsDream\android\build\pre-dexed\debug\gdx-backend-android-1.0.2-SNAPSHOT-505e1863a218ab7d6931fbb745514fb6ebe8aa6c.jar"
+        jar="C:\Users\Sebastian\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.0.2-SNAPSHOT\7a668eb5dc87d9ff96a4c32fcf64e188c6693845\gdx-backend-android-1.0.2-SNAPSHOT.jar"
+        jumboMode="false"
+        revision="19.0.3"
+        sha1="7a668eb5dc87d9ff96a4c32fcf64e188c6693845"/>
+    <item
+        dex="C:\Users\Sebastian\TedsDream\android\build\pre-dexed\debug\gdx-1.0.2-SNAPSHOT-d8821031135e602cd49c1bee819352d95008353e.jar"
+        jar="C:\Users\Sebastian\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.0.2-SNAPSHOT\2021a0530d117ec828b9d0c3dbd3373f7e45de71\gdx-1.0.2-SNAPSHOT.jar"
+        jumboMode="false"
+        revision="19.0.3"
+        sha1="2021a0530d117ec828b9d0c3dbd3373f7e45de71"/>
+    <item
+        dex="C:\Users\Sebastian\TedsDream\android\build\pre-dexed\debug\core-1.0-34d809a5c9b8d0c16338c83286116be7a1c25bb4.jar"
+        jar="C:\Users\Sebastian\TedsDream\core\build\libs\core-1.0.jar"
+        jumboMode="false"
+        revision="19.0.3"
+        sha1="0817908420228cee1d0e8f1039c3341fa5a6a2d9"/>
+=======
+        dex="D:\Dropbox\_DEV\_medienprojekt\Teds Dream\android\build\pre-dexed\debug\gdx-backend-android-1.0.2-SNAPSHOT-869549af323eeee775e30a45b8e8f78c675442bd.jar"
+        jar="C:\Users\Franjo\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.0.2-SNAPSHOT\66ab12428d9db723a870bc5fee24820559e885c\gdx-backend-android-1.0.2-SNAPSHOT.jar"
+>>>>>>> a91c7dcbeb8f5addac2340683bbb9d27de212a8c
         jumboMode="false"
         revision="19.0.3"
         sha1="8b90287691787370fe87280408ca942581f8b106"/>
@@ -18,6 +42,11 @@
         jar="C:\Users\Tim\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.0.2-SNAPSHOT\a6399e591b8a5a495ec8453bbee57b4ffd68c9bd\gdx-backend-android-1.0.2-SNAPSHOT.jar"
         jumboMode="false"
         revision="19.0.3"
+<<<<<<< HEAD
         sha1="a6399e591b8a5a495ec8453bbee57b4ffd68c9bd"/>
+=======
+        sha1="125ce2e5750a731b916a522e5d7bb1784eff1d92"/>
+>>>>>>> 15d3c9f178bf3d274f25ef0fb2db995dc3293888
+>>>>>>> a91c7dcbeb8f5addac2340683bbb9d27de212a8c
 
 </pre-dex-items>
