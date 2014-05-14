@@ -2,14 +2,14 @@
 <merger>
 
     <dataSet config="main" >
-        <source path="D:\Dropbox\_DEV\_medienprojekt\Teds Dream\android\assets" >
+        <source path="C:\Users\Tim\TedsDream\android\assets" >
             <file
                 name="badlogic.jpg"
-                path="D:\Dropbox\_DEV\_medienprojekt\Teds Dream\android\assets\badlogic.jpg" />
+                path="C:\Users\Tim\TedsDream\android\assets\badlogic.jpg" />
         </source>
     </dataSet>
     <dataSet config="debug" >
-        <source path="D:\Dropbox\_DEV\_medienprojekt\Teds Dream\android\src\debug\assets" />
+        <source path="C:\Users\Tim\TedsDream\android\src\debug\assets" />
     </dataSet>
 
 </merger>

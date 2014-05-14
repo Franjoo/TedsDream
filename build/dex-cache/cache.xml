@@ -2,22 +2,22 @@
 <pre-dex-items>
 
     <item
-        dex="D:\Dropbox\_DEV\_medienprojekt\Teds Dream\android\build\pre-dexed\debug\gdx-backend-android-1.0.2-SNAPSHOT-869549af323eeee775e30a45b8e8f78c675442bd.jar"
-        jar="C:\Users\Franjo\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.0.2-SNAPSHOT\66ab12428d9db723a870bc5fee24820559e885c\gdx-backend-android-1.0.2-SNAPSHOT.jar"
+        dex="C:\Users\Tim\TedsDream\android\build\pre-dexed\debug\gdx-1.0.2-SNAPSHOT-db054f7282eb03a6e0d51108e0921d905e13f070.jar"
+        jar="C:\Users\Tim\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.0.2-SNAPSHOT\8b90287691787370fe87280408ca942581f8b106\gdx-1.0.2-SNAPSHOT.jar"
         jumboMode="false"
         revision="19.0.3"
-        sha1="066ab12428d9db723a870bc5fee24820559e885c"/>
+        sha1="8b90287691787370fe87280408ca942581f8b106"/>
     <item
-        dex="D:\Dropbox\_DEV\_medienprojekt\Teds Dream\android\build\pre-dexed\debug\core-1.0-f024788d544cb3588e4b14011d7bad392d5032c0.jar"
-        jar="D:\Dropbox\_DEV\_medienprojekt\Teds Dream\core\build\libs\core-1.0.jar"
+        dex="C:\Users\Tim\TedsDream\android\build\pre-dexed\debug\core-1.0-8646c59630dbe900ea57069a8ac3d8003bb51da8.jar"
+        jar="C:\Users\Tim\TedsDream\core\build\libs\core-1.0.jar"
         jumboMode="false"
         revision="19.0.3"
-        sha1="c3309ce90933a7b2214143fca20cfb9de4d1e1f1"/>
+        sha1="d29b8add3b6c8c1506cab1aa9289a97bfc23bf19"/>
     <item
-        dex="D:\Dropbox\_DEV\_medienprojekt\Teds Dream\android\build\pre-dexed\debug\gdx-1.0.2-SNAPSHOT-9a798a5bc84bcbb30fea096977dae7e326971c10.jar"
-        jar="C:\Users\Franjo\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.0.2-SNAPSHOT\125ce2e5750a731b916a522e5d7bb1784eff1d92\gdx-1.0.2-SNAPSHOT.jar"
+        dex="C:\Users\Tim\TedsDream\android\build\pre-dexed\debug\gdx-backend-android-1.0.2-SNAPSHOT-52f3104a25b83cf1782f8f3317d186a9d080da49.jar"
+        jar="C:\Users\Tim\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.0.2-SNAPSHOT\a6399e591b8a5a495ec8453bbee57b4ffd68c9bd\gdx-backend-android-1.0.2-SNAPSHOT.jar"
         jumboMode="false"
         revision="19.0.3"
-        sha1="125ce2e5750a731b916a522e5d7bb1784eff1d92"/>
+        sha1="a6399e591b8a5a495ec8453bbee57b4ffd68c9bd"/>
 
 </pre-dex-items>
