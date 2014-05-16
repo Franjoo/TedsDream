@@ -13,6 +13,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -24,6 +25,8 @@ import com.esotericsoftware.spine.*;
  */
 public class Player extends Creature {
     private static final String TAG = Player.class.getSimpleName();
+
+    private ParticleEffect[] particleEffects =  new ParticleEffect[100];
 
     // constants
     private final float epsilon = C.EPSILON;
@@ -137,12 +140,21 @@ public class Player extends Creature {
     public void attack() {
         for (Enemy e : map.getEnemies()) {
             if(e.getSkeletonBounds().aabbIntersectsSkeleton(getSkeletonBounds())){
+                AddBloobParticlesForRender(e.getX(), e.getY() * map.getWidth());
                 e.setDamage(atckDmg);
                 System.out.println("atccking enemy " + e.getHealth());
             }
         }
         sound_sword.play();
         //actHP -= 50;
+    }
+
+    private void AddBloobParticlesForRender(float x, float y) {
+        ParticleEffect particle = new ParticleEffect();
+        particle.load(Gdx.files.internal("particles/blueblood.p"), Gdx.files.internal("particles"));
+        particle.setPosition(25, 25);
+        particle.start();
+        map.getParticleEffects().add(particle);
     }
 
     public void update(float deltaTime) {

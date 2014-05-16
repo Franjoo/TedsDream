@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -42,6 +43,8 @@ import java.util.HashMap;
 public class Map {
 
     public static final String TAG = Map.class.getSimpleName();
+
+    private Array<ParticleEffect> particleEffects = new Array<ParticleEffect>();
 
     // constants
     private static final int HORIZONTAL_FLIP = 0;
@@ -161,8 +164,6 @@ public class Map {
 
         // creation methods
         createEnemies();
-
-
     }
 
     private void createEnemies() {
@@ -470,8 +471,9 @@ public class Map {
 
 //        for(Item i: items) if(i != null) i.render(batch);
 
-        // render foreground
         renderForeground(batch);
+
+        renderParticles(batch);
 
         //** draw debug textures **//
         batch.begin();
@@ -491,6 +493,14 @@ public class Map {
 
         batch.end();
 
+    }
+
+    private void renderParticles(SpriteBatch batch) {
+        batch.begin();
+        for(ParticleEffect particleEffet : particleEffects){
+            particleEffet.draw(batch);
+        }
+        batch.end();
     }
 
     private void renderForeground(SpriteBatch batch) {
@@ -542,23 +552,28 @@ public class Map {
         for (Layer l : layers_background) l.update(deltaTime);
         for (Layer l : layers_foreground) l.update(deltaTime);
 
-        // update player
         player.update(deltaTime);
 
-        // update items
         for(Item i : items) if(i != null) i.update(deltaTime);
 
-        // update spawnController
         spawnController.update(deltaTime);
 
-        // update enemies
         for (int i = 0; i < enemies.size; i++) {
             enemies.get(i).update(deltaTime);
         }
 
+        updateParticles(deltaTime);
+
 
         renderer.setView(camera);
         fixedRenderer.setView(fixedCamera);
+    }
+
+    private void updateParticles(float deltaTime) {
+        for(ParticleEffect particleEffect : particleEffects){
+            particleEffect.update(deltaTime);
+            particleEffect.start();
+        }
     }
 
     /**
@@ -989,6 +1004,10 @@ public class Map {
 
     public int getDeadEnemies() {
         return deadEnemies;
+    }
+
+    public Array<ParticleEffect> getParticleEffects() {
+        return particleEffects;
     }
 
     public void removeFromMap(Enemy e) {
