@@ -1,0 +1,18 @@
+testSheet.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+grass
+  rotate: false
+  xy: 2, 2
+  size: 512, 640
+  orig: 512, 640
+  offset: 0, 0
+  index: 9
+tree
+  rotate: false
+  xy: 2, 644
+  size: 192, 192
+  orig: 192, 192
+  offset: 0, 0
+  index: -1

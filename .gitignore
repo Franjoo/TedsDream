@@ -1,0 +1,26 @@
+## Java
+
+# Intellij
+.idea/
+*.iws
+.idea/workspace.xml
+*.iml
+out/
+
+.gradle/
+
+.gradle
+
+.m2
+
+build/
+
+*.class
+
+/target
+*/target
+
+/build
+*/build
+
+build/*
