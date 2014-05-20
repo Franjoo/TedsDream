@@ -44,8 +44,6 @@ public class Map {
 
     public static final String TAG = Map.class.getSimpleName();
 
-    private Array<ParticleEffect> particleEffects = new Array<ParticleEffect>();
-
     // constants
     private static final int HORIZONTAL_FLIP = 0;
     private static final int VERTICAL_FLIP = 1;
@@ -473,7 +471,7 @@ public class Map {
 
         renderForeground(batch);
 
-        renderParticles(batch);
+//        renderParticles(batch);
 
         //** draw debug textures **//
         batch.begin();
@@ -495,22 +493,14 @@ public class Map {
 
     }
 
-    private void renderParticles(SpriteBatch batch) {
-        batch.begin();
-        for(ParticleEffect particleEffet : particleEffects){
-            particleEffet.draw(batch);
-        }
-        batch.end();
-    }
-
     private void renderForeground(SpriteBatch batch) {
         fixedRenderer.getSpriteBatch().setProjectionMatrix(fixedCamera.combined);
         fixedCamera.position.y = camera.position.y;
         for (int i = 0; i < layers_foreground.size; i++) {
 
-            Layer l = layers_foreground.get(i);
-            fixedCamera.position.x = camera.position.x * l.getVelocityX() + l.getX() + C.VIEWPORT_WIDTH / 2;
-            fixedCamera.position.y = camera.position.y * l.getVelocityY() + l.getY();
+            Layer foregroundLayer = layers_foreground.get(i);
+            fixedCamera.position.x = camera.position.x * foregroundLayer.getVelocityX() + foregroundLayer.getX() + C.VIEWPORT_WIDTH / 2;
+            fixedCamera.position.y = camera.position.y * foregroundLayer.getVelocityY() + foregroundLayer.getY();
 
             fixedCamera.update();
 
@@ -527,10 +517,10 @@ public class Map {
         for (int i = 0; i < layers_background.size; i++) {
 
 
-            Layer l = layers_background.get(i);
+            Layer backgroundLayer = layers_background.get(i);
 
-            fixedCamera.position.x = camera.position.x * l.getVelocityX() + l.getX() + C.VIEWPORT_WIDTH / 2;
-            fixedCamera.position.y = camera.position.y * l.getVelocityY() + l.getY();
+            fixedCamera.position.x = camera.position.x * backgroundLayer.getVelocityX() + backgroundLayer.getX() + C.VIEWPORT_WIDTH / 2;
+            fixedCamera.position.y = camera.position.y * backgroundLayer.getVelocityY() + backgroundLayer.getY();
 
             fixedCamera.update();
 
@@ -562,18 +552,8 @@ public class Map {
             enemies.get(i).update(deltaTime);
         }
 
-        updateParticles(deltaTime);
-
-
         renderer.setView(camera);
         fixedRenderer.setView(fixedCamera);
-    }
-
-    private void updateParticles(float deltaTime) {
-        for(ParticleEffect particleEffect : particleEffects){
-            particleEffect.update(deltaTime);
-            particleEffect.start();
-        }
     }
 
     /**
@@ -1004,10 +984,6 @@ public class Map {
 
     public int getDeadEnemies() {
         return deadEnemies;
-    }
-
-    public Array<ParticleEffect> getParticleEffects() {
-        return particleEffects;
     }
 
     public void removeFromMap(Enemy e) {

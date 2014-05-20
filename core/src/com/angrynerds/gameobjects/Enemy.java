@@ -9,6 +9,7 @@ import com.angrynerds.gameobjects.map.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
@@ -58,6 +59,8 @@ public class Enemy extends Creature implements Disposable{
     // animation
     private AnimationState state;
     private AnimationListener animationListener;
+
+    private ParticleEffect bloodParticle;
 
     // sound
     private Sound sound;
@@ -111,15 +114,24 @@ public class Enemy extends Creature implements Disposable{
         ranX = -1 + (int) (+(Math.random() * 3));
         ranY = -1 + (int) (+(Math.random() * 3));
         setAnimationStates();
+
+        bloodParticle = new ParticleEffect();
+        bloodParticle.load(Gdx.files.internal("particles/blood.p"), Gdx.files.internal("particles"));
+        //map.getParticleEffects().add(bloodParticle);
     }
 
     public void render(SpriteBatch batch) {
         super.render(batch);
+        batch.begin();
+        bloodParticle.setPosition(x, y + this.getSkeletonBounds().getHeight()/1.5f);
+        bloodParticle.draw(batch);
+        batch.end();
     }
 
     public void update(float deltatime) {
         super.update(deltatime);
         updatePositions();
+        bloodParticle.update(deltatime);
         // find new path
         if(getNewPath() != null)
           path = getNewPath();
@@ -257,6 +269,10 @@ public class Enemy extends Creature implements Disposable{
     public void setDamage(float dmg) {
         if(alive)
             setHealth(health - dmg);
+    }
+
+    public ParticleEffect getBloodParticle(){
+        return bloodParticle;
     }
 
     @Override

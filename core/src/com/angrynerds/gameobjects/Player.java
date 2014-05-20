@@ -140,7 +140,7 @@ public class Player extends Creature {
     public void attack() {
         for (Enemy e : map.getEnemies()) {
             if(e.getSkeletonBounds().aabbIntersectsSkeleton(getSkeletonBounds())){
-                AddBloobParticlesForRender(e.getX(), e.getY() * map.getWidth());
+                AddBloobParticlesForRender(e.getBloodParticle(), e.getX(), e.getY());
                 e.setDamage(atckDmg);
                 System.out.println("atccking enemy " + e.getHealth());
             }
@@ -149,12 +149,11 @@ public class Player extends Creature {
         //actHP -= 50;
     }
 
-    private void AddBloobParticlesForRender(float x, float y) {
-        ParticleEffect particle = new ParticleEffect();
-        particle.load(Gdx.files.internal("particles/blueblood.p"), Gdx.files.internal("particles"));
-        particle.setPosition(25, 25);
+    private void AddBloobParticlesForRender(ParticleEffect particle, float x, float y) {
+//        ParticleEffect particle = new ParticleEffect();
+//        particle.load(Gdx.files.internal("particles/blueblood.p"), Gdx.files.internal("particles"));
+//        particle.setPosition(x, y);
         particle.start();
-        map.getParticleEffects().add(particle);
     }
 
     public void update(float deltaTime) {
@@ -226,9 +225,14 @@ public class Player extends Creature {
     }
 
     private void checkForNextToItem() {
+        int tolerance = 20;
+        float playerPositionX = x + this.getSkeletonBounds().getWidth()/2;
+        float playerPositionY = y + this.getSkeletonBounds().getHeight()/2;
         for(Item item : map.getItems()){
-            if(item.getX() > x - 15 && item.getX() < x + 15){
-                if(item.getY() > y - 15 && item.getY() < y + 15){
+            float itemPositionX = item.getX() + item.region.getTexture().getWidth()/2;
+            float itemPositionY = item.getY() + item.region.getTexture().getHeight()/2;
+            if(itemPositionX > playerPositionX - tolerance && itemPositionX < playerPositionX + tolerance){
+                if(itemPositionY > playerPositionY - tolerance && itemPositionY < playerPositionY + tolerance){
                     collectItem(item);
                 }
             }
