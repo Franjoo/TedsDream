@@ -17,6 +17,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -53,7 +54,6 @@ public class MainMenu extends AbstractScreen implements TweenAccessor<Sound> {
     private static final int SOUND_TITLE = 0;
     private float volume;
     private Sound sound_title;
-
 
     public MainMenu(GameController gameController) {
         game = gameController;
@@ -131,7 +131,6 @@ public class MainMenu extends AbstractScreen implements TweenAccessor<Sound> {
                 .ease(Sine.IN)
                 .repeatYoyo(-1, 0)
                 .start(manager);
-
     }
 
     @Override

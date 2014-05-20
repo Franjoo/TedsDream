@@ -16,12 +16,13 @@ public abstract class GameObject {
     public float getX(){
         return x;
     }
-
     public float getY(){
         return y;
     }
 
+
     public float getWidth() { return width;}
 
     public float getHeight() { return  height;}
+
 }

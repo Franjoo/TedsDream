@@ -27,8 +27,6 @@ public class Boy extends Creature {
 
         x = 160;
         y = 30;
-
-
     }
 
     @Override
@@ -41,16 +39,10 @@ public class Boy extends Creature {
         super.update(deltaTime);
 
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-
            x = getX() + 320 * deltaTime;
-
         }
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-
             x = getX() - 320 * deltaTime;
-
-
-
         }
 
         walkAnimation.apply(skeleton, skeleton.getTime(), skeleton.getTime(), true, events);

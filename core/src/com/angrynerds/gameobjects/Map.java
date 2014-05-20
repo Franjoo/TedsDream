@@ -1,12 +1,10 @@
 package com.angrynerds.gameobjects;
 
 import com.angrynerds.ai.pathfinding.AStarPathFinder;
-import com.angrynerds.ai.pathfinding.ClosestHeuristic;
 import com.angrynerds.game.Layer;
 import com.angrynerds.game.World;
 import com.angrynerds.game.collision.Detector;
 import com.angrynerds.game.screens.play.PlayScreen;
-import com.angrynerds.gameobjects.creatures.Goblin;
 import com.angrynerds.util.C;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -36,14 +34,10 @@ import java.util.HashMap;
  */
 public class Map {
 
-    // GIT PUSH
-
     public static final String TAG = Map.class.getSimpleName();
 
     // constants
-    private static final int HORIZONTAL_FLIP = 0;
-    private static final int VERTICAL_FLIP = 1;
-    private static final int BOTH_FLIP = 2;
+    private static enum Flip {HORIZONTAL, VERTICAL, BOTH} ;
 
     // map instance
     private static Map instance;
@@ -142,39 +136,36 @@ public class Map {
 
     private void createEnemies() {
         enemies = new Array<Enemy>();
-        MapLayers l = map.getLayers();
-        for (int i = 0; i < l.getCount(); i++) {
+        MapLayers mapLayers = map.getLayers();
+        for (int i = 0; i < mapLayers.getCount(); i++) {
             // contains objects
-            if (l.get(i).getObjects().getCount() != 0) {
-                MapObjects objects = l.get(i).getObjects();
+            if (mapLayers.get(i).getObjects().getCount() != 0) {
+                MapObjects objects = mapLayers.get(i).getObjects();
                 for (int j = 0; j < objects.getCount(); j++) {
-                    MapProperties p = objects.get(j).getProperties();
+                    MapProperties properties = objects.get(j).getProperties();
 
                     // goblin spawn
-                    if (p.containsKey("spawn") && p.get("spawn").equals("goblin")) {
+                    if (properties.containsKey("spawn") && properties.get("spawn").equals("goblin")) {
 
                         System.out.println("goblin spawned");
 
-                        int min = Integer.parseInt((String) p.get("min"));
-                        int max = Integer.parseInt((String) p.get("max"));
+                        int min = Integer.parseInt((String) properties.get("min"));
+                        int max = Integer.parseInt((String) properties.get("max"));
 
                         int num = (int) (min + Math.random() * (max - min));
                         for (int k = 0; k < num; k++) {
-                            float x = Float.parseFloat(p.get("x").toString());
-                            float y = Float.parseFloat(p.get("y").toString());
-                            float w = Float.parseFloat(p.get("width").toString());
-                            float h = Float.parseFloat(p.get("height").toString());
+                            float x = Float.parseFloat(properties.get("x").toString());
+                            float y = Float.parseFloat(properties.get("y").toString());
+                            float w = Float.parseFloat(properties.get("width").toString());
+                            float h = Float.parseFloat(properties.get("height").toString());
 
                           //  Enemy e = new Enemy((float)(x + Math.random() * 180),(float)(y - Math.random() * 192),"goblins", "data/spine/goblins/", "goblingirl", player, 0.4f);
                          //   enemies.add(e);
                         }
                     }
-
                 }
-
             }
         }
-
     }
 
     /**
@@ -187,33 +178,74 @@ public class Map {
         return instance;
     }
 
-
     /**
      * initializes the map
      */
     private void init() {
+        loadTmx();
 
-        // load tmx
-        map = new TmxMapLoader().load(mapPath);
-        renderer = new OrthogonalTiledMapRenderer(map, PlayScreen.getBatch());
-        renderer.setView(camera);
+        createTextureAtlas();
 
-        // create texture atlas
-        atlas = new TextureAtlas("data/maps/map_02.txt");
-        regionMap = new HashMap<String, TextureRegion>();
+        setTextureFilter();
 
-        // set Texture Filter
-        for (Texture t : atlas.getTextures()) {
-            t.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        }
+        fillRegionMap();
 
-        // fill region Map
-        for (int i = 0; i < atlas.getRegions().size; i++) {
-            regionMap.put(atlas.getRegions().get(i).name, atlas.getRegions().get(i));
-            // System.out.println("putted: " + atlas.getRegions().get(i).name);
-        }
+        parseMapProperties();
 
-        // parse map properties
+        setPositionAndSize();
+
+        System.out.println("w/h: " + mapWidth + " " + mapHeight);
+
+        initFixedCameraAndRenderer();
+
+        initCollisionRelevantLists();
+
+        setRenderLayers();
+
+        spawn = findSpawn();
+
+        initCollisionDetector();
+
+        drawDebugStuff();
+    }
+
+    private void drawDebugStuff() {
+        if (SHOW_TILE_GRID)
+            drawTileGrid();
+
+        if (SHOW_COLLISION_SHAPES)
+            createCollisionShapes();
+
+        if (SHOW_COLLISION_TILES)
+            createCollisionTileShapes();
+    }
+
+    private void initCollisionDetector() {
+        Detector.initialize(map);
+        detector = Detector.getInstance();
+    }
+
+    private void initCollisionRelevantLists() {
+        createMapLayers();
+        collisionTileLayers = createCollisionTileLayers();
+        collisionObjects = createCollisionObjects();
+        mapObjects = createMapObjects();
+    }
+
+    private void initFixedCameraAndRenderer() {
+        fixedCamera = new OrthographicCamera(C.VIEWPORT_WIDTH, C.VIEWPORT_HEIGHT);
+        fixedRenderer = new OrthogonalTiledMapRenderer(map, 1, PlayScreen.getBatch());
+        fixedRenderer.setView(fixedCamera);
+    }
+
+    private void setPositionAndSize() {
+        x = 0;
+        y = 0;
+        width = mapWidth;
+        height = mapHeight;
+    }
+
+    private void parseMapProperties() {
         numTilesX = Integer.parseInt(map.getProperties().get("width").toString());
         numTilesY = Integer.parseInt(map.getProperties().get("height").toString());
         tileWidth = Integer.parseInt(map.getProperties().get("tilewidth").toString());
@@ -224,87 +256,72 @@ public class Map {
         offsetY = 0;
         mapWidth = numTilesX * tileWidth;
         mapHeight = numTilesY * tileHeight;
+    }
 
-        // position and size
-        x = 0;
-        y = 0;
-        width = mapWidth;
-        height = mapHeight;
+    private void fillRegionMap() {
+        for (int i = 0; i < atlas.getRegions().size; i++) {
+            regionMap.put(atlas.getRegions().get(i).name, atlas.getRegions().get(i));
+            // System.out.println("putted: " + atlas.getRegions().get(i).name);
+        }
+    }
 
-        System.out.println("w/h: " + mapWidth + " " + mapHeight);
+    private void setTextureFilter() {
+        for (Texture t : atlas.getTextures()) {
+            t.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        }
+    }
 
-        // fixed camera & renderer
-        fixedCamera = new OrthographicCamera(C.VIEWPORT_WIDTH, C.VIEWPORT_HEIGHT);
-        fixedRenderer = new OrthogonalTiledMapRenderer(map, 1, PlayScreen.getBatch());
-        fixedRenderer.setView(fixedCamera);
+    private void createTextureAtlas() {
+        atlas = new TextureAtlas("data/maps/map_02.txt");
+        regionMap = new HashMap<String, TextureRegion>();
+    }
 
-
-        // fill collision relevant lists
-        createMapLayers();
-        collisionTileLayers = createCollisionTileLayers();
-        collisionObjects = createCollisionObjects();
-        mapObjects = createMapObjects();
-
-
-        // set render layers
-        setRenderLayers();
-
-        // set player relevant attributes
-        spawn = findSpawn();
-
-        // initialize Collision Detector
-        Detector.initialize(map);
-        detector = Detector.getInstance();
-
-        // draw tile grid
-        if (SHOW_TILE_GRID) drawTileGrid();
-
-        // draw collision shapes
-        if (SHOW_COLLISION_SHAPES) drawCollisionShapes();
-
-        // draw collision tiles
-        if (SHOW_COLLISION_TILES) drawCollisionTiles();
-
+    private void loadTmx() {
+        map = new TmxMapLoader().load(mapPath);
+        renderer = new OrthogonalTiledMapRenderer(map, PlayScreen.getBatch());
+        renderer.setView(camera);
     }
 
     private void createMapLayers() {
-
         layers_foreground = new Array<Layer>();
         layers_background = new Array<Layer>();
+        MapLayer mapLayer;
 
         for (int i = 0; i < map.getLayers().getCount(); i++) {
-
+            mapLayer = map.getLayers().get(i);
             // if is tileLayer
-            if (map.getLayers().get(i).getObjects().getCount() == 0) {
-                MapProperties ps = map.getLayers().get(i).getProperties();
-
-                if (map.getLayers().get(i).getName().startsWith("bg") ||
-                        map.getLayers().get(i).getName().startsWith("fg")) {
-
-                    // parse layer properties
-                    float x = Float.parseFloat(ps.get("x").toString());
-                    float y = Float.parseFloat(ps.get("y").toString());
-                    float vX = Float.parseFloat(ps.get("vx").toString());
-                    float vY = Float.parseFloat(ps.get("vy").toString());
-                    TiledMapTileLayer tl = (TiledMapTileLayer) map.getLayers().get(i);
-                    System.out.println(tl.getName() + "  " + "x: " + x + "y: " + y);
-                    // create layer
-                    Layer layer = new Layer(x, y, vX, vY, tl);
-
-                    // background layer
-                    if (tl.getName().startsWith("bg")) {
-                        layers_background.add(layer);
-                    }
-
-                    // foreground layer
-                    else if (tl.getName().startsWith("fg")) {
-                        layers_foreground.add(layer);
-                    }
-                }
-
+            if (mapLayer.getObjects().getCount() == 0) {
+                fillBackgroundOrForegroundLayer(mapLayer);
             }
         }
 
+    }
+
+    private void fillBackgroundOrForegroundLayer(MapLayer mapLayer) {
+        String layerName = mapLayer.getName();
+        if (layerName.startsWith("bg") || layerName.startsWith("fg")) {
+            TiledMapTileLayer tileLayer = (TiledMapTileLayer) mapLayer;
+            System.out.println(tileLayer.getName() + "  " + "x: " + x + "y: " + y);
+            MapProperties mapProperties = mapLayer.getProperties();
+            Layer layer = createLayer(mapProperties, tileLayer);
+
+            if (tileLayer.getName().startsWith("bg")) {
+                layers_background.add(layer);
+            }
+            else if (tileLayer.getName().startsWith("fg")) {
+                layers_foreground.add(layer);
+            }
+        }
+    }
+
+    private Layer createLayer(MapProperties mapProperties, TiledMapTileLayer tileLayer) {
+        // parse layer properties
+        float x = Float.parseFloat(mapProperties.get("x").toString());
+        float y = Float.parseFloat(mapProperties.get("y").toString());
+        float velocityX = Float.parseFloat(mapProperties.get("vx").toString());
+        float velocityY = Float.parseFloat(mapProperties.get("vy").toString());
+
+        return new Layer(x, y, velocityX, velocityY, tileLayer);
     }
 
     /**
@@ -349,7 +366,6 @@ public class Map {
         return rectangle;
     }
 
-
     /**
      * returns an array of hashmaps which contains the object properties of tmx map object<br>
      * note: MapLayer m -> m.getObjects.get(n).getProperties() is incorrect
@@ -357,7 +373,6 @@ public class Map {
      * @param layer MapLayer which should be parsed
      */
     private Array<HashMap<String, String>> getObjectGroups(final MapLayer layer) {
-
         final String layername = layer.getName();
         Array<HashMap<String, String>> objects = new Array<HashMap<String, String>>();
 
@@ -377,17 +392,14 @@ public class Map {
 
                             hm.put(k, v);
                         }
-
                         line = reader.readLine();
                     }
                 }
-
                 line = reader.readLine();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return objects;
     }
 
@@ -396,17 +408,14 @@ public class Map {
      *
      * @param batch SpriteBatch that is used for rendering
      */
-
     public void render(SpriteBatch batch) {
         // background
         renderBackground(batch);
 
         // render player
 
-
         // set camera
         renderer.getSpriteBatch().setProjectionMatrix(camera.combined);
-
 
         // render map object in which are in foreground
         for (int i = 0; i < mapObjects.size; i++) {
@@ -416,7 +425,6 @@ public class Map {
         }
         player.render(batch);
 
-
         for (int i = 0; i < enemies.size; i++) {
             enemies.get(i).render(batch);
         }
@@ -424,7 +432,6 @@ public class Map {
 //        enemy.render(batch);
         // render foreground
         renderForeground(batch);
-
 
         //** draw debug textures **//
         batch.begin();
@@ -439,24 +446,14 @@ public class Map {
         if (SHOW_COLLISION_TILES) batch.draw(collisionTilesTexture, 0, 0);
 
         batch.end();
-
     }
 
     private void renderForeground(SpriteBatch batch) {
         fixedRenderer.getSpriteBatch().setProjectionMatrix(fixedCamera.combined);
         fixedCamera.position.y = camera.position.y;
         for (int i = 0; i < layers_foreground.size; i++) {
-
-            Layer l = layers_foreground.get(i);
-            fixedCamera.position.x = camera.position.x * l.getvX() + l.getX() + C.VIEWPORT_WIDTH / 2;
-            fixedCamera.position.y = camera.position.y * l.getvY() + l.getY();
-
-            fixedCamera.update();
-
-            batch.begin();
-            fixedRenderer.setView(fixedCamera);
-            fixedRenderer.renderTileLayer(layers_foreground.get(i).getTiledMapTileLayer());
-            batch.end();
+            Layer layer = layers_foreground.get(i);
+            setFixedCamerePositionAndRenderLayer(batch, layer);
         }
     }
 
@@ -464,18 +461,24 @@ public class Map {
         fixedRenderer.getSpriteBatch().setProjectionMatrix(fixedCamera.combined);
         fixedCamera.position.y = camera.position.y;
         for (int i = 0; i < layers_background.size; i++) {
-
-            Layer l = layers_background.get(i);
-            fixedCamera.position.x = camera.position.x * l.getvX() + l.getX() + C.VIEWPORT_WIDTH / 2;
-            fixedCamera.position.y = camera.position.y * l.getvY() + l.getY();
-
-            fixedCamera.update();
-
-            batch.begin();
-            fixedRenderer.setView(fixedCamera);
-            fixedRenderer.renderTileLayer(layers_background.get(i).getTiledMapTileLayer());
-            batch.end();
+            Layer layer = layers_background.get(i);
+            setFixedCamerePositionAndRenderLayer(batch, layer);
         }
+    }
+
+    private void setFixedCamerePositionAndRenderLayer(SpriteBatch batch, Layer layer) {
+        setFixedCameraPositionAndUpdate(layer);
+
+        batch.begin();
+        fixedRenderer.setView(fixedCamera);
+        fixedRenderer.renderTileLayer(layer.getTiledMapTileLayer());
+        batch.end();
+    }
+
+    private void setFixedCameraPositionAndUpdate(Layer layer) {
+        fixedCamera.position.x = camera.position.x * layer.getVelocityX() + layer.getX() + C.VIEWPORT_WIDTH / 2;
+        fixedCamera.position.y = camera.position.y * layer.getVelocityY() + layer.getY();
+        fixedCamera.update();
     }
 
     /**
@@ -485,14 +488,21 @@ public class Map {
      */
     public void update(float deltaTime) {
         player.update(deltaTime);
-//        enemy.update(deltaTime);
 
+        updateEnemies(deltaTime);
+
+        setRenderViews();
+    }
+
+    private void setRenderViews() {
+        renderer.setView(camera);
+        fixedRenderer.setView(fixedCamera);
+    }
+
+    private void updateEnemies(float deltaTime) {
         for (int i = 0; i < enemies.size; i++) {
            enemies.get(i).update(deltaTime);
         }
-
-        renderer.setView(camera);
-        fixedRenderer.setView(fixedCamera);
     }
 
     /**
@@ -503,7 +513,6 @@ public class Map {
      * @return whether point collides with solid tile or not
      */
     public boolean isSolid(final float x, final float y) {
-
         for (int i = 0; i < collisionTileLayers.size; i++) {
             TiledMapTileLayer.Cell cell = collisionTileLayers.get(i).getCell((int) (x) / tileWidth, (int) (y) / tileHeight);
             if (cell != null) {
@@ -522,8 +531,9 @@ public class Map {
     public Array<Rectangle> getCollisionObjects(final float x, final float y) {
         if (qArray.size != 0) qArray.clear();
         for (int i = 0; i < collisionObjects.size; i++) {
-            if (collisionObjects.get(i).contains(x, y)) {
-                qArray.add(collisionObjects.get(i));
+            Rectangle collisionObject = collisionObjects.get(i);
+            if (collisionObject.contains(x, y)) {
+                qArray.add(collisionObject);
             }
         }
         return qArray;
@@ -533,8 +543,8 @@ public class Map {
         if (rectangles.size == 0) throw new IllegalArgumentException("size of rectangle array must not be 0");
 
         float min = Float.MAX_VALUE;
-        for (Rectangle r : rectangles) {
-            if (r.getX() < min) min = r.getX();
+        for (Rectangle rectangle : rectangles) {
+            if (rectangle.getX() < min) min = rectangle.getX();
         }
         return min;
     }
@@ -543,8 +553,8 @@ public class Map {
         if (rectangles.size == 0) throw new IllegalArgumentException("size of rectangle array must not be 0");
 
         float min = Float.MAX_VALUE;
-        for (Rectangle r : rectangles) {
-            if (r.getY() < min) min = r.getY();
+        for (Rectangle rectangle : rectangles) {
+            if (rectangle.getY() < min) min = rectangle.getY();
         }
         return min;
     }
@@ -553,8 +563,8 @@ public class Map {
         if (rectangles.size == 0) throw new IllegalArgumentException("size of rectangle array must not be 0");
 
         float max = Float.MIN_VALUE;
-        for (Rectangle r : rectangles) {
-            if (r.getX() + r.getWidth() > max) max = r.getX() + r.getWidth();
+        for (Rectangle rectangle : rectangles) {
+            if (rectangle.getX() + rectangle.getWidth() > max) max = rectangle.getX() + rectangle.getWidth();
         }
         return max;
     }
@@ -563,8 +573,8 @@ public class Map {
         if (rectangles.size == 0) throw new IllegalArgumentException("size of rectangle array must not be 0");
 
         float max = Float.MIN_VALUE;
-        for (Rectangle r : rectangles) {
-            if (r.getY() + r.getHeight() > max) max = r.getY() + r.getHeight();
+        for (Rectangle rectangle : rectangles) {
+            if (rectangle.getY() + rectangle.getHeight() > max) max = rectangle.getY() + rectangle.getHeight();
         }
         return max;
     }
@@ -584,7 +594,6 @@ public class Map {
         return getCollisionObjects(p1.x, p1.y, p2.x, p2.y);
     }
 
-
     /**
      * returns an array of rectangles which contains the assigned point
      *
@@ -594,7 +603,6 @@ public class Map {
         return this.getCollisionObjects(position.x, position.y);
     }
 
-
     /**
      * flips a TiledMapTileLayer depending on the flipKind
      *
@@ -602,24 +610,24 @@ public class Map {
      * @param flipKind the way the layer should be flipped
      * @return a flipped copy of the layer
      */
-    private TiledMapTileLayer flipTiledMapTileLayer(final TiledMapTileLayer layer, final int flipKind) {
+    private TiledMapTileLayer flipTiledMapTileLayer(final TiledMapTileLayer layer, Flip flipKind) {
         TiledMapTileLayer copy = new TiledMapTileLayer(layer.getWidth(), layer.getHeight(), (int) (layer.getTileWidth()), (int) (layer.getTileHeight()));
         switch (flipKind) {
-            case HORIZONTAL_FLIP:
+            case HORIZONTAL:
                 for (int h = 0; h < layer.getHeight(); h++) {
                     for (int w = 0; w < layer.getWidth(); w++) {
                         copy.setCell(w, layer.getHeight() - h - 1, layer.getCell(w, h));
                     }
                 }
                 break;
-            case VERTICAL_FLIP:
+            case VERTICAL:
                 for (int h = 0; h < layer.getHeight(); h++) {
                     for (int w = 0; w < layer.getWidth(); w++) {
                         copy.setCell(layer.getWidth() - w - 1, h, layer.getCell(w, h));
                     }
                 }
                 break;
-            case BOTH_FLIP:
+            case BOTH:
                 for (int h = 0; h < layer.getHeight(); h++) {
                     for (int w = 0; w < layer.getWidth(); w++) {
                         copy.setCell(layer.getWidth() - w - 1, layer.getHeight() - h - 1, layer.getCell(w, h));
@@ -629,7 +637,6 @@ public class Map {
             default:
                 break;
         }
-
         return copy;
     }
 
@@ -637,21 +644,17 @@ public class Map {
      * returns the position on the map where the player is spawn
      */
     private Vector2 findSpawn() {
-
         MapLayers layers = map.getLayers();
-
         for (int i = 0; i < layers.getCount(); i++) {
-            if (layers.get(i).getName().startsWith("$s") && layers.get(i).getObjects().getCount() == 0) {
-
-                TiledMapTileLayer l = (TiledMapTileLayer) layers.get(i);
-
-                for (int j = 0; j < l.getHeight(); j++) {
-                    for (int k = 0; k < l.getWidth(); k++) {
-                        if (l.getCell(k, j) != null && l.getCell(k, j).getTile().getProperties().containsKey("spawn")) {
-                            System.out.println("SPAWN FOUND");
-                            float qX = k * tileWidth;
-                            float qY = j * tileHeight;
-                            return new Vector2(qX, qY);
+            MapLayer mapLayer = layers.get(i);
+            if (mapLayer.getName().startsWith("$s") && mapLayer.getObjects().getCount() == 0) {
+                TiledMapTileLayer tileLayer = (TiledMapTileLayer) mapLayer;
+                for (int j = 0; j < tileLayer.getHeight(); j++) {
+                    for (int k = 0; k < tileLayer.getWidth(); k++) {
+                        TiledMapTileLayer.Cell tileCell = tileLayer.getCell(k, j);
+                        if (tileCell != null && tileCell.getTile().getProperties().containsKey("spawn")) {
+                            Vector2 spawnVector = getSpawnVector(j,k);
+                            return spawnVector;
                         }
                     }
                 }
@@ -661,43 +664,60 @@ public class Map {
 
     }
 
+    private Vector2 getSpawnVector(int tileInY, int tileInX) {
+        System.out.println("SPAWN FOUND");
+        float qX = tileInX * tileWidth;
+        float qY = tileInY * tileHeight;
+        Vector2 spawnVector = new Vector2(qX, qY);
+        return spawnVector;
+    }
+
     /**
      * returns an array of TmxMapObject which are located on a tmx object layer<br>
      * note: tmx map object layer starts with $o
      */
     private Array<TmxMapObject> createMapObjects() {
-        Array<TmxMapObject> mo = new Array<TmxMapObject>();
+        Array<TmxMapObject> mapObjects = new Array<TmxMapObject>();
+        createMapObjectsOnMapLayers(mapObjects);
+        return mapObjects;
+    }
 
+    private void createMapObjectsOnMapLayers(Array<TmxMapObject> mapObjects) {
         MapLayers layers = map.getLayers();
 
         for (int i = 0; i < layers.getCount(); i++) {
-            if (layers.get(i).getName().startsWith("$o") && layers.get(i).getObjects().getCount() != 0) {
-
-                Array<HashMap<String, String>> objects = getObjectGroups(layers.get(i));
-                for (int j = 0; j < objects.size; j++) {
-
-                    int qX = Integer.parseInt(objects.get(j).get("x"));
-                    int qY = Integer.parseInt(objects.get(j).get("y"));
-                    int qW = Integer.parseInt(objects.get(j).get("width"));
-                    int qH = Integer.parseInt(objects.get(j).get("height"));
-                    String qT = objects.get(j).get("type");
-
-                    TmxMapObject object = new TmxMapObject(atlas.findRegion(qT), qX, mapHeight - qH - qY, qW, qH);
-                    mo.add(object);
-                }
-
-                mo.sort(new Comparator<TmxMapObject>() {
-                    @Override
-                    public int compare(TmxMapObject o1, TmxMapObject o2) {
-                        if (o1.getY() < o2.getY()) return 1;
-                        else if (o1.getY() > o2.getY()) return -1;
-                        else return 0;
-                    }
-                });
-
+            MapLayer mapLayer = layers.get(i);
+            if (mapLayer.getName().startsWith("$o") && mapLayer.getObjects().getCount() != 0) {
+                createAndFillMapObjects(mapObjects, mapLayer);
+                sortMapObjects(mapObjects);
             }
         }
-        return mo;
+    }
+
+    private void sortMapObjects(Array<TmxMapObject> mapObjects) {
+        mapObjects.sort(new Comparator<TmxMapObject>() {
+            @Override
+            public int compare(TmxMapObject o1, TmxMapObject o2) {
+                if (o1.getY() < o2.getY()) return 1;
+                else if (o1.getY() > o2.getY()) return -1;
+                else return 0;
+            }
+        });
+    }
+
+    private void createAndFillMapObjects(Array<TmxMapObject> mapObjects, MapLayer mapLayer) {
+        Array<HashMap<String, String>> objects = getObjectGroups(mapLayer);
+        for (int j = 0; j < objects.size; j++) {
+
+            int qX = Integer.parseInt(objects.get(j).get("x"));
+            int qY = Integer.parseInt(objects.get(j).get("y"));
+            int qW = Integer.parseInt(objects.get(j).get("width"));
+            int qH = Integer.parseInt(objects.get(j).get("height"));
+            String qT = objects.get(j).get("type");
+
+            TmxMapObject mapObject = new TmxMapObject(atlas.findRegion(qT), qX, mapHeight - qH - qY, qW, qH);
+            mapObjects.add(mapObject);
+        }
     }
 
     /**
@@ -705,14 +725,11 @@ public class Map {
      * note: the tiled map layer has to be an object layer and must start with $c
      */
     private Array<Rectangle> createCollisionObjects() {
-        Array<Rectangle> co = new Array<Rectangle>();
-
+        Array<Rectangle> collisionObjects = new Array<Rectangle>();
         MapLayers layers = map.getLayers();
         for (int i = 0; i < layers.getCount(); i++) {
             if (layers.get(i).getName().startsWith("$c") && layers.get(i).getObjects().getCount() != 0) {
-
                 Array<HashMap<String, String>> objects = getObjectGroups(layers.get(i));
-
                 for (int j = 0; j < objects.size; j++) {
                     if (objects.get(j).containsKey("width") &&
                             objects.get(j).containsKey("height") &&
@@ -724,12 +741,12 @@ public class Map {
                         float qW = Float.parseFloat(objects.get(j).get("width").toString());
                         float qH = Float.parseFloat(objects.get(j).get("height").toString());
 
-                        co.add(new Rectangle(qX, mapHeight - qY - qH, qW, qH));
+                        collisionObjects.add(new Rectangle(qX, mapHeight - qY - qH, qW, qH));
                     }
                 }
             }
         }
-        return co;
+        return collisionObjects;
     }
 
     /**
@@ -739,15 +756,19 @@ public class Map {
      * note: the name of a collision tiled map tile layer starts with $c and must not contain a tmx object
      */
     private Array<TiledMapTileLayer> createCollisionTileLayers() {
-        Array<TiledMapTileLayer> ctl = new Array<TiledMapTileLayer>();
+        Array<TiledMapTileLayer> collisionTileLayers = new Array<TiledMapTileLayer>();
+        fillCollisionTileLayers(collisionTileLayers);
+        return collisionTileLayers;
+    }
 
+    private void fillCollisionTileLayers(Array<TiledMapTileLayer> collisionTileLayers) {
         MapLayers layers = map.getLayers();
         for (int i = 0; i < layers.getCount(); i++) {
-            if (layers.get(i).getName().startsWith("$c") && layers.get(i).getObjects().getCount() == 0) {
-                ctl.add((TiledMapTileLayer) layers.get(i));
+            MapLayer mapLayer = layers.get(i);
+            if (mapLayer.getName().startsWith("$c") && mapLayer.getObjects().getCount() == 0) {
+                collisionTileLayers.add((TiledMapTileLayer) mapLayer);
             }
         }
-        return ctl;
     }
 
 
@@ -770,84 +791,74 @@ public class Map {
     /**
      * draws the collision tiles of the map which are located on a collision tile layer
      */
-    private void drawCollisionTiles() {
-        Pixmap p = new Pixmap(mapWidth / 100, mapHeight, Pixmap.Format.RGBA8888);
+    private void createCollisionTileShapes() {
+        Pixmap pixmap = new Pixmap(mapWidth / 100, mapHeight, Pixmap.Format.RGBA8888);
         Color color_outline = new Color(0, 0, 0, 1);
         Color color_fill = new Color(1, 0, 0, 0.3f);
 
-       /*draws the collision tiles */
+        drawCollisionTiles(pixmap, color_outline, color_fill);
+        System.out.println(pixmap.toString());
+        collisionTilesTexture = new Texture(pixmap);
+    }
+
+    private void drawCollisionTiles(Pixmap pixmap, Color color_outline, Color color_fill) {
         for (int j = 0; j < collisionTileLayers.size; j++) {
             for (int h = 0; h < numTilesY; h++) {
                 for (int w = 0; w < numTilesX / 100; w++) {
                     TiledMapTileLayer layer = (collisionTileLayers.get(j));
                     TiledMapTileLayer.Cell cell = layer.getCell(w, h);
                     if (cell != null) {
-                        Rectangle r = flipY(new Rectangle(w * tileWidth, h * tileHeight, tileWidth, tileHeight));
-                        p.setColor(color_outline);
-                        p.drawRectangle((int) r.getX(), (int) r.getY(), (int) r.getWidth(), (int) r.getHeight());
-                        p.setColor(color_fill);
-                        p.fillRectangle((int) r.getX(), (int) r.getY(), (int) r.getWidth(), (int) r.getHeight());
+                        Rectangle rectangle = flipY(new Rectangle(w * tileWidth, h * tileHeight, tileWidth, tileHeight));
+                        drawRectangleOnPixmap(pixmap, color_outline, color_fill, rectangle);
                     }
                 }
             }
         }
-        System.out.println(p.toString());
-        collisionTilesTexture = new Texture(p);
     }
 
     /**
      * draws the collision shapes of the tmx tiled map which are located on a collision object layer
      */
-    private void drawCollisionShapes() {
-        Pixmap p = new Pixmap(mapWidth, mapHeight, Pixmap.Format.RGBA8888);
+    private void createCollisionShapes() {
+        Pixmap pixmap = new Pixmap(mapWidth, mapHeight, Pixmap.Format.RGBA8888);
         Color color_outline = new Color(0, 0, 0, 1);
         Color color_fill = new Color(1, 0, 0, 0.3f);
 
-        /* draws the collision rectangles */
+        drawCollisionRectangles(pixmap, color_outline, color_fill);
+        collisionShapesTexture = new Texture(pixmap);
+    }
+
+    private void drawCollisionRectangles(Pixmap pixmap, Color color_outline, Color color_fill) {
         for (int i = 0; i < collisionObjects.size; i++) {
-            Rectangle r = flipY(new Rectangle(collisionObjects.get(i)));
-            p.setColor(color_outline);
-            p.drawRectangle((int) (r.getX()), (int) (r.getY()), (int) (r.getWidth()), (int) (r.getHeight()));
-            p.setColor(color_fill);
-            p.fillRectangle((int) (r.getX()), (int) (r.getY()), (int) (r.getWidth()), (int) (r.getHeight()));
+            Rectangle rectangle = flipY(new Rectangle(collisionObjects.get(i)));
+            drawRectangleOnPixmap(pixmap, color_outline, color_fill, rectangle);
         }
-        collisionShapesTexture = new Texture(p);
+    }
+
+    private void drawRectangleOnPixmap(Pixmap pixmap, Color color_outline, Color color_fill, Rectangle rectangle) {
+        pixmap.setColor(color_outline);
+        pixmap.drawRectangle((int) (rectangle.getX()), (int) (rectangle.getY()), (int) (rectangle.getWidth()), (int) (rectangle.getHeight()));
+        pixmap.setColor(color_fill);
+        pixmap.fillRectangle((int) (rectangle.getX()), (int) (rectangle.getY()), (int) (rectangle.getWidth()), (int) (rectangle.getHeight()));
     }
 
     //*** GETTER METHODS ****//
-    //<editor-fold desc="getter methods">
-
-    /**
-     * returns x position
-     */
     public float getX() {
         return x;
     }
 
-    /**
-     * returns y position
-     */
     public float getY() {
         return y;
     }
 
-    /**
-     * returns width
-     */
     public float getWidth() {
         return width;
     }
 
-    /**
-     * returns height
-     */
     public float getHeight() {
         return height;
     }
 
-    /**
-     * returns the player
-     */
     public Player getPlayer() {
         return player;
     }
@@ -859,60 +870,34 @@ public class Map {
         return spawn;
     }
 
-    /**
-     * returns number of tiles in x direction
-     */
     public int getNumTilesX() {
         return numTilesX;
     }
 
-    /**
-     * returns number of tiles in y direction
-     */
     public int getNumTilesY() {
         return numTilesY;
     }
 
-    /**
-     * returns tile width
-     */
     public int getTileWidth() {
         return tileWidth;
     }
 
-    /**
-     * returns tile height
-     */
     public int getTileHeight() {
         return tileHeight;
     }
 
-    /**
-     * returns map height
-     *
-     * @return
-     */
     public int getMapHeight() {
         return mapHeight;
     }
 
-    /**
-     * returns map width
-     */
     public int getMapWidth() {
         return mapWidth;
     }
 
-    /**
-     * returns offset X
-     */
     public int getOffsetX() {
         return offsetX;
     }
 
-    /**
-     * returns offset Y
-     */
     public int getOffsetY() {
         return offsetY;
     }

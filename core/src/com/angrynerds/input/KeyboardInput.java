@@ -46,7 +46,6 @@ public class KeyboardInput extends InputAdapter implements IGameInputController 
     @Override
     public boolean get_isB() {
         return Gdx.input.isKeyPressed(Keys.X);
-
     }
 
     @Override

@@ -9,10 +9,6 @@ import com.angrynerds.util.State;
  * Project: GameDemo
  */
 public class TouchInput implements IGameInputController {
-
-
-
-
     @Override
     public float get_stickX() {
         return 0;  //To change body of implemented methods use File | Settings | File Templates.

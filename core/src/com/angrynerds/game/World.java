@@ -99,33 +99,18 @@ public class World {
 
     }
 
-    /**
-     * returns the map
-     */
     public Map getMap() {
         return map;
     }
 
-    /**
-     * returns the player
-     */
     public Player getPlayer() {
         return player;
     }
 
-
-    /**
-     * returns the camera
-     */
     public OrthographicCamera getCamera() {
         return camera;
     }
 
-    /**
-     * returns the camera helper
-     *
-     * @return
-     */
     public CameraHelper getCameraHelper() {
         return cameraHelper;
     }

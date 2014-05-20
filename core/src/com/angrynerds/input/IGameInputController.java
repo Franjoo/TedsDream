@@ -10,7 +10,6 @@ import com.angrynerds.util.State;
  */
 public interface IGameInputController {
 
-
     public float get_stickX();
 
     public float get_stickY();
@@ -20,7 +19,6 @@ public interface IGameInputController {
     public boolean get_isA();
 
     public boolean get_isB();
-
 
    public void setState(State state);
 }

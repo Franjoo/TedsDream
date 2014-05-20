@@ -7,4 +7,20 @@
 *.iml
 out/
 
+.gradle/
 
+.gradle
+
+.m2
+
+build/
+
+*.class
+
+/target
+*/target
+
+/build
+*/build
+
+build/*
