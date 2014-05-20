@@ -49,7 +49,7 @@ public class World {
         if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
 
             // xbox 360 controller
-/**            Array<Controller> controllers = Controllers.getControllers();
+/**           Array<Controller> controllers = Controllers.getControllers();
             try {
                 if (controllers != null) {
                     input = new X360Gamepad(controllers.get(0));
@@ -59,7 +59,7 @@ public class World {
 //                e.printStackTrace();
                 System.out.println("No Controller detected");
             }
- */
+   */
         }
 
         // world objects

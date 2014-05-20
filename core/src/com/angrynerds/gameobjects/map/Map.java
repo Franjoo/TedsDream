@@ -6,20 +6,16 @@ import com.angrynerds.game.Layer;
 import com.angrynerds.game.World;
 import com.angrynerds.game.collision.Detector;
 import com.angrynerds.game.screens.play.PlayScreen;
-import com.angrynerds.gameobjects.Enemy;
-import com.angrynerds.gameobjects.Item;
-import com.angrynerds.gameobjects.Player;
-import com.angrynerds.gameobjects.TmxMapObject;
+import com.angrynerds.gameobjects.*;
+import com.angrynerds.renderer.ShadowRenderer;
 import com.angrynerds.util.C;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.*;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -65,6 +61,8 @@ public class Map {
     private Texture collisionShapesTexture;
     private Texture collisionTilesTexture;
     private Texture dreamOver;
+    private ShapeRenderer shapeRenderer = new ShapeRenderer();
+
 
     // map relevant attributes
     private TiledMap map;
@@ -100,6 +98,7 @@ public class Map {
 
     // player relevant subjects
     private Vector2 spawn;
+    private ShadowRenderer shadowRenderer = new ShadowRenderer();
 
     // map lists
     private Array<TiledMapTileLayer> collisionTileLayers;
@@ -434,7 +433,13 @@ public class Map {
 
         // set camera
         renderer.getSpriteBatch().setProjectionMatrix(camera.combined);
+        for(Enemy e : enemies) {
+            shadowRenderer.renderShadow(shapeRenderer,camera,e);
+        }
 
+        for(Item item : items){
+            shadowRenderer.renderShadow(shapeRenderer,camera,item);
+        }
         // enemies in background
         for (int i = 0; i < enemies.size; i++) {
             Enemy e = enemies.get(i);
@@ -491,6 +496,7 @@ public class Map {
             batch.draw(dreamOver,fixedCamera.position.x-dreamOver.getWidth()/2,fixedCamera.position.y-dreamOver.getHeight()/2);
         }
 
+
         batch.end();
 
     }
@@ -511,6 +517,20 @@ public class Map {
             fixedRenderer.renderTileLayer(layers_foreground.get(i).getTiledMapTileLayer());
             batch.end();
         }
+    }
+
+    private void renderShadows(){
+        camera.update();
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
+        for(Enemy e : enemies){
+            e.renderShadow(shapeRenderer);
+        }
+           shapeRenderer.end();
+        Gdx.gl.glDisable(GL20.GL_BLEND);
     }
 
     private void renderBackground(SpriteBatch batch) {

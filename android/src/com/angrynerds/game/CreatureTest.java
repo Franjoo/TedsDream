@@ -8,7 +8,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
@@ -57,7 +57,7 @@ public class CreatureTest extends AndroidApplication implements ApplicationListe
 
     @Override
     public void render() {
-        Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // render goblin
         goblin.update(Gdx.graphics.getDeltaTime());

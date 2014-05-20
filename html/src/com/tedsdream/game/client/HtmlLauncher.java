@@ -3,7 +3,7 @@ package com.tedsdream.game.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.tedsdream.game.Main;
+import com.angrynerds.game.core.Main;
 
 public class HtmlLauncher extends GwtApplication {
 

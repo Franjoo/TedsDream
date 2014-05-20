@@ -1,59 +1,76 @@
 
-hase-1.png
+hase.png
+size: 451,125
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 hase/hase_01
-  rotate: false
-  xy: 808, 2
-  size: 120, 302
-  orig: 417, 588
-  offset: 161, 152
+  rotate: true
+  xy: 2, 2
+  size: 13, 31
+  orig: 42, 59
+  offset: 16, 15
   index: -1
 hase/hase_02
-  rotate: true
-  xy: 558, 72
-  size: 255, 248
-  orig: 570, 432
-  offset: 212, 83
+  rotate: false
+  xy: 425, 100
+  size: 26, 25
+  orig: 57, 43
+  offset: 21, 8
+  index: -1
+hase/hase_03
+  rotate: false
+  xy: 255, 73
+  size: 84, 52
+  orig: 95, 66
+  offset: 3, 9
   index: -1
 hase/hase_04
   rotate: false
-  xy: 2, 329
-  size: 805, 532
-  orig: 945, 663
-  offset: 43, 77
+  xy: 341, 71
+  size: 82, 54
+  orig: 95, 66
+  offset: 4, 7
   index: -1
 hase/hase_05
   rotate: false
-  xy: 2, 37
-  size: 554, 290
-  orig: 705, 408
-  offset: 67, 60
+  xy: 2, 17
+  size: 57, 30
+  orig: 71, 41
+  offset: 6, 6
   index: -1
 hase/hase_06
-  rotate: true
-  xy: 809, 306
-  size: 555, 197
-  orig: 705, 408
-  offset: 67, 74
+  rotate: false
+  xy: 255, 50
+  size: 57, 21
+  orig: 71, 41
+  offset: 6, 7
   index: -1
 hase/hase_07
-  rotate: true
-  xy: 930, 8
-  size: 296, 68
-  orig: 561, 168
-  offset: 149, 44
-  index: -1
-
-hase-2.png
-format: RGBA8888
-filter: Linear,Linear
-repeat: none
-hase/hase_03
   rotate: false
-  xy: 2, 2
-  size: 821, 517
-  orig: 945, 663
-  offset: 36, 93
+  xy: 61, 39
+  size: 31, 8
+  orig: 56, 17
+  offset: 14, 4
+  index: -1
+hase/hase_angriff
+  rotate: false
+  xy: 172, 50
+  size: 81, 75
+  orig: 104, 90
+  offset: 10, 6
+  index: -1
+hase/hase_angriff_02
+  rotate: false
+  xy: 2, 49
+  size: 83, 76
+  orig: 104, 90
+  offset: 9, 8
+  index: -1
+hase/hase_norm
+  rotate: false
+  xy: 87, 49
+  size: 83, 76
+  orig: 104, 90
+  offset: 9, 8
   index: -1

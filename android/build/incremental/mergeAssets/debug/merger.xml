@@ -487,12 +487,6 @@
                 name="spine/boss/spinne.skel"
                 path="C:\Users\Sebastian\TedsDream\android\assets\spine\boss\spinne.skel" />
             <file
-                name="spine/goblin/goblin-1.png"
-                path="C:\Users\Sebastian\TedsDream\android\assets\spine\goblin\goblin-1.png" />
-            <file
-                name="spine/goblin/goblin-2.png"
-                path="C:\Users\Sebastian\TedsDream\android\assets\spine\goblin\goblin-2.png" />
-            <file
                 name="spine/goblin/goblin.atlas"
                 path="C:\Users\Sebastian\TedsDream\android\assets\spine\goblin\goblin.atlas" />
             <file
@@ -504,12 +498,6 @@
             <file
                 name="spine/goblin/goblin.spine"
                 path="C:\Users\Sebastian\TedsDream\android\assets\spine\goblin\goblin.spine" />
-            <file
-                name="spine/hase/hase-1.png"
-                path="C:\Users\Sebastian\TedsDream\android\assets\spine\hase\hase-1.png" />
-            <file
-                name="spine/hase/hase-2.png"
-                path="C:\Users\Sebastian\TedsDream\android\assets\spine\hase\hase-2.png" />
             <file
                 name="spine/hase/hase.atlas"
                 path="C:\Users\Sebastian\TedsDream\android\assets\spine\hase\hase.atlas" />
@@ -555,12 +543,6 @@
             <file
                 name="spine/max/Max_move2.png"
                 path="C:\Users\Sebastian\TedsDream\android\assets\spine\max\Max_move2.png" />
-            <file
-                name="spine/spinne/spinne-1.png"
-                path="C:\Users\Sebastian\TedsDream\android\assets\spine\spinne\spinne-1.png" />
-            <file
-                name="spine/spinne/spinne-2.png"
-                path="C:\Users\Sebastian\TedsDream\android\assets\spine\spinne\spinne-2.png" />
             <file
                 name="spine/spinne/spinne.atlas"
                 path="C:\Users\Sebastian\TedsDream\android\assets\spine\spinne\spinne.atlas" />
@@ -672,6 +654,27 @@
             <file
                 name="ui/menus/main/titel_moon_02.jpg"
                 path="C:\Users\Sebastian\TedsDream\android\assets\ui\menus\main\titel_moon_02.jpg" />
+            <file
+                name=".temp/18ea0fd0/gdx64.dll"
+                path="C:\Users\Sebastian\TedsDream\android\assets\.temp\18ea0fd0\gdx64.dll" />
+            <file
+                name="spine/hase/hase.png"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\hase\hase.png" />
+            <file
+                name="spine/ted/ted2.png"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\ted\ted2.png" />
+            <file
+                name="spine/ted/ted.png"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\ted\ted.png" />
+            <file
+                name="spine/spinne/spi.png"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\spinne\spi.png" />
+            <file
+                name="spine/goblin/goblin.png"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\goblin\goblin.png" />
+            <file
+                name="spine/goblin/goblin2.png"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\goblin\goblin2.png" />
         </source>
     </dataSet>
     <dataSet config="debug" >

@@ -10,6 +10,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import com.esotericsoftware.spine.AnimationState;
@@ -50,6 +52,9 @@ public class Enemy extends Creature implements Disposable{
     private float minDmg = 3.2f;
     private float maxDmg = 7.1f;
     private final float cooldown = 1.5f;
+
+    private float skeletonWidth;
+    private float skeletonHeight;
 
     private float health = 100f;
     private float nextAttackTime = 0;
@@ -104,6 +109,29 @@ public class Enemy extends Creature implements Disposable{
         state.addAnimation(0, "move", true, 0);
     }
 
+    public void renderShadow(ShapeRenderer shapeRenderer){
+
+        shapeRenderer.setColor(0,0,0,0.5f);
+        shapeRenderer.ellipse(getX()-getSkeletonBounds().getWidth()/2,getY(),getSkeletonBounds().getWidth()*0.7f,getSkeletonBounds().getHeight()/3);
+
+
+
+    }
+    public void renderPath(ShapeRenderer shapeRenderer){
+
+        shapeRenderer.rect(x, y, map.getTileWidth(), map.getTileHeight());
+        if(path != null) {
+            for (int i = 0; i < path.getLength() - 1; i++) {
+                float x1 = path.getStep(i).getX() * map.getTileWidth();
+                float x2 = path.getStep(i + 1).getX() * map.getTileWidth();
+                float y1 = path.getStep(i).getY() * map.getTileHeight();
+                float y2 = path.getStep(i + 1).getY() * map.getTileHeight();
+                shapeRenderer.line(x1, y1, x2, y2);
+            }
+
+        }
+        }
+
 
     public void init(float x, float y) {
         this.x = x;
@@ -117,7 +145,8 @@ public class Enemy extends Creature implements Disposable{
         ranX = -1 + (int) (+(Math.random() * 3));
         ranY = -1 + (int) (+(Math.random() * 3));
         setAnimationStates();
-
+        skeletonWidth = getSkeletonBounds().getWidth();
+        skeletonHeight = getSkeletonBounds().getHeight();
     }
 
 
@@ -136,6 +165,7 @@ public class Enemy extends Creature implements Disposable{
         if (alive) {
 
             // update pathfinding attributes
+
 
 
             // enemy is far from player (move)
@@ -192,6 +222,8 @@ public class Enemy extends Creature implements Disposable{
         // update animation
         state.apply(skeleton);
         state.update(deltatime);
+
+
     }
 
     public void updatePositions() {
@@ -284,6 +316,14 @@ public class Enemy extends Creature implements Disposable{
             if(Math.random() >= 0.6) map.addItem(new HealthPotion(x,y));
         }
 
+    }
+
+    public float getWidth(){
+        return getSkeletonBounds().getWidth();
+    }
+
+    public float getHeight(){
+        return getSkeletonBounds().getHeight();
     }
 
     public void setDamage(float dmg) {
