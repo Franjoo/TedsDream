@@ -30,9 +30,6 @@ public class Lifebar extends Actor {
         this.border = new Sprite(new Texture("ui/ingame/bars/" + borderName));
         this.life = new Sprite(new Texture("ui/ingame/bars/" + lifeName));
         maxLifeWidth = life.getWidth();
-
-
-
     }
 
     public Sprite getBubble() {
@@ -70,12 +67,10 @@ public class Lifebar extends Actor {
 
   //  @Override
     public void draw(SpriteBatch batch, float parentAlpha) {
-
         batch.draw(life, getX()+bubble.getWidth()-19, getY(), life.getWidth(), life.getHeight());
         batch.draw(border, getX()+bubble.getWidth()-18, getY());
         batch.draw(bubble,getX(), getY());
 
         super.draw(batch, parentAlpha);    //To change body of overridden methods use File | Settings | File Templates.
-
     }
 }

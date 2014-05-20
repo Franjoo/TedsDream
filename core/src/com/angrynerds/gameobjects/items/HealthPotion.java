@@ -1,9 +1,5 @@
 package com.angrynerds.gameobjects.items;
 
-import com.angrynerds.gameobjects.Item;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Tim

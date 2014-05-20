@@ -85,11 +85,8 @@ public class UIButtonListener extends DragListener implements IGameInputControll
         else if (touchOrder.equals(dashOrderLeft)){
             state = State.DASHINGLEFT;
         }
-
         //state = State.IDLE;
-
         touchOrder.clear();
-
     }
 
     @Override
@@ -102,7 +99,6 @@ public class UIButtonListener extends DragListener implements IGameInputControll
             touchOrder.add(b.getId());
             b.setChecked(true);
         }
-
         super.enter(event, x, y, pointer, fromActor);
     }
 

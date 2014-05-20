@@ -7,7 +7,7 @@ import com.angrynerds.game.World;
 import com.angrynerds.game.collision.Detector;
 import com.angrynerds.game.screens.play.PlayScreen;
 import com.angrynerds.gameobjects.Enemy;
-import com.angrynerds.gameobjects.Item;
+import com.angrynerds.gameobjects.items.Item;
 import com.angrynerds.gameobjects.Player;
 import com.angrynerds.gameobjects.TmxMapObject;
 import com.angrynerds.util.C;
@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -27,8 +28,6 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 
 import java.io.BufferedReader;
@@ -163,8 +162,6 @@ public class Map {
 
         // creation methods
         createEnemies();
-
-
     }
 
     private void createEnemies() {
@@ -472,8 +469,9 @@ public class Map {
 
 //        for(Item i: items) if(i != null) i.render(batch);
 
-        // render foreground
         renderForeground(batch);
+
+//        renderParticles(batch);
 
         //** draw debug textures **//
         batch.begin();
@@ -500,9 +498,9 @@ public class Map {
         fixedCamera.position.y = camera.position.y;
         for (int i = 0; i < layers_foreground.size; i++) {
 
-            Layer l = layers_foreground.get(i);
-            fixedCamera.position.x = camera.position.x * l.getvX() + l.getX() + C.VIEWPORT_WIDTH / 2;
-            fixedCamera.position.y = camera.position.y * l.getvY() + l.getY();
+            Layer foregroundLayer = layers_foreground.get(i);
+            fixedCamera.position.x = camera.position.x * foregroundLayer.getVelocityX() + foregroundLayer.getX() + C.VIEWPORT_WIDTH / 2;
+            fixedCamera.position.y = camera.position.y * foregroundLayer.getVelocityY() + foregroundLayer.getY();
 
             fixedCamera.update();
 
@@ -519,10 +517,10 @@ public class Map {
         for (int i = 0; i < layers_background.size; i++) {
 
 
-            Layer l = layers_background.get(i);
+            Layer backgroundLayer = layers_background.get(i);
 
-            fixedCamera.position.x = camera.position.x * l.getvX() + l.getX() + C.VIEWPORT_WIDTH / 2;
-            fixedCamera.position.y = camera.position.y * l.getvY() + l.getY();
+            fixedCamera.position.x = camera.position.x * backgroundLayer.getVelocityX() + backgroundLayer.getX() + C.VIEWPORT_WIDTH / 2;
+            fixedCamera.position.y = camera.position.y * backgroundLayer.getVelocityY() + backgroundLayer.getY();
 
             fixedCamera.update();
 
@@ -544,20 +542,15 @@ public class Map {
         for (Layer l : layers_background) l.update(deltaTime);
         for (Layer l : layers_foreground) l.update(deltaTime);
 
-        // update player
         player.update(deltaTime);
 
-        // update items
         for(Item i : items) if(i != null) i.update(deltaTime);
 
-        // update spawnController
         spawnController.update(deltaTime);
 
-        // update enemies
         for (int i = 0; i < enemies.size; i++) {
             enemies.get(i).update(deltaTime);
         }
-
 
         renderer.setView(camera);
         fixedRenderer.setView(fixedCamera);

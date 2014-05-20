@@ -1,7 +1,6 @@
 package com.angrynerds.game;
 
 import com.angrynerds.gameobjects.GameObject;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
  * User: Franjo
@@ -11,23 +10,22 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public abstract class AbstractLayer extends GameObject {
 
-    protected float vX;
-    protected float vY;
+    protected float velocityX;
+    protected float velocityY;
 
-    public AbstractLayer(float x, float y, float vX, float vY) {
+    public AbstractLayer(float x, float y, float velocityX, float velocityY) {
         this.x = x;
         this.y = y;
-        this.vX = vX;
-        this.vY = vY;
+        this.velocityX = velocityX;
+        this.velocityY = velocityY;
     }
 
     public abstract void update(float deltaTime);
 
-    public float getvX() {
-        return vX;
+    public float getVelocityX() {
+        return velocityX;
     }
-
-    public float getvY() {
-        return vY;
+    public float getVelocityY() {
+        return velocityY;
     }
 }

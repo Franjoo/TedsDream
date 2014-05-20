@@ -16,9 +16,7 @@ public abstract class GameObject {
     public float getX(){
         return x;
     }
-
     public float getY(){
         return y;
     }
-
 }

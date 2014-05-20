@@ -29,14 +29,11 @@ public abstract class Creature extends GameObject {
     // atlas
     private TextureAtlas atlas;
 
-
-
     // constructor params
     private String name;
     private String path;
     private float scale;
     private String skin;
-
 
     public Creature(String name, String path, String skin, float scale) {
         this.name = name;
@@ -51,16 +48,13 @@ public abstract class Creature extends GameObject {
         this(name, path, skin, 1);
     }
 
-
     private void create() {
         // atlas
         atlas = new TextureAtlas(Gdx.files.internal(path + name + ".atlas"));
         showBounds = true;
 
-
         // skeleton json
         skeletonJson = new SkeletonJson(atlas);
-
 
         // set scale
         skeletonJson.setScale(scale);
@@ -71,12 +65,8 @@ public abstract class Creature extends GameObject {
         // create skeleton
         skeleton = new Skeleton(skeletonData);
 
-
         // create skeleton Bounds
         skeletonBounds = new SkeletonBounds();
-
-
-
 
         if (skin != null) {
             // set skin
@@ -91,9 +81,6 @@ public abstract class Creature extends GameObject {
         // create renderer
         skeletonRenderer = new SkeletonRenderer();
         skeletonDebugRenderer = new SkeletonRendererDebug();
-
-
-
     }
 
     public void update(float deltaTime) {
@@ -105,7 +92,6 @@ public abstract class Creature extends GameObject {
         skeleton.updateWorldTransform();
         skeleton.update(deltaTime);
         skeletonBounds.update(skeleton,true);
-
     }
 
     public void render(SpriteBatch batch) {
@@ -116,24 +102,11 @@ public abstract class Creature extends GameObject {
         batch.begin();
         skeletonRenderer.draw(batch, skeleton);
         batch.end();
-
-        // draw bounds
-
-       // if (showBounds)
-
     }
 
     public SkeletonBounds getSkeletonBounds(){
-
         return skeletonBounds;
-
-
-
-     //   if (showBounds) skeletonDebugRenderer.draw(skeleton);
-//            skeletonDebugRenderer.draw(skeleton);
-
     }
 
     public abstract void attack();
-
 }

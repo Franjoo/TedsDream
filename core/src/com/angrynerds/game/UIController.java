@@ -9,7 +9,6 @@ package com.angrynerds.game;
 public class UIController {
 
     public void update(float deltaTime){
-
     }
 
 }
