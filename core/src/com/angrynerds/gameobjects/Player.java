@@ -26,8 +26,6 @@ import com.esotericsoftware.spine.*;
 public class Player extends Creature {
     private static final String TAG = Player.class.getSimpleName();
 
-    private ParticleEffect[] particleEffects =  new ParticleEffect[100];
-
     // constants
     private final float epsilon = C.EPSILON;
 
@@ -225,7 +223,7 @@ public class Player extends Creature {
     }
 
     private void checkForNextToItem() {
-        int tolerance = 20;
+        int tolerance = 30;
         float playerPositionX = x + this.getSkeletonBounds().getWidth()/2;
         float playerPositionY = y + this.getSkeletonBounds().getHeight()/2;
         for(Item item : map.getItems()){

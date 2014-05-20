@@ -53,9 +53,7 @@ public class Map {
     public static final String TAG = Map.class.getSimpleName();
 
     // constants
-    private static final int HORIZONTAL_FLIP = 0;
-    private static final int VERTICAL_FLIP = 1;
-    private static final int BOTH_FLIP = 2;
+    private static enum Flip {HORIZONTAL, VERTICAL, BOTH} ;
 
     // map instance
     private static Map instance;
@@ -97,6 +95,8 @@ public class Map {
     private int tileHeight;
     private int mapWidth;
     private int mapHeight;
+    private int offsetX;
+    private int offsetY;
     public final int borderWidth = 5;
 
     private float x;
@@ -701,24 +701,24 @@ public class Map {
      * @param flipKind the way the layer should be flipped
      * @return a flipped copy of the layer
      */
-    private TiledMapTileLayer flipTiledMapTileLayer(final TiledMapTileLayer layer, final int flipKind) {
+    private TiledMapTileLayer flipTiledMapTileLayer(final TiledMapTileLayer layer, Flip flipKind) {
         TiledMapTileLayer copy = new TiledMapTileLayer(layer.getWidth(), layer.getHeight(), (int) (layer.getTileWidth()), (int) (layer.getTileHeight()));
         switch (flipKind) {
-            case HORIZONTAL_FLIP:
+            case HORIZONTAL:
                 for (int h = 0; h < layer.getHeight(); h++) {
                     for (int w = 0; w < layer.getWidth(); w++) {
                         copy.setCell(w, layer.getHeight() - h - 1, layer.getCell(w, h));
                     }
                 }
                 break;
-            case VERTICAL_FLIP:
+            case VERTICAL:
                 for (int h = 0; h < layer.getHeight(); h++) {
                     for (int w = 0; w < layer.getWidth(); w++) {
                         copy.setCell(layer.getWidth() - w - 1, h, layer.getCell(w, h));
                     }
                 }
                 break;
-            case BOTH_FLIP:
+            case BOTH:
                 for (int h = 0; h < layer.getHeight(); h++) {
                     for (int w = 0; w < layer.getWidth(); w++) {
                         copy.setCell(layer.getWidth() - w - 1, layer.getHeight() - h - 1, layer.getCell(w, h));
@@ -728,7 +728,6 @@ public class Map {
             default:
                 break;
         }
-
         return copy;
     }
 
