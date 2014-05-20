@@ -24,3 +24,5 @@ build/
 */build
 
 build/*
+
+local.properties

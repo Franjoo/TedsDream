@@ -6,14 +6,12 @@ import com.angrynerds.game.Layer;
 import com.angrynerds.game.World;
 import com.angrynerds.game.collision.Detector;
 import com.angrynerds.game.screens.play.PlayScreen;
-<<<<<<< HEAD
 import com.angrynerds.gameobjects.*;
 import com.angrynerds.renderer.ShadowRenderer;
 import com.angrynerds.util.C;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
-=======
 import com.angrynerds.gameobjects.Enemy;
 import com.angrynerds.gameobjects.items.Item;
 import com.angrynerds.gameobjects.Player;
@@ -26,7 +24,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
->>>>>>> 35639cfc71b387be6816c190db87d5341ef000a5
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

@@ -4,6 +4,9 @@
     <dataSet config="main" >
         <source path="C:\Users\Sebastian\TedsDream\android\assets" >
             <file
+                name=".temp/18ea0fd0/gdx64.dll"
+                path="C:\Users\Sebastian\TedsDream\android\assets\.temp\18ea0fd0\gdx64.dll" />
+            <file
                 name="badlogic.jpg"
                 path="C:\Users\Sebastian\TedsDream\android\assets\badlogic.jpg" />
             <file
@@ -457,6 +460,15 @@
                 name="maps/map_05.tmx"
                 path="C:\Users\Sebastian\TedsDream\android\assets\maps\map_05.tmx" />
             <file
+                name="particles/blood.p"
+                path="C:\Users\Sebastian\TedsDream\android\assets\particles\blood.p" />
+            <file
+                name="particles/blueblood.p"
+                path="C:\Users\Sebastian\TedsDream\android\assets\particles\blueblood.p" />
+            <file
+                name="particles/particle.png"
+                path="C:\Users\Sebastian\TedsDream\android\assets\particles\particle.png" />
+            <file
                 name="sounds/ingame/attack_0.wav"
                 path="C:\Users\Sebastian\TedsDream\android\assets\sounds\ingame\attack_0.wav" />
             <file
@@ -493,17 +505,26 @@
                 name="spine/goblin/goblin.json"
                 path="C:\Users\Sebastian\TedsDream\android\assets\spine\goblin\goblin.json" />
             <file
+                name="spine/goblin/goblin.png"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\goblin\goblin.png" />
+            <file
                 name="spine/goblin/goblin.skel"
                 path="C:\Users\Sebastian\TedsDream\android\assets\spine\goblin\goblin.skel" />
             <file
                 name="spine/goblin/goblin.spine"
                 path="C:\Users\Sebastian\TedsDream\android\assets\spine\goblin\goblin.spine" />
             <file
+                name="spine/goblin/goblin2.png"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\goblin\goblin2.png" />
+            <file
                 name="spine/hase/hase.atlas"
                 path="C:\Users\Sebastian\TedsDream\android\assets\spine\hase\hase.atlas" />
             <file
                 name="spine/hase/hase.json"
                 path="C:\Users\Sebastian\TedsDream\android\assets\spine\hase\hase.json" />
+            <file
+                name="spine/hase/hase.png"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\hase\hase.png" />
             <file
                 name="spine/hase/hase.skel"
                 path="C:\Users\Sebastian\TedsDream\android\assets\spine\hase\hase.skel" />
@@ -544,6 +565,9 @@
                 name="spine/max/Max_move2.png"
                 path="C:\Users\Sebastian\TedsDream\android\assets\spine\max\Max_move2.png" />
             <file
+                name="spine/spinne/spi.png"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\spinne\spi.png" />
+            <file
                 name="spine/spinne/spinne.atlas"
                 path="C:\Users\Sebastian\TedsDream\android\assets\spine\spinne\spinne.atlas" />
             <file
@@ -555,6 +579,27 @@
             <file
                 name="spine/spinne/spinne.spine"
                 path="C:\Users\Sebastian\TedsDream\android\assets\spine\spinne\spinne.spine" />
+            <file
+                name="spine/ted/old/ted-1.png"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\ted\old\ted-1.png" />
+            <file
+                name="spine/ted/old/ted-2.png"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\ted\old\ted-2.png" />
+            <file
+                name="spine/ted/old/ted.atlas"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\ted\old\ted.atlas" />
+            <file
+                name="spine/ted/old/ted.json"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\ted\old\ted.json" />
+            <file
+                name="spine/ted/old/ted.png"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\ted\old\ted.png" />
+            <file
+                name="spine/ted/old/ted.skel"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\ted\old\ted.skel" />
+            <file
+                name="spine/ted/old/ted2.png"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\ted\old\ted2.png" />
             <file
                 name="spine/ted/ted-1.png"
                 path="C:\Users\Sebastian\TedsDream\android\assets\spine\ted\ted-1.png" />
@@ -568,8 +613,17 @@
                 name="spine/ted/ted.json"
                 path="C:\Users\Sebastian\TedsDream\android\assets\spine\ted\ted.json" />
             <file
+                name="spine/ted/ted.png"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\ted\ted.png" />
+            <file
                 name="spine/ted/ted.skel"
                 path="C:\Users\Sebastian\TedsDream\android\assets\spine\ted\ted.skel" />
+            <file
+                name="spine/ted/ted.spine"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\ted\ted.spine" />
+            <file
+                name="spine/ted/ted2.png"
+                path="C:\Users\Sebastian\TedsDream\android\assets\spine\ted\ted2.png" />
             <file
                 name="ui/ingame/bars/lifebar2b_03.png"
                 path="C:\Users\Sebastian\TedsDream\android\assets\ui\ingame\bars\lifebar2b_03.png" />
@@ -654,27 +708,6 @@
             <file
                 name="ui/menus/main/titel_moon_02.jpg"
                 path="C:\Users\Sebastian\TedsDream\android\assets\ui\menus\main\titel_moon_02.jpg" />
-            <file
-                name=".temp/18ea0fd0/gdx64.dll"
-                path="C:\Users\Sebastian\TedsDream\android\assets\.temp\18ea0fd0\gdx64.dll" />
-            <file
-                name="spine/hase/hase.png"
-                path="C:\Users\Sebastian\TedsDream\android\assets\spine\hase\hase.png" />
-            <file
-                name="spine/ted/ted2.png"
-                path="C:\Users\Sebastian\TedsDream\android\assets\spine\ted\ted2.png" />
-            <file
-                name="spine/ted/ted.png"
-                path="C:\Users\Sebastian\TedsDream\android\assets\spine\ted\ted.png" />
-            <file
-                name="spine/spinne/spi.png"
-                path="C:\Users\Sebastian\TedsDream\android\assets\spine\spinne\spi.png" />
-            <file
-                name="spine/goblin/goblin.png"
-                path="C:\Users\Sebastian\TedsDream\android\assets\spine\goblin\goblin.png" />
-            <file
-                name="spine/goblin/goblin2.png"
-                path="C:\Users\Sebastian\TedsDream\android\assets\spine\goblin\goblin2.png" />
         </source>
     </dataSet>
     <dataSet config="debug" >
