@@ -1,6 +1,6 @@
 package com.tedsdream.game.desktop;
 
-import com.angrynerds.game.core.Main;
+import com.angrynerds.tedsdream.core.Main;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
