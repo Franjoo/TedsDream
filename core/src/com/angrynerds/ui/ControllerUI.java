@@ -230,6 +230,7 @@ public class ControllerUI {
     }
 
     public void show() {
+        Gdx.input.setInputProcessor(stage);
         stage.addActor(touchpad);
         stage.addActor(buttonTable);
     }

@@ -1,14 +1,11 @@
 package com.angrynerds.game.screens.play;
 
-import com.angrynerds.game.core.GameController;
+import com.angrynerds.game.core.Controller;
 import com.angrynerds.game.screens.AbstractScreen;
-import com.angrynerds.game.screens.mainmenu.MainMenu;
-import com.angrynerds.ui.ControllerUI;
 import com.angrynerds.ui.TimeDisplay;
 import com.angrynerds.util.C;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
@@ -26,26 +23,20 @@ public class PlayScreen extends AbstractScreen {
 
     private static SpriteBatch batch;
 
-    private GameController game;
+    private final Controller game;
 
     /**
      * creates a new PlayScreen.
      * PlayScreen provides static access to the SpriteBatch which
      * is used for rendering
-     * @param gameController
+     * @param game
      */
-    public PlayScreen(GameController gameController) {
-        super();
-        game = gameController;
+    public PlayScreen(Controller game) {
+        this.game = game;
+
         // allow static access, note: ugly code practice
         batch = super.getSpriteBatch();
 
-    }
-
-    /**
-     * initializes PlayScreen
-     */
-    private void init() {
         playController = new PlayController();
         playRenderer = new PlayRenderer(playController, batch);
 
@@ -53,22 +44,8 @@ public class PlayScreen extends AbstractScreen {
         timer = new TimeDisplay(playController);
         camera = new OrthographicCamera(C.VIEWPORT_WIDTH, C.VIEWPORT_HEIGHT);
         camera.setToOrtho(true);
-
     }
 
-    /**
-     * returns the PlayController which is used in the PlayScreen
-     */
-    public PlayController getPlayController() {
-        return playController;
-    }
-
-    /**
-     * returns the PlayRenderer which is used in the PlayScreen
-     */
-    public PlayRenderer getPlayRenderer() {
-        return playRenderer;
-    }
 
     /**
      * returns the static SpriteBatch which is used for rendering the PlayScreen
@@ -81,11 +58,12 @@ public class PlayScreen extends AbstractScreen {
     @Override
     public void update(float deltaTime) {
         playController.update(deltaTime);
-
     }
 
     @Override
     public void render(float deltaTime) {
+        update(deltaTime);
+
         playRenderer.render(deltaTime);
 
         // timer
@@ -96,9 +74,7 @@ public class PlayScreen extends AbstractScreen {
 
         if(playController.getWorld().getPlayer().getActualHP() <= 0){
             if (Gdx.input.isTouched()) { // If the screen is touched after the game is done loading, go to the main menu screen
-                game.setMainMenu(new MainMenu(game));
-                game.setActiveScreen(game.getMainMenu());
-                game.setScreen(game.getMainMenu());
+                game.setScreen(game.mainMenu);
             }
         }
 
@@ -112,7 +88,7 @@ public class PlayScreen extends AbstractScreen {
 
     @Override
     public void show() {
-        init();
+        playController.getControllerUI().show();
     }
 
     @Override
