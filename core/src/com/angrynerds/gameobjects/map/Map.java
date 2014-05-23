@@ -3,33 +3,25 @@ package com.angrynerds.gameobjects.map;
 import com.angrynerds.ai.pathfinding.AStarPathFinder;
 import com.angrynerds.ai.pathfinding.ClosestHeuristic;
 import com.angrynerds.game.Layer;
-import com.angrynerds.game.World;
 import com.angrynerds.game.collision.Detector;
 import com.angrynerds.game.screens.play.PlayScreen;
-import com.angrynerds.gameobjects.*;
+import com.angrynerds.gameobjects.Enemy;
+import com.angrynerds.gameobjects.Player;
+import com.angrynerds.gameobjects.TmxMapObject;
+import com.angrynerds.gameobjects.items.Item;
 import com.angrynerds.renderer.ShadowRenderer;
 import com.angrynerds.util.C;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
-import com.angrynerds.gameobjects.Enemy;
-import com.angrynerds.gameobjects.items.Item;
-import com.angrynerds.gameobjects.Player;
-import com.angrynerds.gameobjects.TmxMapObject;
-import com.angrynerds.util.C;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.*;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapLayers;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -145,10 +137,10 @@ public class Map {
      * @param world
      * @param player
      */
-    public Map(World world, Player player) {
+    public Map(Player player, OrthographicCamera camera) {
         this.player = player;
 
-        camera = world.getCamera();
+        this.camera = camera;
         SpriteBatch batch = new SpriteBatch();
         // loading texture
         texture_loading = new Texture(Gdx.files.internal("ui/menus/main/loadingScreen.png"));

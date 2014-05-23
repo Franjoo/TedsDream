@@ -1,7 +1,5 @@
 package com.angrynerds.game.camera;
 
-import com.angrynerds.game.screens.play.PlayController;
-import com.angrynerds.game.World;
 import com.angrynerds.gameobjects.GameObject;
 import com.angrynerds.gameobjects.map.Map;
 import com.angrynerds.util.C;
@@ -13,22 +11,18 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class CameraHelper {
-    public static final String TAG = CameraHelper.class.getSimpleName();
 
     private static final float MAX_ZOOM_IN = 0.25f;
     private static final float MAX_ZOOM_OUT = 4.0f;
 
     private float aX = 0.07f;
     private float aY = 0.1f;
-//    private float aX = 1;
-//    private float aY = 1;
 
     private Vector2 position;
     private float zoom;
     private GameObject target;
     private Map map;
 
-    private PlayController playController;
     public float deltaX;
     public float deltaY;
 

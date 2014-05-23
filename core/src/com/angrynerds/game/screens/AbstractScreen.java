@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * Provides a SpriteBatch which is used for rendering
  */
 public abstract class AbstractScreen implements Screen {
-    private static final String TAG = AbstractScreen.class.getSimpleName();
 
     private SpriteBatch batch;
 

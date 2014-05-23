@@ -34,7 +34,10 @@ public class PlayRenderer {
     public void render(float deltaTime) {
         batch.setProjectionMatrix(playController.getCamera().combined);
 
-        playController.getWorld().render(batch);
+        playController.getMap().render(batch);
+
+        playController.getControllerUI().render(Gdx.graphics.getDeltaTime());
+
     }
 
     /**

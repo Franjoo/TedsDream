@@ -11,18 +11,13 @@ import com.badlogic.gdx.utils.Disposable;
  * class that is reponsible for updating and rendering all the
  * screen which are in use
  */
-public class GameController extends Game implements Disposable {
+public class GameController extends Game {
 
     // screens
-    private PlayScreen playScreen;
-    private MainMenu mainMenu;
-    private AbstractScreen activeScreen;
-    private StartingScreen startingScreen;
-
-    // game states
-    private static String STATE;
-    private static final String PLAY = "play";
-    private static final String MENU = "menu";
+    public AbstractScreen playScreen;
+    public AbstractScreen mainMenu;
+    public AbstractScreen activeScreen;
+    public StartingScreen startingScreen;
 
 
     public GameController() {

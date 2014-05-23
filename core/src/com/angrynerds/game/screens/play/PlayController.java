@@ -1,6 +1,9 @@
 package com.angrynerds.game.screens.play;
 
-import com.angrynerds.game.World;
+import com.angrynerds.game.camera.CameraHelper;
+import com.angrynerds.gameobjects.Player;
+import com.angrynerds.gameobjects.map.Map;
+import com.angrynerds.input.IGameInputController;
 import com.angrynerds.ui.ControllerUI;
 import com.angrynerds.util.C;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,50 +13,52 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
  * updating the world
  */
 public class PlayController {
-    private static final String TAG = PlayController.class.getSimpleName();
 
-    private World world;
+    private Map map;
+    private Player player;
+
     private OrthographicCamera camera;
+    private PlayController playController;
+    private CameraHelper cameraHelper;
 
     private ControllerUI controllerUI;
-
-
 
     /**
      * creates an new PlayController
      */
     public PlayController() {
-        System.out.println("playcontreoller craerted");
-        init();
-    }
-
-    /**
-     * initializes PlayController
-     */
-    private void init() {
         camera = new OrthographicCamera(C.VIEWPORT_WIDTH, C.VIEWPORT_HEIGHT);
         camera.update();
 
         controllerUI = new ControllerUI();
 
-        world = new World(this);
+
+        // world objects
+        player = new Player(controllerUI.getListener());
+        map = new Map(player, camera);
+
+        // camera
+        cameraHelper = new CameraHelper();
+        cameraHelper.applyTo(camera);
+        cameraHelper.setTarget(player);
+
     }
+
 
     /**
      * updates the objects used in PlayScreen
      *
-     * @param deltaTime time since last frame
+     * @param delta time since last frame
      */
-    public void update(float deltaTime) {
-        world.update(deltaTime);
-        controllerUI.getLifeBar().setLifePercent(world.getPlayer().getActualHP()/world.getPlayer().getMaxHP());
-    }
+    public void update(float delta) {
+        controllerUI.getLifeBar().setLifePercent(player.getActualHP()/player.getMaxHP());
+        controllerUI.update(delta);
 
-    /**
-     * returns the world in which the game is taking place
-     */
-    public World getWorld() {
-        return world;
+        map.update(delta);
+
+        cameraHelper.update(delta);
+        cameraHelper.applyTo(camera);
+
     }
 
     /**
@@ -65,5 +70,13 @@ public class PlayController {
 
     public ControllerUI getControllerUI() {
         return controllerUI;
+    }
+
+    public Map getMap(){
+        return map;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }

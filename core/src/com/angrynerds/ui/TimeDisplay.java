@@ -70,7 +70,7 @@ public class TimeDisplay {
     }
 
     private void buildKillsString() {
-         kills = (playController.getWorld().getMap().getDeadEnemies() + " / " + playController.getWorld().getMap().getMaxEnemies());
+         kills = (playController.getMap().getDeadEnemies() + " / " + playController.getMap().getMaxEnemies());
     }
 
     private void buildTime(float delta) {

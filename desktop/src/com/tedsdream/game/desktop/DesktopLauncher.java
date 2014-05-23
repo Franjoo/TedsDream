@@ -10,7 +10,10 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 
         config.title = "Teds Dream";
+        config.width = 800;
+        config.height = 480;
         config.vSyncEnabled = false;
+
 
 		new LwjglApplication(new Main(), config);
 	}
