@@ -1,4 +1,4 @@
-package com.angrynerds.game.screens.mainmenu;
+package com.angrynerds.game.screens;
 
 import com.angrynerds.game.core.Controller;
 import com.angrynerds.game.screens.AbstractScreen;

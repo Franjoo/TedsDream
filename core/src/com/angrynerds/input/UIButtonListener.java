@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.IntArray;
  * Time: 13:04
  * To change this template use File | Settings | File Templates.
  */
-public class UIButtonListener extends DragListener implements IGameInputController{
+public class UIButtonListener extends DragListener implements IGameInputController {
 
     private ControllerUI controller;
     private Array<Integer> touchOrder;
@@ -34,6 +34,7 @@ public class UIButtonListener extends DragListener implements IGameInputControll
         this.controller = controller;
         touchOrder = new Array<Integer>();
 
+
         init();
     }
 
@@ -49,7 +50,6 @@ public class UIButtonListener extends DragListener implements IGameInputControll
     }
 
 
-
     @Override
     public void touchUp(InputEvent event, float x, float y, int pointer,
                         int button) {
@@ -58,31 +58,23 @@ public class UIButtonListener extends DragListener implements IGameInputControll
         for (MyButton but : controller.getButtons()) {
             if ((but != null) && but.getOver())
                 but.setOver(false);
-                but.setChecked(false);
+            but.setChecked(false);
             MyButton.overCounter = 0;
         }
-        if(touchOrder.equals(attackOrder)){
+        if (touchOrder.equals(attackOrder)) {
             state = State.ATTACKING;
-        }
-
-        else if (touchOrder.equals(jumpOrder)){
+        } else if (touchOrder.equals(jumpOrder)) {
             System.out.println("jump to the sky");
             state = State.JUMPING;
-        }
-
-        else if (touchOrder.equals(smashOrder)) {
+        } else if (touchOrder.equals(smashOrder)) {
             System.out.println("smaaaaaaash");
             state = State.SMASHING;
-        }
-
-        else if (touchOrder.equals(turnAroundOrder))
+        } else if (touchOrder.equals(turnAroundOrder))
             System.out.println("turn around");
 
-        else if (touchOrder.equals(dashOrderRight)){
+        else if (touchOrder.equals(dashOrderRight)) {
             state = State.DASHINGRIGHT;
-        }
-
-        else if (touchOrder.equals(dashOrderLeft)){
+        } else if (touchOrder.equals(dashOrderLeft)) {
             state = State.DASHINGLEFT;
         }
         //state = State.IDLE;
@@ -92,6 +84,10 @@ public class UIButtonListener extends DragListener implements IGameInputControll
     @Override
     public void enter(InputEvent event, float x, float y, int pointer,
                       Actor fromActor) {
+
+        System.out.println(event.getTarget());
+
+
         MyButton b;
         b = (MyButton) event.getTarget();
         if (!b.getOver()) {
@@ -104,6 +100,7 @@ public class UIButtonListener extends DragListener implements IGameInputControll
 
     @Override
     public float get_stickX() {
+        System.out.println(controller.getTouchpad().getKnobPercentX());
         return controller.getTouchpad().getKnobPercentX();
     }
 
@@ -126,8 +123,9 @@ public class UIButtonListener extends DragListener implements IGameInputControll
     public boolean get_isB() {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
-    public void setState(State state){
-         this.state = state;
+
+    public void setState(State state) {
+        this.state = state;
 
     }
 }

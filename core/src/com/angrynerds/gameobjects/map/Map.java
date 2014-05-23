@@ -3,33 +3,24 @@ package com.angrynerds.gameobjects.map;
 import com.angrynerds.ai.pathfinding.AStarPathFinder;
 import com.angrynerds.ai.pathfinding.ClosestHeuristic;
 import com.angrynerds.game.Layer;
-import com.angrynerds.game.World;
 import com.angrynerds.game.collision.Detector;
-import com.angrynerds.game.screens.play.PlayScreen;
-import com.angrynerds.gameobjects.*;
+import com.angrynerds.gameobjects.Enemy;
+import com.angrynerds.gameobjects.Player;
+import com.angrynerds.gameobjects.TmxMapObject;
+import com.angrynerds.gameobjects.items.Item;
 import com.angrynerds.renderer.ShadowRenderer;
 import com.angrynerds.util.C;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
-import com.angrynerds.gameobjects.Enemy;
-import com.angrynerds.gameobjects.items.Item;
-import com.angrynerds.gameobjects.Player;
-import com.angrynerds.gameobjects.TmxMapObject;
-import com.angrynerds.util.C;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.*;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapLayers;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -142,13 +133,12 @@ public class Map {
     /**
      * creates a new Map
      *
-     * @param world
      * @param player
      */
-    public Map(World world, Player player) {
+    public Map(Player player, OrthographicCamera camera) {
         this.player = player;
 
-        camera = world.getCamera();
+        this.camera = camera;
         SpriteBatch batch = new SpriteBatch();
         // loading texture
         texture_loading = new Texture(Gdx.files.internal("ui/menus/main/loadingScreen.png"));
@@ -216,7 +206,7 @@ public class Map {
 
         // load tmx
         map = new TmxMapLoader().load(mapPath);
-        renderer = new OrthogonalTiledMapRenderer(map, PlayScreen.getBatch());
+        renderer = new OrthogonalTiledMapRenderer(map);
         renderer.setView(camera);
 
         dreamOver = new Texture("ui/ingame/dreamover.png");
@@ -256,7 +246,7 @@ public class Map {
 
         // fixed camera & renderer
         fixedCamera = new OrthographicCamera(C.VIEWPORT_WIDTH, C.VIEWPORT_HEIGHT);
-        fixedRenderer = new OrthogonalTiledMapRenderer(map, 1, PlayScreen.getBatch());
+        fixedRenderer = new OrthogonalTiledMapRenderer(map);
         fixedRenderer.setView(fixedCamera);
 
 
@@ -437,6 +427,7 @@ public class Map {
      */
 
     public void render(SpriteBatch batch) {
+
         // background
         renderBackground(batch);
 
@@ -512,6 +503,7 @@ public class Map {
     }
 
     private void renderForeground(SpriteBatch batch) {
+
         fixedRenderer.getSpriteBatch().setProjectionMatrix(fixedCamera.combined);
         fixedCamera.position.y = camera.position.y;
         for (int i = 0; i < layers_foreground.size; i++) {
@@ -522,11 +514,14 @@ public class Map {
 
             fixedCamera.update();
 
-            batch.begin();
             fixedRenderer.setView(fixedCamera);
+            fixedRenderer.getSpriteBatch().begin();
+
             fixedRenderer.renderTileLayer(layers_foreground.get(i).getTiledMapTileLayer());
-            batch.end();
+            fixedRenderer.getSpriteBatch().end();
+
         }
+
     }
 
     private void renderShadows(){
@@ -544,6 +539,8 @@ public class Map {
     }
 
     private void renderBackground(SpriteBatch batch) {
+        batch.begin();
+
         fixedRenderer.getSpriteBatch().setProjectionMatrix(fixedCamera.combined);
         fixedCamera.position.y = camera.position.y;
         for (int i = 0; i < layers_background.size; i++) {
@@ -556,11 +553,14 @@ public class Map {
 
             fixedCamera.update();
 
-            batch.begin();
+//            batch.begin();
+            fixedRenderer.getSpriteBatch().begin();
             fixedRenderer.setView(fixedCamera);
             fixedRenderer.renderTileLayer(layers_background.get(i).getTiledMapTileLayer());
-            batch.end();
+            fixedRenderer.getSpriteBatch().end();
         }
+
+        batch.end();
     }
 
     /**

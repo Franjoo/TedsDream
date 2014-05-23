@@ -1,4 +1,4 @@
-package com.angrynerds.game.screens.mainmenu;
+package com.angrynerds.game.screens;
 
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenAccessor;

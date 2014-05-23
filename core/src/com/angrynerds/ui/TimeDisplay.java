@@ -1,6 +1,5 @@
 package com.angrynerds.ui;
 
-import com.angrynerds.game.screens.play.PlayController;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,12 +23,10 @@ public class TimeDisplay {
     private StringBuilder timeBuilder;
 
     // kills
-    private String kills;
+    private int kills;
 
-    private PlayController playController;
 
-    public TimeDisplay(PlayController playController) {
-        this.playController = playController;
+    public TimeDisplay() {
 
         drawTimeBackground();
 
@@ -64,14 +61,18 @@ public class TimeDisplay {
     public void update(float delta) {
         buildTime(delta);
 
-        buildKillsString();
+//        buildKillsString();
 
 
     }
 
-    private void buildKillsString() {
-         kills = (playController.getWorld().getMap().getDeadEnemies() + " / " + playController.getWorld().getMap().getMaxEnemies());
+    public void setKills(final int kills) {
+        this.kills = kills;
     }
+
+//    private void buildKillsString() {
+//        kills = (playController.getWorld().getMap().getDeadEnemies() + " / " + playController.getWorld().getMap().getMaxEnemies());
+//    }
 
     private void buildTime(float delta) {
         currentTime += delta;
@@ -97,7 +98,7 @@ public class TimeDisplay {
         font.draw(batch, time, x + texture_background.getWidth() / 2 - font.getBounds(time).width / 2, y + texture_background.getHeight() / 2 - font.getBounds(time).height / 2);
         // kills
         batch.draw(texture_background, x, y + texture_background.getHeight() + 10);
-        font.draw(batch, kills, x + texture_background.getWidth() / 2 - font.getBounds(time).width / 2, y + texture_background.getHeight() / 2 - font.getBounds(time).height / 2 + texture_background.getHeight() + 10);
+        font.draw(batch, "" +kills, x + texture_background.getWidth() / 2 - font.getBounds(time).width / 2, y + texture_background.getHeight() / 2 - font.getBounds(time).height / 2 + texture_background.getHeight() + 10);
         batch.end();
     }
 

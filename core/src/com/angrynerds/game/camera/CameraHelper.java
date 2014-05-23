@@ -1,7 +1,5 @@
 package com.angrynerds.game.camera;
 
-import com.angrynerds.game.screens.play.PlayController;
-import com.angrynerds.game.World;
 import com.angrynerds.gameobjects.GameObject;
 import com.angrynerds.gameobjects.map.Map;
 import com.angrynerds.util.C;
@@ -28,7 +26,6 @@ public class CameraHelper {
     private GameObject target;
     private Map map;
 
-    private PlayController playController;
     public float deltaX;
     public float deltaY;
 

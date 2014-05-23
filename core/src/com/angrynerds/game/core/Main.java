@@ -13,8 +13,8 @@ import com.badlogic.gdx.graphics.GL20;
  */
 public class Main implements ApplicationListener {
 
-    // debug bools
-    private static final boolean FPS_LOGGING = true;
+    // ENABLE LOGGING
+    private static final boolean FPS_LOGGING = false;
 
     private Controller controller;
     private FPSLogger fpsLogger;

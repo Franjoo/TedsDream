@@ -1,9 +1,9 @@
 package com.angrynerds.game.core;
 
 import com.angrynerds.game.screens.AbstractScreen;
-import com.angrynerds.game.screens.mainmenu.MainMenu;
-import com.angrynerds.game.screens.mainmenu.SplashScreen;
-import com.angrynerds.game.screens.play.PlayScreen;
+import com.angrynerds.game.screens.MainMenu;
+import com.angrynerds.game.screens.SplashScreen;
+import com.angrynerds.game.screens.PlayScreen;
 import com.badlogic.gdx.Game;
 
 /**

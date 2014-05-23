@@ -3,19 +3,16 @@ package com.angrynerds.ui;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
 import aurelienribon.tweenengine.equations.Bounce;
-import com.angrynerds.game.screens.play.PlayScreen;
 import com.angrynerds.input.UIButtonListener;
 import com.angrynerds.tweens.LifebarAccessor;
 import com.angrynerds.util.C;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.utils.Array;
 
 /**
  * User: Franjo
@@ -168,8 +165,8 @@ public class ControllerUI {
         skin.add("bottom_down", new Texture("ui/ingame/controls/bottom_down.png"));
     }
 
-    public void update(float deltaTime) {
-            stage.act(deltaTime);
+    public void update(float delta) {
+        stage.act(delta);
     }
 
     // public void render() {
@@ -230,8 +227,9 @@ public class ControllerUI {
     }
 
     public void show() {
-        Gdx.input.setInputProcessor(stage);
         stage.addActor(touchpad);
         stage.addActor(buttonTable);
+
+        Gdx.input.setInputProcessor(stage);
     }
 }

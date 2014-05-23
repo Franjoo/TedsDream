@@ -35,17 +35,29 @@ public class KeyboardInput extends InputAdapter implements IGameInputController 
 
     @Override
     public State getState() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        // jump
+        if(get_isA()) return State.JUMPING;
+        // attack
+        if(get_isB()) return State.ATTACKING;
+        // dash
+        if(get_isB() && get_stickX() >= 0) return State.DASHINGRIGHT;
+        if(get_isB() && get_stickX() < 0) return State.DASHINGLEFT;
+
+        // run
+        if(get_stickX() != 0 || get_stickY() != 0) return State.RUNNING;
+
+        return State.IDLE;
+
     }
 
     @Override
     public boolean get_isA() {
-        return Gdx.input.isKeyPressed(Keys.Y);
+        return Gdx.input.isKeyPressed(Keys.A);
     }
 
     @Override
     public boolean get_isB() {
-        return Gdx.input.isKeyPressed(Keys.X);
+        return Gdx.input.isKeyPressed(Keys.S);
     }
 
     @Override
