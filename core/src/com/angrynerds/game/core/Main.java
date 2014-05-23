@@ -14,6 +14,9 @@ import com.badlogic.gdx.graphics.GL20;
  * follows the standard Android activity life-cycle.
  */
 public class Main implements ApplicationListener {
+
+    // create refactoring branch
+
     private static final String TAG = Main.class.getSimpleName();
 
     // debug bools
