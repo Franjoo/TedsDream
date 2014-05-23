@@ -38,6 +38,8 @@ public class Player extends Creature {
     private float velocityY;
     private float velocityX_MAX = 320;
     private float velocityY_MAX = 220;
+    private  float shadowHeight;
+    private float shadowWidth;
 
     // stats
     private float maxHP = 100;
@@ -76,6 +78,7 @@ public class Player extends Creature {
 //        walkAnimation = skeletonData.findAnimation("run_test");
 //        jumpAnimation = skeletonData.findAnimation("jump");
 //        showBounds = true;
+
     }
 
     public void init() {
@@ -93,6 +96,7 @@ public class Player extends Creature {
         //*** sounds
         sound_sword = Gdx.audio.newSound(Gdx.files.internal("sounds/ingame/lightsaber.mp3"));
         sound_dash = Gdx.audio.newSound(Gdx.files.internal("sounds/ingame/dash.wav"));
+
     }
 
     private void setAnimationStates() {
@@ -156,6 +160,8 @@ public class Player extends Creature {
 
     public void update(float deltaTime) {
         super.update(deltaTime);
+        shadowHeight = getSkeletonBounds().getHeight();
+        shadowWidth = getSkeletonBounds().getWidth();
         if(alive){
             // set v in x and y direction
             velocityX = input.get_stickX() * deltaTime * velocityX_MAX;
@@ -210,6 +216,23 @@ public class Player extends Creature {
             x = 20;
         if(x >= map.getWidth() -20)
             x = map.getWidth() - 20;
+    }
+
+    @Override
+    public float getHeight() {
+        return shadowHeight;
+    }
+
+    public float getWidth(){
+        return shadowWidth;
+    }
+    public float getX(){
+        return  x + 20;
+    }
+
+
+    public float getY(){
+        return  y -25;
     }
 
     private void updatePositionAttributes(float deltaTime, Vector2 collisionPosition) {

@@ -449,6 +449,8 @@ public class Map {
         for(Item item : items){
             shadowRenderer.renderShadow(shapeRenderer,camera,item);
         }
+
+        shadowRenderer.renderShadow(shapeRenderer,camera,player);
         // enemies in background
         for (int i = 0; i < enemies.size; i++) {
             Enemy e = enemies.get(i);
