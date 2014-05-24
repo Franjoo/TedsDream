@@ -52,6 +52,10 @@ public class MainMenu extends AbstractScreen implements TweenAccessor<Sound> {
     public MainMenu(final Controller game) {
         this.game = game;
 
+        // sound
+        sound_title = Gdx.audio.newSound(Gdx.files.internal("sounds/menus/titelmusik.wav"));
+        sound_title.setLooping(0, true);
+        volume = 0;
 
         stage = new Stage();
         atlas = new TextureAtlas("ui/menus/main/mainMenuButton.pack");
@@ -113,7 +117,8 @@ public class MainMenu extends AbstractScreen implements TweenAccessor<Sound> {
 
                 // button settings
                 else if (event.getTarget() == buttonSettings) {
-                    System.out.println("settings pressed");
+                    game.setScreen(game.multiplayer_choose);
+                    System.out.println("settings pressed (multiplayer)");
                 }
 
                 return true;
@@ -156,10 +161,7 @@ public class MainMenu extends AbstractScreen implements TweenAccessor<Sound> {
     public void show() {
         Gdx.input.setInputProcessor(stage);
 
-        // start tile music
-        sound_title = Gdx.audio.newSound(Gdx.files.internal("sounds/menus/titelmusik.wav"));
-        sound_title.setLooping(0, true);
-        volume = 1;
+        // play title music
         sound_title.play(volume);
 
         //todo sound ausfaden, problem: kein volume getter um TweenAccessor zu benutzen
@@ -173,9 +175,7 @@ public class MainMenu extends AbstractScreen implements TweenAccessor<Sound> {
 
     @Override
     public void hide() {
-        sound_title.dispose();
-        bg.dispose();
-        stage.dispose();
+        sound_title.stop();
 
         // remove listener
         buttonPlay.removeListener(listener);
@@ -194,6 +194,9 @@ public class MainMenu extends AbstractScreen implements TweenAccessor<Sound> {
 
     @Override
     public void dispose() {
+        sound_title.dispose();
+        bg.dispose();
+        stage.dispose();
 
     }
 
