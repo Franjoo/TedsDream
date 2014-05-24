@@ -85,7 +85,7 @@ public class GameServer implements Disposable {
      * @param message that will be send
      */
 
-    public synchronized void broadcast(ClientHandler handler, String message) {
+    public void broadcast(ClientHandler handler, String message) {
         for (ClientHandler ClientHandler : clients) {
             if (ClientHandler != handler) {
                 ClientHandler.write(message);
@@ -98,7 +98,7 @@ public class GameServer implements Disposable {
      *
      * @param message that will be send
      */
-    public synchronized void broadcast(String message) {
+    public void broadcast(String message) {
         for (ClientHandler ClientHandler : clients) {
             ClientHandler.write(message);
         }

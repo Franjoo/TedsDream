@@ -580,9 +580,9 @@ public class Map {
         for (Layer l : layers_background) l.update(deltaTime);
         for (Layer l : layers_foreground) l.update(deltaTime);
 
-        for(Player p :players){
-            p.update(deltaTime);
-        }
+//        for(Player p :players){
+//            p.update(deltaTime);
+//        }
 
         for(Item i : items) if(i != null) i.update(deltaTime);
 

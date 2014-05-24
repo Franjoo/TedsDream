@@ -64,8 +64,7 @@ public class SplashScreen extends AbstractScreen {
 
     @Override
     public void pause() {
-        batch.dispose();
-        stage.dispose();
+
     }
 
     @Override

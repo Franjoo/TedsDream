@@ -23,7 +23,6 @@ import com.esotericsoftware.spine.*;
  * class that represents the Player
  */
 public class Player extends Creature {
-    private static final String TAG = Player.class.getSimpleName();
 
     // constants
     private final float epsilon = C.EPSILON;
@@ -67,9 +66,11 @@ public class Player extends Creature {
     private IGameInputController input;
     public int attackFlag = 0;
 
-    boolean upleft,downleft,upright,downright;
+    boolean upleft, downleft, upright, downright;
 
-    public Player(IGameInputController input,Map map) {
+    private int id;
+
+    public Player(IGameInputController input, Map map) {
         super("ted", "spine/ted/", null, 0.20f);
         this.input = input;
         this.map = map;
@@ -95,6 +96,8 @@ public class Player extends Creature {
         //*** sounds
         sound_sword = Gdx.audio.newSound(Gdx.files.internal("sounds/ingame/lightsaber.mp3"));
         sound_dash = Gdx.audio.newSound(Gdx.files.internal("sounds/ingame/dash.wav"));
+
+        setCurrentState();
     }
 
     private void setAnimationStates() {
@@ -103,11 +106,11 @@ public class Player extends Creature {
 
         for (int i = 0; i < stateData.getSkeletonData().getAnimations().size; i++) {
             String from = stateData.getSkeletonData().getAnimations().get(i).getName();
-            if(from.startsWith("attack")) attackAnimations.add(from);
+            if (from.startsWith("attack")) attackAnimations.add(from);
             for (int j = 0; j < stateData.getSkeletonData().getAnimations().size; j++) {
                 String to = stateData.getSkeletonData().getAnimations().get(i).getName();
 
-                if(!from.equals(to)) stateData.setMix(from, to, 0.4f);
+                if (!from.equals(to)) stateData.setMix(from, to, 0.4f);
             }
         }
 //
@@ -139,7 +142,7 @@ public class Player extends Creature {
     @Override
     public void attack() {
         for (Enemy e : map.getEnemies()) {
-            if(e.getSkeletonBounds().aabbIntersectsSkeleton(getSkeletonBounds())){
+            if (e.getSkeletonBounds().aabbIntersectsSkeleton(getSkeletonBounds())) {
                 AddBloobParticlesForRender(e.getBloodParticle(), e.getX(), e.getY());
                 e.setDamage(atckDmg);
                 System.out.println("atccking enemy " + e.getHealth());
@@ -158,22 +161,25 @@ public class Player extends Creature {
 
     public void update(float deltaTime) {
         super.update(deltaTime);
-        if(alive){
-            // set v in x and y direction
-            velocityX = input.get_stickX() * deltaTime * velocityX_MAX;
-            velocityY = input.get_stickY() * deltaTime * velocityY_MAX;
-            if(velocityX != 0 && velocityY != 0 && input.getState() == State.IDLE)
-                input.setState(State.RUNNING);
+        if (alive) {
 
-            if(velocityX == 0 && velocityY == 0 && input.getState() == State.RUNNING)
-                input.setState(State.IDLE);
+            if (input != null) {
+                // set v in x and y direction
+                velocityX = input.get_stickX() * deltaTime * velocityX_MAX;
+                velocityY = input.get_stickY() * deltaTime * velocityY_MAX;
+                if (velocityX != 0 && velocityY != 0 && input.getState() == State.IDLE)
+                    input.setState(State.RUNNING);
 
+                if (velocityX == 0 && velocityY == 0 && input.getState() == State.RUNNING)
+                    input.setState(State.IDLE);
+            }
             Vector2 collisionPosition = getCollisionPosition();
 
             if (velocityX == 0)
                 skeleton.setFlipX(flipped);
             else
                 skeleton.setFlipX(velocityX < 0);
+
 
             setCurrentState();
 
@@ -183,13 +189,13 @@ public class Player extends Creature {
 
             letPlayerDontRunOut();
             // apply and update skeleton
-    //        Animation animation = state.getCurrent(0).getAnimation();
-    //        if(animation.getName().equals("run_test")){
-    //            System.out.println(velocityX);
-    //            animation.apply(skeleton,skeleton.getTime(),skeleton.getTime() * input.get_stickX(),true,null);
-    //        }
+            //        Animation animation = state.getCurrent(0).getAnimation();
+            //        if(animation.getName().equals("run_test")){
+            //            System.out.println(velocityX);
+            //            animation.apply(skeleton,skeleton.getTime(),skeleton.getTime() * input.get_stickX(),true,null);
+            //        }
 
-        // apply and update skeleton
+            // apply and update skeleton
 //        Animation animation = state.getCurrent(0).getAnimation();
 //        if(animation.getName().equals("move")){
 //            System.out.println(velocityX);
@@ -204,21 +210,20 @@ public class Player extends Creature {
     }
 
     private void letPlayerDontRunOut() {
-        if(y >= map.getTileHeight() * 6)
+        if (y >= map.getTileHeight() * 6)
             y = map.getTileHeight() * 6;
-        if(y <= 0)
+        if (y <= 0)
             y = 0;
-        if(x <= 20)
+        if (x <= 20)
             x = 20;
-        if(x >= map.getWidth() -20)
+        if (x >= map.getWidth() - 20)
             x = map.getWidth() - 20;
     }
 
     private void updatePositionAttributes(float deltaTime, Vector2 collisionPosition) {
-        if(state.getCurrent(0).toString().equals("dash")){
+        if (state.getCurrent(0).toString().equals("dash")) {
             x += dash(deltaTime);
-        }
-        else{
+        } else {
             x = collisionPosition.x;
         }
         y = collisionPosition.y;
@@ -226,13 +231,13 @@ public class Player extends Creature {
 
     private void checkForNextToItem() {
         int tolerance = 30;
-        float playerPositionX = x + this.getSkeletonBounds().getWidth()/2;
-        float playerPositionY = y + this.getSkeletonBounds().getHeight()/2;
-        for(Item item : map.getItems()){
-            float itemPositionX = item.getX() + item.region.getTexture().getWidth()/2;
-            float itemPositionY = item.getY() + item.region.getTexture().getHeight()/2;
-            if(itemPositionX > playerPositionX - tolerance && itemPositionX < playerPositionX + tolerance){
-                if(itemPositionY > playerPositionY - tolerance && itemPositionY < playerPositionY + tolerance){
+        float playerPositionX = x + this.getSkeletonBounds().getWidth() / 2;
+        float playerPositionY = y + this.getSkeletonBounds().getHeight() / 2;
+        for (Item item : map.getItems()) {
+            float itemPositionX = item.getX() + item.region.getTexture().getWidth() / 2;
+            float itemPositionY = item.getY() + item.region.getTexture().getHeight() / 2;
+            if (itemPositionX > playerPositionX - tolerance && itemPositionX < playerPositionX + tolerance) {
+                if (itemPositionY > playerPositionY - tolerance && itemPositionY < playerPositionY + tolerance) {
                     collectItem(item);
                 }
             }
@@ -240,62 +245,73 @@ public class Player extends Creature {
     }
 
     private void collectItem(Item item) {
-        if(item instanceof HealthPotion)
+        if (item instanceof HealthPotion)
             setActualHP(actHP + 8);
         map.getItems().removeValue(item, true);
     }
 
     private float dash(float deltaTime) {
-        if(dashRight){
+        if (dashRight) {
             skeleton.setFlipX(false);
-            return deltaTime * Gdx.graphics.getWidth()/2;
-        }
-        else{
+            return deltaTime * Gdx.graphics.getWidth() / 2;
+        } else {
             skeleton.setFlipX(true);
-            return -deltaTime * Gdx.graphics.getWidth()/2;
+            return -deltaTime * Gdx.graphics.getWidth() / 2;
         }
     }
 
     private void setCurrentState() {
-        String current = state.getCurrent(0).toString();
 
-        if(current.equals("move") || current.equals("idle")){
-            if (input.getState() == State.JUMPING && !current.equals("jump")) {
-                state.setAnimation(0, "jump", false);
+        if (input != null) {
+
+            String current = state.getCurrent(0).toString();
+
+            if (current.equals("move") || current.equals("idle")) {
+                if (input.getState() == State.JUMPING && !current.equals("jump")) {
+                    state.setAnimation(0, "jump", false);
+                    state.addAnimation(0, "idle", true, 0);
+                    //            state.addAnimation(1, "move", true, jumpAnimation.getDuration() - 30);
+                    //            state.addAnimation(1, "move", false, 0);
+                }
+                if (input.getState() == State.ATTACKING && !current.startsWith("attack_1")) {
+                    attack();
+                    String attack = attackAnimations.get((int) (Math.random() * attackAnimations.size));
+                    state.setAnimation(0, attack, false);
+                    state.addAnimation(0, "idle", true, 0);
+                }
+                if ((input.getState() == State.DASHINGRIGHT || input.getState() == State.DASHINGLEFT) && !current.equals("dash")) {
+                    if (input.getState() == State.DASHINGRIGHT)
+                        dashRight = true;
+                    else
+                        dashRight = false;
+                    state.setAnimation(0, "dash", false);
+                    state.addAnimation(0, "idle", true, 0);
+                    sound_dash.play();
+                }
+                if ((input.getState() == State.DEAD) && !current.equals("die")) {
+                    state.setAnimation(0, "die", false);
+                }
+            }
+            if (input.getState() == State.IDLE && !current.equals("idle")) {
+                if (current.equals("move"))
+                    state.setAnimation(0, "idle", false);
                 state.addAnimation(0, "idle", true, 0);
-    //            state.addAnimation(1, "move", true, jumpAnimation.getDuration() - 30);
-    //            state.addAnimation(1, "move", false, 0);
             }
-            if (input.getState() == State.ATTACKING && !current.startsWith("attack_1")) {
-                attack();
-                String attack = attackAnimations.get((int) (Math.random() * attackAnimations.size));
-                state.setAnimation(0, attack, false);
-                state.addAnimation(0, "idle", true, 0);
+            if (input.getState() == State.RUNNING && current.equals("idle")) {
+                state.setAnimation(0, "move", false);
+                state.addAnimation(0, "move", true, 0);
             }
-            if ((input.getState() == State.DASHINGRIGHT || input.getState() == State.DASHINGLEFT) && !current.equals("dash")){
-                if(input.getState() == State.DASHINGRIGHT)
-                    dashRight = true;
-                else
-                    dashRight = false;
-                state.setAnimation(0, "dash", false);
-                state.addAnimation(0, "idle", true, 0);
-                sound_dash.play();
-            }
-            if ((input.getState() == State.DEAD) && !current.equals("die")){
-                state.setAnimation(0, "die", false);
-            }
+            if (input.getState() != State.DEAD && input.getState() != State.RUNNING)
+                input.setState(State.IDLE);
+
+        } else {
+            state.setAnimation(0, "idle", true);
         }
-        if(input.getState() == State.IDLE && !current.equals("idle")) {
-            if(current.equals("move"))
-                state.setAnimation(0, "idle", false);
-            state.addAnimation(0, "idle", true, 0);
-        }
-        if(input.getState() == State.RUNNING && current.equals("idle")){
-            state.setAnimation(0, "move", false);
-            state.addAnimation(0, "move", true, 0);
-        }
-        if(input.getState() != State.DEAD && input.getState() != State.RUNNING)
-            input.setState(State.IDLE);
+    }
+
+    public void setPosition(float x, float y) {
+        this.x = x;
+        this.y = y;
     }
 
     /**
@@ -329,7 +345,7 @@ public class Player extends Creature {
                 velocityX = 0;
             }
 
-        // RIGHT
+            // RIGHT
         } else if (velocityX > 0) {
             if (detector.isSolid(x + width, y) || detector.isSolid(x + width, y + height)) {
                 velocityX = 0;
@@ -397,12 +413,12 @@ public class Player extends Creature {
         return vec2;
     }
 
-    public void getMyCorners(float pX,float pY){
+    public void getMyCorners(float pX, float pY) {
         // calculate corner coordinates
-        int downY=(int) Math.floor(map.getHeight()-(pY)/map.getTileHeight());
-        int upY=(int) Math.floor(map.getHeight()-(pY+map.getHeight())/map.getTileHeight());
-        int leftX=(int) Math.floor((pX)/map.getTileWidth());
-        int rightX=(int) Math.floor((pX+map.getWidth())/map.getTileWidth());
+        int downY = (int) Math.floor(map.getHeight() - (pY) / map.getTileHeight());
+        int upY = (int) Math.floor(map.getHeight() - (pY + map.getHeight()) / map.getTileHeight());
+        int leftX = (int) Math.floor((pX) / map.getTileWidth());
+        int rightX = (int) Math.floor((pX + map.getWidth()) / map.getTileWidth());
 
         // check if the corner is a wall
         checkForWall(downY, upY, leftX, rightX);
@@ -412,7 +428,7 @@ public class Player extends Creature {
         upleft = map.isSolid(leftX, upY);
         downleft = map.isSolid(leftX, downY);
         upright = map.isSolid(rightX, upY);
-        downright = map.isSolid(rightX,downY);
+        downright = map.isSolid(rightX, downY);
     }
 
     private Vector2 getTileCollisionPosition(float pX, float pY, float vX, float vY) {
@@ -423,7 +439,7 @@ public class Player extends Creature {
         float qY = pY + vY;
 
         /* COLLIDED TILES */
-         getMyCorners(qX,qY);
+        getMyCorners(qX, qY);
         /* X-AXIS */
         if (vX < 0) {
             // botton left
@@ -520,12 +536,12 @@ public class Player extends Creature {
     }
 
     public void setActualHP(float hp) {
-        if(actHP > 0) {
-            if(hp > maxHP)
+        if (actHP > 0) {
+            if (hp > maxHP)
                 actHP = maxHP;
             else actHP = hp;
         }
-        if(actHP <= 0 && alive)
+        if (actHP <= 0 && alive)
             die();
     }
 
@@ -540,7 +556,7 @@ public class Player extends Creature {
         maxHP = hp;
     }
 
-    public void setDamage(float dmg){
+    public void setDamage(float dmg) {
         setActualHP(actHP - dmg);
     }
 
@@ -605,4 +621,11 @@ public class Player extends Creature {
         }
     }
 
+    public int getID() {
+        return id;
+    }
+
+    public void setID(int id) {
+        this.id = id;
+    }
 }

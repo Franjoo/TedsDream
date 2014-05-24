@@ -66,7 +66,7 @@ public class ServerConnectMenu implements Screen {
         label_headline.setPosition(fontX, 380);
 
         // textfields
-        tf_ip = new TextField("", skin);
+        tf_ip = new TextField("192.168.2.101", skin);
         tf_port = new TextField(""+GameServer.PORT, skin);
 
         tf_ip.setSize(Gdx.graphics.getWidth() / 4, 40);

@@ -1,11 +1,20 @@
 package com.angrynerds.tedsdream.screens.multiplayer;
 
+import com.angrynerds.tedsdream.camera.CameraHelper;
 import com.angrynerds.tedsdream.core.Controller;
+import com.angrynerds.tedsdream.gameobjects.Player;
+import com.angrynerds.tedsdream.gameobjects.map.Map;
+import com.angrynerds.tedsdream.input.KeyboardInput;
+import com.angrynerds.tedsdream.ui.TimeDisplay;
+import com.angrynerds.tedsdream.util.C;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.net.SocketHints;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 import java.io.BufferedReader;
@@ -17,7 +26,24 @@ import java.io.InputStreamReader;
  */
 public class MultiplayerScreen implements Screen {
 
+    // TimeDisplay
+    private TimeDisplay timer;
+
+    // camera
+    private SpriteBatch batch;
+    private OrthographicCamera camera;
+    private CameraHelper cameraHelper;
+
+    // map
+    private Map map;
+
+    private Player[] players;
+    private Player player;
+
+    // multiplayer
     private GameClient client;
+    private StringBuilder stringBuilder = new StringBuilder();
+    private String clientNames = "";
 
     private final Controller game;
 
@@ -25,15 +51,61 @@ public class MultiplayerScreen implements Screen {
         this.game = game;
 
         client = new GameClient();
+
+        batch = new SpriteBatch();
+        timer = new TimeDisplay();
+        camera = new OrthographicCamera(C.VIEWPORT_WIDTH, C.VIEWPORT_HEIGHT);
+
+        // world objects
+        map = new Map(camera);
+        players = new Player[10];
+        player = new Player(new KeyboardInput(),map);
+
+        map.addPlayer(player);
+
+        // camera
+        cameraHelper = new CameraHelper();
+        cameraHelper.applyTo(camera);
+        cameraHelper.setTarget(player);
+
     }
 
     public void update(float delta) {
 
+        timer.update(delta);
+
+        player.update(delta);
+        for (int i = 0; i < players.length; i++) {
+            if(players[i] != null){
+                players[i].update(delta);
+            }
+        }
+
+        map.update(delta);
+
+        // camera
+        camera.update();
+        cameraHelper.update(delta);
+        cameraHelper.applyTo(camera);
+
+        // menu on player dead
+        if(player.getActualHP() <= 0){
+            game.setScreen(game.mainMenu);
+        }
+
+
+        // send game relevant data
+        client.writePosition();
     }
 
     @Override
     public void render(float delta) {
+        update(delta);
 
+        batch.setProjectionMatrix(camera.combined);
+
+        timer.render(batch);
+        map.render(batch);
     }
 
     @Override
@@ -66,18 +138,33 @@ public class MultiplayerScreen implements Screen {
 
     }
 
+    private void addPlayer(final int id){
+        players[id] = new Player(null, map);
+        players[id].setID(id);
+        buildClientNameString();
+        map.addPlayer(players[id]);
+        System.out.println("player added: " + id);
+    }
+
     public void connect(final String host, final int port) {
         client.connect(host, port);
     }
 
-    private void buildClientNames(){
-        StringBuilder builder = new StringBuilder();
+    private void buildClientNameString() {
+        stringBuilder.delete(0, stringBuilder.length());
+        stringBuilder.append("Player " + player.getID() + " ( ME ) \n");
 
+        for (int i = 0; i < players.length; i++) {
+            if (players[i] != null) {
+                stringBuilder.append("Player " + players[i].getID() + "\n");
+            }
+        }
+
+        clientNames = stringBuilder.toString();
     }
 
     public String getClientNames() {
-         return null;
-
+         return clientNames;
     }
 
     /**
@@ -96,12 +183,16 @@ public class MultiplayerScreen implements Screen {
         public static final char START = 'S';
         public static final char END = 'E';
 
+        private String name = "";
+
         private Socket socket;
 
         public void connect(final String host, final int port) {
             SocketHints socketHints = new SocketHints();
             socket = Gdx.net.newClientSocket(Net.Protocol.TCP, host, port, socketHints);
             System.out.println("server [" + host + "] connected @" + port);
+
+            new Thread(this).start();
         }
 
         @Override
@@ -135,7 +226,7 @@ public class MultiplayerScreen implements Screen {
                                 final String args[] = line.split(" ");
                                 final int id = Integer.parseInt(args[1]);
 
-//                                player.setID(id);
+                                player.setID(id);
                                 System.out.println("id assigned: " + id);
                             }
 
@@ -148,12 +239,10 @@ public class MultiplayerScreen implements Screen {
                                 Gdx.app.postRunnable(new Runnable() {
                                     @Override
                                     public void run() {
-//                                        players[id] = new Player();
-//                                        players[id].setID(id);
+                                        addPlayer(id);
                                     }
                                 });
 
-                                System.out.println("player added: " + id);
                             }
 
 
@@ -164,7 +253,7 @@ public class MultiplayerScreen implements Screen {
                                 final float px = Float.parseFloat(args[2]);
                                 final float py = Float.parseFloat(args[3]);
 
-//                                players[id].setPosition(px, py);
+                                players[id].setPosition(px, py);
                             }
 
                             // velocity
@@ -188,7 +277,7 @@ public class MultiplayerScreen implements Screen {
 
 
         public void writePosition() {
-//            write(POSITION + " " + player.getID() + " " + player.getPosition().x + " " + player.getPosition().y);
+            write(POSITION + " " + player.getID() + " " + player.getX() + " " + player.getY());
         }
 
         public void writeVelocity() {
@@ -212,6 +301,13 @@ public class MultiplayerScreen implements Screen {
 
         }
 
+        public void setName(String name){
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
 
         @Override
         public void dispose() {
