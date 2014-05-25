@@ -130,11 +130,6 @@ public class Map {
     private int deadEnemies;
 
 
-    /**
-     * creates a new Map
-     *
-     * @param player
-     */
     public Map(OrthographicCamera camera) {
 
         this.camera = camera;
@@ -152,10 +147,7 @@ public class Map {
 
         instance = this;
 
-//        player.init();
         AStarPathFinder.initialize(this, 200, true, new ClosestHeuristic());
-//        enemy = new Enemy("Spinne", "data/spine/animations/", null, player, 0.1f);
-//        enemy.init();
 
         spawnController = new SpawnController(this);
 
