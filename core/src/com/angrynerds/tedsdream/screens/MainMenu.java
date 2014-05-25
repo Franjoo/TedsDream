@@ -162,7 +162,7 @@ public class MainMenu extends AbstractScreen implements TweenAccessor<Sound> {
         Gdx.input.setInputProcessor(stage);
 
         // play title music
-        sound_title.play(volume);
+//        sound_title.play(volume);
 
         //todo sound ausfaden, problem: kein volume getter um TweenAccessor zu benutzen
 
