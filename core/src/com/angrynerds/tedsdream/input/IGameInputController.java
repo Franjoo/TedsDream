@@ -14,11 +14,11 @@ public interface IGameInputController {
 
     public float get_stickY();
 
-    public State getState();
+    public int getState();
 
     public boolean get_isA();
 
     public boolean get_isB();
 
-   public void setState(State state);
+   public void setState(int state);
 }

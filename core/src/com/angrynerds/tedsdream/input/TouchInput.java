@@ -27,7 +27,7 @@ public class TouchInput extends DragListener implements IGameInputController {
     private Array<Integer> dashOrderRight;
     private Array<Integer> dashOrderLeft;
 
-    State state;
+    int  state;
 
     public TouchInput(ControllerUI controller) {
         this.controller = controller;
@@ -61,20 +61,20 @@ public class TouchInput extends DragListener implements IGameInputController {
             MyButton.overCounter = 0;
         }
         if (touchOrder.equals(attackOrder)) {
-            state = State.ATTACKING;
+            state = State.ATTACK;
         } else if (touchOrder.equals(jumpOrder)) {
             System.out.println("jump to the sky");
-            state = State.JUMPING;
+            state = State.JUMP;
         } else if (touchOrder.equals(smashOrder)) {
             System.out.println("smaaaaaaash");
-            state = State.SMASHING;
+            state = State.SMASH;
         } else if (touchOrder.equals(turnAroundOrder))
             System.out.println("turn around");
 
         else if (touchOrder.equals(dashOrderRight)) {
-            state = State.DASHINGRIGHT;
+            state = State.DASH_RIGHT;
         } else if (touchOrder.equals(dashOrderLeft)) {
-            state = State.DASHINGLEFT;
+            state = State.DASH_LEFT;
         }
         //state = State.IDLE;
         touchOrder.clear();
@@ -109,7 +109,7 @@ public class TouchInput extends DragListener implements IGameInputController {
     }
 
     @Override
-    public State getState() {
+    public int getState() {
         return state;
     }
 
@@ -123,7 +123,7 @@ public class TouchInput extends DragListener implements IGameInputController {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void setState(State state) {
+    public void setState(int state) {
         this.state = state;
 
     }

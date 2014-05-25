@@ -1,12 +1,20 @@
 package com.angrynerds.tedsdream.util;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Tim
- * Date: 14.11.13
- * Time: 14:30
- * To change this template use File | Settings | File Templates.
- */
-public enum State {
-    JUMPING, SMASHING, RUNNING, IDLE, DASHING, DASHINGRIGHT, DASHINGLEFT, ATTACKING, DEAD
+
+import java.io.Serializable;
+
+public final class State implements Serializable {
+
+    public static final int JUMP = 0;
+    public static final int SMASH = 1;
+    public static final int RUN = 2;
+    public static final int IDLE = 3;
+    public static final int DASH_RIGHT = 5;
+    public static final int DASH_LEFT = 6;
+    public static final int ATTACK = 7;
+    public static final int DEAD = 8;
+
+
+
+
 }

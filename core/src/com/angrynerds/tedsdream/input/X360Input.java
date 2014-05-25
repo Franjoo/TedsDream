@@ -184,17 +184,17 @@ public class X360Input implements IGameInputController {
     }
 
     @Override
-    public State getState() {
+    public int getState() {
         // jump
-        if(is_A_pressed()) return State.JUMPING;
+        if(is_A_pressed()) return State.JUMP;
         // attack
-        if(is_X_pressed()) return State.ATTACKING;
+        if(is_X_pressed()) return State.ATTACK;
         // dash
-        if(is_B_pressed() && stick_left_X() >= 0) return State.DASHINGRIGHT;
-        if(is_B_pressed() && stick_left_X() < 0) return State.DASHINGLEFT;
+        if(is_B_pressed() && stick_left_X() >= 0) return State.DASH_RIGHT;
+        if(is_B_pressed() && stick_left_X() < 0) return State.DASH_LEFT;
 
         // run
-        if(stick_left_X() != 0 || stick_left_Y() != 0) return State.RUNNING;
+        if(stick_left_X() != 0 || stick_left_Y() != 0) return State.RUN;
 
         return State.IDLE;
 
@@ -211,7 +211,7 @@ public class X360Input implements IGameInputController {
     }
 
     @Override
-    public void setState(State state) {
+    public void setState(int state) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 }

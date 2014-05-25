@@ -1,18 +1,15 @@
 package com.angrynerds.tedsdream.net;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.net.ServerSocket;
 import com.badlogic.gdx.net.ServerSocketHints;
 import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import sun.misc.IOUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Serializable;
+import java.io.*;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -22,8 +19,13 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 
-
-public class GameServer implements Disposable {
+/**
+ * Created with IntelliJ IDEA.
+ * User: Franjo
+ * Date: 25.05.2014
+ * Time: 15:10
+ */
+public class Server implements Disposable {
 
     private static String IP = null;
     public static final int PORT = 1234;
@@ -34,7 +36,7 @@ public class GameServer implements Disposable {
     private Array<ClientHandler> clients;
 
 
-    public GameServer() {
+    public Server() {
 
         // create client list with fixed capacity
         clients = new Array<>();
@@ -80,56 +82,6 @@ public class GameServer implements Disposable {
     }
 
     /**
-     * broadcast message to other clients
-     *
-     * @param handler that sends the message
-     * @param message that will be send
-     */
-
-    public void broadcast(ClientHandler handler, String message) {
-        for (int i = 0; i < clients.size; i++) {
-            if (clients.get(i) != handler) {
-                clients.get(i).write(message);
-            }
-        }
-    }
-
-    /**
-     * broadcast message to all clients
-     *
-     * @param message that will be send
-     */
-    public void broadcast(String message) {
-        for (int i = 0; i < clients.size; i++) {
-            clients.get(i).write(message);
-        }
-    }
-
-    /**
-     * broadcast that new client was added
-     * inform new client about others
-     *
-     * @param self
-     * @param id
-     */
-    public void playerAdded(ClientHandler self, int id) {
-
-        // inform this player about other players
-        for (int i = 0; i < clients.size; i++) {
-            if(clients.get(i) != self){
-                self.write("A " + clients.get(i).getID());
-            }
-        }
-
-        // inform other players about this player
-        for (int i = 0; i < clients.size; i++) {
-            if(clients.get(i) != self){
-                clients.get(i).write("A " + self.getID());
-            }
-        }
-    }
-
-    /**
      * prints all hosts that are found
      */
     public void printHosts() {
@@ -150,40 +102,50 @@ public class GameServer implements Disposable {
         }
     }
 
-    public void updateDebugInput() {
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            broadcast("S"); // start game
-        } else if (Gdx.input.isKeyPressed(Input.Keys.E)) {
-            broadcast("E"); // end game
-        }
-    }
 
     @Override
     public void dispose() {
-        for (ClientHandler client : clients) {
-            client.dispose();
+
+    }
+
+
+    public void broadcast(byte[] b, int k, int bytesRead){
+        try {
+
+            for (int i = 0; i < clients.size; i++) {
+                clients.get(i).write(b);
+            }
+
+        }catch (IOException e){
+            e.printStackTrace();
         }
     }
 
-    public void startGame() {
 
-    }
+    private final class ClientHandler implements Runnable, Disposable {
 
+        private final Socket connection;
+        private final int id;
 
-    class ClientHandler implements Runnable, Disposable {
-
-        private Socket connection;
-        private int id;
+        private ObjectOutputStream oos;
+        private ObjectInputStream ois;
 
         public ClientHandler(Socket connection, int id) {
             this.connection = connection;
             this.id = id;
 
-            // assign ID
-            write("I " + this.id);
+            try {
+                oos = new ObjectOutputStream(connection.getOutputStream());
+                ois = new ObjectInputStream(connection.getInputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-            // inform other players about new
-            playerAdded(this, this.id);
+//            // assign ID
+//            write("I " + this.id);
+//
+//            // inform other players about new
+//             playerAdded(this, this.id);
         }
 
         /**
@@ -192,24 +154,50 @@ public class GameServer implements Disposable {
         @Override
         public void run() {
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
             try {
 
                 while (true) {
 
-                    final String line = reader.readLine();
-                    if (line != null) {
+                    byte[] buffer = new byte[1024]; // Adjust if you want
+                    int bytesRead;
+                    while ((bytesRead = connection.getInputStream().read(buffer)) != -1) {
 
-                        // broadcast received message
-                        broadcast(this, line);
+                        broadcast(buffer,0,bytesRead);
+
+//                        output.write(buffer, 0, bytesRead);
                     }
                 }
 
-            } catch (IOException e) {
+            }catch (Exception e){
                 e.printStackTrace();
             }
+
+
+
+//            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//
+//            try {
+//
+//                while (true) {
+//
+//                    final String line = reader.readLine();
+//                    if (line != null) {
+//
+//                        // broadcast received message
+//                        broadcast(this, line);
+//                    }
+//                }
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
+
+        public void write(byte[] buffer) throws IOException {
+//            oos.write(buffer);
+//            connection.getOutputStream().write(buffer,0,);
+        }
+
 
         /**
          * writes a message to the output stream of the client

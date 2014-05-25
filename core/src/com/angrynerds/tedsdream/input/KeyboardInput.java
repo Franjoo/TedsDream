@@ -34,16 +34,16 @@ public class KeyboardInput extends InputAdapter implements IGameInputController 
     }
 
     @Override
-    public State getState() {
+    public int getState() {
         // jump
-        if (get_isA()) return State.JUMPING;
+        if (get_isA()) return State.JUMP;
         // dash
-        else if (get_isB() && get_stickX() >= 0) return State.DASHINGRIGHT;
-        else if (get_isB() && get_stickX() < 0) return State.DASHINGLEFT;
+        else if (get_isB() && get_stickX() >= 0) return State.DASH_RIGHT;
+        else if (get_isB() && get_stickX() < 0) return State.DASH_LEFT;
         // attack
-        else if (get_isB()) return State.ATTACKING;
+        else if (get_isB()) return State.ATTACK;
         // run
-        else if (get_stickX() != 0 || get_stickY() != 0) return State.RUNNING;
+        else if (get_stickX() != 0 || get_stickY() != 0) return State.RUN;
 
         return State.IDLE;
 
@@ -60,7 +60,7 @@ public class KeyboardInput extends InputAdapter implements IGameInputController 
     }
 
     @Override
-    public void setState(State state) {
+    public void setState(int state) {
 //        this.state = state;
     }
 }

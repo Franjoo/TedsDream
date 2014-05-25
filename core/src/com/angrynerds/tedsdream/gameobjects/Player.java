@@ -6,6 +6,7 @@ import com.angrynerds.tedsdream.gameobjects.items.HealthPotion;
 import com.angrynerds.tedsdream.gameobjects.items.Item;
 import com.angrynerds.tedsdream.gameobjects.map.Map;
 import com.angrynerds.tedsdream.input.IGameInputController;
+import com.angrynerds.tedsdream.input.RemoteInput;
 import com.angrynerds.tedsdream.util.C;
 import com.angrynerds.tedsdream.util.State;
 import com.badlogic.gdx.Gdx;
@@ -163,22 +164,26 @@ public class Player extends Creature {
         super.update(deltaTime);
         if (alive) {
 
-            if (input != null) {
+            if (!(input instanceof RemoteInput)) {
                 // set v in x and y direction
                 velocityX = input.get_stickX() * deltaTime * velocityX_MAX;
                 velocityY = input.get_stickY() * deltaTime * velocityY_MAX;
                 if (velocityX != 0 && velocityY != 0 && input.getState() == State.IDLE)
-                    input.setState(State.RUNNING);
+                    input.setState(State.RUN);
 
-                if (velocityX == 0 && velocityY == 0 && input.getState() == State.RUNNING)
+                if (velocityX == 0 && velocityY == 0 && input.getState() == State.RUN)
                     input.setState(State.IDLE);
             }
-            Vector2 collisionPosition = getCollisionPosition();
 
-            if (velocityX == 0)
-                skeleton.setFlipX(flipped);
-            else
-                skeleton.setFlipX(velocityX < 0);
+                Vector2 collisionPosition = getCollisionPosition();
+
+                if (velocityX == 0)
+                    skeleton.setFlipX(flipped);
+                else
+                    skeleton.setFlipX(velocityX < 0);
+
+
+
 
 
             setCurrentState();
@@ -204,9 +209,13 @@ public class Player extends Creature {
             // was flipped for velocityX == 0 in next update
             flipped = skeleton.getFlipX();
         }
+
         state.update(deltaTime);
 
         state.apply(skeleton);
+
+        System.out.println("set state: " + input.getState());
+
     }
 
     private void letPlayerDontRunOut() {
@@ -262,51 +271,55 @@ public class Player extends Creature {
 
     private void setCurrentState() {
 
-        if (input != null) {
+        System.out.println("set state: " + input.getState());
 
-            String current = state.getCurrent(0).toString();
+//        if (input != null) {
 
-            if (current.equals("move") || current.equals("idle")) {
-                if (input.getState() == State.JUMPING && !current.equals("jump")) {
-                    state.setAnimation(0, "jump", false);
-                    state.addAnimation(0, "idle", true, 0);
-                    //            state.addAnimation(1, "move", true, jumpAnimation.getDuration() - 30);
-                    //            state.addAnimation(1, "move", false, 0);
-                }
-                if (input.getState() == State.ATTACKING && !current.startsWith("attack_1")) {
-                    attack();
-                    String attack = attackAnimations.get((int) (Math.random() * attackAnimations.size));
-                    state.setAnimation(0, attack, false);
-                    state.addAnimation(0, "idle", true, 0);
-                }
-                if ((input.getState() == State.DASHINGRIGHT || input.getState() == State.DASHINGLEFT) && !current.equals("dash")) {
-                    if (input.getState() == State.DASHINGRIGHT)
-                        dashRight = true;
-                    else
-                        dashRight = false;
-                    state.setAnimation(0, "dash", false);
-                    state.addAnimation(0, "idle", true, 0);
-                    sound_dash.play();
-                }
-                if ((input.getState() == State.DEAD) && !current.equals("die")) {
-                    state.setAnimation(0, "die", false);
-                }
+        String current = state.getCurrent(0).toString();
+
+        if (current.equals("move") || current.equals("idle")) {
+            if (input.getState() == State.JUMP && !current.equals("jump")) {
+                state.setAnimation(0, "jump", false);
+                state.addAnimation(0, "idle", true, 0);
+                //            state.addAnimation(1, "move", true, jumpAnimation.getDuration() - 30);
+                //            state.addAnimation(1, "move", false, 0);
             }
-            if (input.getState() == State.IDLE && !current.equals("idle")) {
-                if (current.equals("move"))
-                    state.setAnimation(0, "idle", false);
+            if (input.getState() == State.ATTACK && !current.startsWith("attack_1")) {
+                attack();
+                String attack = attackAnimations.get((int) (Math.random() * attackAnimations.size));
+                state.setAnimation(0, attack, false);
                 state.addAnimation(0, "idle", true, 0);
             }
-            if (input.getState() == State.RUNNING && current.equals("idle")) {
-                state.setAnimation(0, "move", false);
-                state.addAnimation(0, "move", true, 0);
+            if ((input.getState() == State.DASH_RIGHT || input.getState() == State.DASH_LEFT) && !current.equals("dash")) {
+                if (input.getState() == State.DASH_RIGHT)
+                    dashRight = true;
+                else
+                    dashRight = false;
+                state.setAnimation(0, "dash", false);
+                state.addAnimation(0, "idle", true, 0);
+                sound_dash.play();
             }
-            if (input.getState() != State.DEAD && input.getState() != State.RUNNING)
-                input.setState(State.IDLE);
-
-        } else {
-            state.setAnimation(0, "idle", true);
+            if ((input.getState() == State.DEAD) && !current.equals("die")) {
+                state.setAnimation(0, "die", false);
+            }
         }
+        if (input.getState() == State.IDLE && !current.equals("idle")) {
+            if (current.equals("move"))
+                state.setAnimation(0, "idle", false);
+            state.addAnimation(0, "idle", true, 0);
+        }
+        if (input.getState() == State.RUN && current.equals("idle")) {
+            state.setAnimation(0, "move", false);
+            state.addAnimation(0, "move", true, 0);
+        }
+        if (input.getState() != State.DEAD && input.getState() != State.RUN)
+            input.setState(State.IDLE);
+
+    }
+
+
+    public void setCurrentState(int state) {
+        input.setState(state);
     }
 
     public void setPosition(float x, float y) {
@@ -560,40 +573,19 @@ public class Player extends Creature {
         setActualHP(actHP - dmg);
     }
 
+
     public IGameInputController getInput() {
         return input;
     }
 
-    /*
-    private void setCurrentState() {
-        if (input.getState() == State.JUMPING && !state.getCurrent(0).toString().equals("jump")) {
-            state.setAnimation(0, "jump", false);
-            state.addAnimation(0, "move", true, 0);
-//            state.addAnimation(1, "move", true, jumpAnimation.getDuration() - 30);
-//            state.addAnimation(1, "move", false, 0);
-        }
-        if (input.getState() == State.ATTACKING && !state.getCurrent(0).toString().equals("attack_1")) {
-            attack();
-            state.setAnimation(0, "attack_1", false);
-            state.addAnimation(0, "move", true, 0);
-        }
-
-        if ((input.getState() == State.DASHINGRIGHT || input.getState() == State.DASHINGLEFT)&& !state.getCurrent(0).toString().equals("dash")){
-            if(input.getState() == State.DASHINGRIGHT)
-                dashRight = true;
-            else dashRight = false;
-            state.setAnimation(0, "dash", false);
-            state.addAnimation(0, "move", true, 0);
-        }
-
-        if ((input.getState() == State.DASHINGRIGHT || input.getState() == State.DASHINGLEFT)&& !state.getCurrent(0).toString().equals("dash")){
-            state.setAnimation(0, "die", false);
-        }
-
-        if(input.getState() != State.DEAD)
-            input.setState(State.IDLE);
+    public int getState() {
+        return input.getState();
     }
-    */
+
+    public void setState(int state) {
+        input.setState(state);
+    }
+
 
     class AnimationListener implements AnimationState.AnimationStateListener {
         @Override
@@ -619,6 +611,7 @@ public class Player extends Creature {
         public void end(int trackIndex) {
 //            System.out.println(trackIndex + " end: " + state.getCurrent(trackIndex));
         }
+
     }
 
     public int getID() {

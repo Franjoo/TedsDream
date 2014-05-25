@@ -3,10 +3,13 @@ package com.angrynerds.tedsdream.screens.multiplayer;
 import com.angrynerds.tedsdream.camera.CameraHelper;
 import com.angrynerds.tedsdream.core.Controller;
 import com.angrynerds.tedsdream.gameobjects.Player;
+import com.angrynerds.tedsdream.gameobjects.PlayerRemote;
 import com.angrynerds.tedsdream.gameobjects.map.Map;
 import com.angrynerds.tedsdream.input.KeyboardInput;
+import com.angrynerds.tedsdream.input.RemoteInput;
 import com.angrynerds.tedsdream.ui.TimeDisplay;
 import com.angrynerds.tedsdream.util.C;
+import com.angrynerds.tedsdream.util.State;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.Screen;
@@ -20,6 +23,8 @@ import com.badlogic.gdx.utils.Disposable;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.function.BiConsumer;
 
 /**
  * User: Franjo
@@ -37,7 +42,7 @@ public class MultiplayerScreen implements Screen {
     // map
     private Map map;
 
-    private Player[] players;
+    private HashMap<Integer, PlayerRemote> players;
     private Player player;
 
     // multiplayer
@@ -58,8 +63,8 @@ public class MultiplayerScreen implements Screen {
 
         // world objects
         map = new Map(camera);
-        players = new Player[10];
-        player = new Player(new KeyboardInput(),map);
+        players = new HashMap<>();
+        player = new Player(new KeyboardInput(), map);
 
         map.addPlayer(player);
 
@@ -75,9 +80,9 @@ public class MultiplayerScreen implements Screen {
         timer.update(delta);
 
         player.update(delta);
-        for (int i = 0; i < players.length; i++) {
-            if(players[i] != null){
-                players[i].update(delta);
+        for (int i = 0; i <= players.size(); i++) {
+            if (players.containsKey(i)) {
+                players.get(i).getPlayer().update(delta);
             }
         }
 
@@ -89,13 +94,15 @@ public class MultiplayerScreen implements Screen {
         cameraHelper.applyTo(camera);
 
         // menu on player dead
-        if(player.getActualHP() <= 0){
+        if (player.getActualHP() <= 0) {
             game.setScreen(game.mainMenu);
         }
 
 
         // send game relevant data
         client.writePosition();
+        client.writeState();
+
     }
 
     @Override
@@ -138,11 +145,16 @@ public class MultiplayerScreen implements Screen {
 
     }
 
-    private void addPlayer(final int id){
-        players[id] = new Player(null, map);
-        players[id].setID(id);
+    private void addPlayer(final int id) {
+
+        RemoteInput remoteInput = new RemoteInput();
+        Player player = new Player(remoteInput, map);
+        player.setID(id);
+
+        players.put(id, new PlayerRemote(player, remoteInput));
+
         buildClientNameString();
-        map.addPlayer(players[id]);
+        map.addPlayer(player);
         System.out.println("player added: " + id);
     }
 
@@ -154,22 +166,24 @@ public class MultiplayerScreen implements Screen {
         stringBuilder.delete(0, stringBuilder.length());
         stringBuilder.append("Player " + player.getID() + " ( ME ) \n");
 
-        for (int i = 0; i < players.length; i++) {
-            if (players[i] != null) {
-                stringBuilder.append("Player " + players[i].getID() + "\n");
+        players.forEach(new BiConsumer<Integer, PlayerRemote>() {
+            @Override
+            public void accept(Integer integer, PlayerRemote playerRemote) {
+                stringBuilder.append("Player " + integer + "\n");
             }
-        }
+        });
+
 
         clientNames = stringBuilder.toString();
     }
 
     public String getClientNames() {
-         return clientNames;
+        return clientNames;
     }
 
     /**
      * class GameClient
-     * <p>
+     * <p/>
      * is responsible for server communication,
      * provides some methods to send game relevant data to server
      */
@@ -177,7 +191,7 @@ public class MultiplayerScreen implements Screen {
 
         // static Identification Prefixes
         public static final char POSITION = 'P';
-        public static final char VELOCITY = 'V';
+        public static final char STATE = 'Q';
         public static final char ADD = 'A';
         public static final char ID = 'I';
         public static final char START = 'S';
@@ -253,18 +267,22 @@ public class MultiplayerScreen implements Screen {
                                 final float px = Float.parseFloat(args[2]);
                                 final float py = Float.parseFloat(args[3]);
 
-                                players[id].setPosition(px, py);
+
+                                players.get(id).getPlayer().setPosition(px, py);
                             }
 
-                            // velocity
-                            else if (line.charAt(0) == VELOCITY) {
+                            // state
+                            else if (line.charAt(0) == STATE) {
                                 final String args[] = line.split(" ");
                                 final int id = Integer.parseInt(args[1]);
-                                final float vx = Float.parseFloat(args[2]);
-                                final float vy = Float.parseFloat(args[3]);
+                                final int state = Integer.parseInt(args[2]);
 
-//                                players[id].setVelocity(vx, vy);
+
+                                players.get(id).getPlayer().setState(state);
+
+//                                System.out.println("state received: " + state);
                             }
+
 
                             // System.out.println("message reseived: " + line);
                         }
@@ -280,13 +298,17 @@ public class MultiplayerScreen implements Screen {
             write(POSITION + " " + player.getID() + " " + player.getX() + " " + player.getY());
         }
 
+        public void writeState() {
+            write(STATE + " " + player.getID() + " " + player.getState());
+        }
+
         public void writeVelocity() {
 //            write(VELOCITY + " " + player.getID() + " " + player.getVelocity().x + " " + player.getVelocity().y);
         }
 
         /**
          * writes a message to the output stream of the client.
-         * <p>
+         * <p/>
          * connect() should be called before writing a message!
          *
          * @param message that will be send
@@ -301,7 +323,7 @@ public class MultiplayerScreen implements Screen {
 
         }
 
-        public void setName(String name){
+        public void setName(String name) {
             this.name = name;
         }
 
