@@ -55,7 +55,7 @@ public class MainMenu extends AbstractScreen implements TweenAccessor<Sound> {
         // sound
         sound_title = Gdx.audio.newSound(Gdx.files.internal("sounds/menus/titelmusik.wav"));
         sound_title.setLooping(0, true);
-        volume = 0;
+        sound_title.setVolume(0,0);
 
         stage = new Stage();
         atlas = new TextureAtlas("ui/menus/main/mainMenuButton.pack");

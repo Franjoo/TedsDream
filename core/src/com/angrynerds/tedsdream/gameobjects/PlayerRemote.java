@@ -3,10 +3,7 @@ package com.angrynerds.tedsdream.gameobjects;
 import com.angrynerds.tedsdream.input.RemoteInput;
 
 /**
- * Created with IntelliJ IDEA.
  * User: Franjo
- * Date: 24.05.2014
- * Time: 14:19
  */
 public class PlayerRemote {
 

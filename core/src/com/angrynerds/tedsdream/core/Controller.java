@@ -2,6 +2,8 @@ package com.angrynerds.tedsdream.core;
 
 import com.angrynerds.tedsdream.net.GameServer;
 import com.angrynerds.tedsdream.screens.*;
+import com.angrynerds.tedsdream.screens.game._MPGame;
+import com.angrynerds.tedsdream.screens.game._SPGame;
 import com.angrynerds.tedsdream.screens.multiplayer.*;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
@@ -22,7 +24,7 @@ public class Controller extends Game {
     public Screen multiplayer_configuration;
     public Screen multiplayer_connect;
     public Screen multiplayer_lobby;
-    public MultiplayerScreen multiplayerScreen;
+    public _MPGame MPGame;
 
     // game server
     public GameServer server;
@@ -32,14 +34,14 @@ public class Controller extends Game {
         // create screens
         splashScreen = new SplashScreen(this);
         mainMenu = new MainMenu(this);
-        playScreen = new PlayScreen(this);
+        playScreen = new _SPGame(this);
 
         // create multiplayer screens
         multiplayer_choose = new MultiplayerChooseMenu(this);
         multiplayer_configuration = new ServerConfigurationMenu(this);
         multiplayer_connect = new ServerConnectMenu(this);
         multiplayer_lobby = new ServerLobby(this);
-        multiplayerScreen = new MultiplayerScreen(this);
+        MPGame = new _MPGame(this);
 
         // create server
         server = new GameServer();

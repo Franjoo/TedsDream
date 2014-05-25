@@ -7,6 +7,8 @@ import com.angrynerds.tedsdream.gameobjects.items.Item;
 import com.angrynerds.tedsdream.gameobjects.map.Map;
 import com.angrynerds.tedsdream.input.IGameInputController;
 import com.angrynerds.tedsdream.input.RemoteInput;
+import com.angrynerds.tedsdream.net.Update;
+import com.angrynerds.tedsdream.screens.game.UpdatePlayerEvent;
 import com.angrynerds.tedsdream.util.C;
 import com.angrynerds.tedsdream.util.State;
 import com.badlogic.gdx.Gdx;
@@ -69,7 +71,10 @@ public class Player extends Creature {
 
     boolean upleft, downleft, upright, downright;
 
-    private int id;
+    // multiplayer
+    private UpdatePlayerEvent updateEvent;
+
+    private int id = -1;
 
     public Player(IGameInputController input, Map map) {
         super("ted", "spine/ted/", null, 0.20f);
@@ -79,7 +84,9 @@ public class Player extends Creature {
 //        jumpAnimation = skeletonData.findAnimation("jump");
 //        showBounds = true;
 
+
         init();
+
     }
 
     public void init() {
@@ -99,6 +106,8 @@ public class Player extends Creature {
         sound_dash = Gdx.audio.newSound(Gdx.files.internal("sounds/ingame/dash.wav"));
 
         setCurrentState();
+
+        updateEvent = new UpdatePlayerEvent();
     }
 
     private void setAnimationStates() {
@@ -160,11 +169,22 @@ public class Player extends Creature {
         particle.start();
     }
 
+    public void remoteUpdate(float delta){
+        super.update(delta);
+        setCurrentState();
+
+        state.update(delta);
+        state.apply(skeleton);
+    }
+
     public void update(float deltaTime) {
         super.update(deltaTime);
+
+
+
         if (alive) {
 
-            if (!(input instanceof RemoteInput)) {
+//            if (!(input instanceof RemoteInput)) {
                 // set v in x and y direction
                 velocityX = input.get_stickX() * deltaTime * velocityX_MAX;
                 velocityY = input.get_stickY() * deltaTime * velocityY_MAX;
@@ -208,13 +228,16 @@ public class Player extends Creature {
 //        }
             // was flipped for velocityX == 0 in next update
             flipped = skeleton.getFlipX();
-        }
+//        }
 
         state.update(deltaTime);
 
         state.apply(skeleton);
 
-        System.out.println("set state: " + input.getState());
+//        System.out.println("set state: " + input.getState());
+
+
+        updateEvent.set(id,x,y,input.getState(),skeleton.getFlipX());
 
     }
 
@@ -271,7 +294,7 @@ public class Player extends Creature {
 
     private void setCurrentState() {
 
-        System.out.println("set state: " + input.getState());
+//        System.out.println("set state: " + input.getState());
 
 //        if (input != null) {
 
@@ -586,6 +609,10 @@ public class Player extends Creature {
         input.setState(state);
     }
 
+    public void setFlip(boolean flip) {
+        skeleton.setFlipX(flip);
+    }
+
 
     class AnimationListener implements AnimationState.AnimationStateListener {
         @Override
@@ -618,7 +645,11 @@ public class Player extends Creature {
         return id;
     }
 
-    public void setID(int id) {
+    public void setID(final int id) {
         this.id = id;
+    }
+
+    public UpdatePlayerEvent getUpdateEvent() {
+        return updateEvent;
     }
 }

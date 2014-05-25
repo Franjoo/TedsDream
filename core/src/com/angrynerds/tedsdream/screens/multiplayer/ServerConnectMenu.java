@@ -92,7 +92,7 @@ public class ServerConnectMenu implements Screen {
                     System.out.println("connect pressed");
 
                     // connect to server
-                    _this.game.multiplayerScreen.connect(tf_ip.getText(),Integer.parseInt(tf_port.getText()));
+                    _this.game.MPGame.connect(tf_ip.getText(),Integer.parseInt(tf_port.getText()));
 
                     // show _this
                     _this.game.setScreen(_this.game.multiplayer_lobby);

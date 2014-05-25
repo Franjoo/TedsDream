@@ -80,8 +80,8 @@ public class ServerLobby implements Screen {
                 // singleplayer
                 if (e.getTarget().getParent() == btn_start) {
                     System.out.println("start pressed");
-                    _this.game.server.startGame();
-                    _this.game.setScreen(_this.game.multiplayerScreen);
+//                    _this.game.server.startGame();
+                    _this.game.setScreen(_this.game.MPGame);
                     return true;
                 }
 
@@ -116,7 +116,7 @@ public class ServerLobby implements Screen {
         }
 
         // update client text area
-        ta_clients.setText(game.multiplayerScreen.getClientNames());
+        ta_clients.setText(game.MPGame.getClientNames());
     }
 
     @Override

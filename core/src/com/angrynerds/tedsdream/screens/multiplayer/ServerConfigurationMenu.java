@@ -107,7 +107,7 @@ public class ServerConfigurationMenu implements Screen {
                     _this.game.server.start();
 
 
-                    _this.game.multiplayerScreen.connect(tf_ip.getText(), Integer.parseInt(tf_port.getText()));
+                    _this.game.MPGame.connect(tf_ip.getText(), Integer.parseInt(tf_port.getText()));
 
                     _this.game.setScreen(_this.game.multiplayer_lobby);
                     return true;

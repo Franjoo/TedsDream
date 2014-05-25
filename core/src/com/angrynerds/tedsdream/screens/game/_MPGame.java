@@ -1,4 +1,4 @@
-package com.angrynerds.tedsdream.screens.multiplayer;
+package com.angrynerds.tedsdream.screens.game;
 
 import com.angrynerds.tedsdream.camera.CameraHelper;
 import com.angrynerds.tedsdream.core.Controller;
@@ -7,6 +7,7 @@ import com.angrynerds.tedsdream.gameobjects.PlayerRemote;
 import com.angrynerds.tedsdream.gameobjects.map.Map;
 import com.angrynerds.tedsdream.input.KeyboardInput;
 import com.angrynerds.tedsdream.input.RemoteInput;
+import com.angrynerds.tedsdream.net.Update;
 import com.angrynerds.tedsdream.ui.TimeDisplay;
 import com.angrynerds.tedsdream.util.C;
 import com.angrynerds.tedsdream.util.State;
@@ -20,16 +21,14 @@ import com.badlogic.gdx.net.SocketHints;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.HashMap;
 import java.util.function.BiConsumer;
 
 /**
  * User: Franjo
  */
-public class MultiplayerScreen implements Screen {
+public class _MPGame implements Screen {
 
     // TimeDisplay
     private TimeDisplay timer;
@@ -52,10 +51,10 @@ public class MultiplayerScreen implements Screen {
 
     private final Controller game;
 
-    public MultiplayerScreen(Controller game) {
+    public _MPGame(Controller game) {
         this.game = game;
 
-        client = new GameClient();
+        client = new GameClient(this);
 
         batch = new SpriteBatch();
         timer = new TimeDisplay();
@@ -82,7 +81,7 @@ public class MultiplayerScreen implements Screen {
         player.update(delta);
         for (int i = 0; i <= players.size(); i++) {
             if (players.containsKey(i)) {
-                players.get(i).getPlayer().update(delta);
+                players.get(i).getPlayer().remoteUpdate(delta);
             }
         }
 
@@ -100,8 +99,11 @@ public class MultiplayerScreen implements Screen {
 
 
         // send game relevant data
-        client.writePosition();
-        client.writeState();
+        try {
+            client.write(player.getUpdateEvent());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -113,6 +115,10 @@ public class MultiplayerScreen implements Screen {
 
         timer.render(batch);
         map.render(batch);
+    }
+
+    HashMap<Integer, PlayerRemote> getPlayers() {
+        return players;
     }
 
     @Override
@@ -145,7 +151,7 @@ public class MultiplayerScreen implements Screen {
 
     }
 
-    private void addPlayer(final int id) {
+    void addPlayer(final int id) {
 
         RemoteInput remoteInput = new RemoteInput();
         Player player = new Player(remoteInput, map);
@@ -189,146 +195,60 @@ public class MultiplayerScreen implements Screen {
      */
     private class GameClient implements Runnable, Disposable {
 
-        // static Identification Prefixes
-        public static final char POSITION = 'P';
-        public static final char STATE = 'Q';
-        public static final char ADD = 'A';
-        public static final char ID = 'I';
-        public static final char START = 'S';
-        public static final char END = 'E';
-
-        private String name = "";
+        private ObjectOutputStream oos;
+        private ObjectInputStream ois;
 
         private Socket socket;
+
+        private final _MPGame game;
+
+        public GameClient(_MPGame game) {
+            this.game = game;
+        }
 
         public void connect(final String host, final int port) {
             SocketHints socketHints = new SocketHints();
             socket = Gdx.net.newClientSocket(Net.Protocol.TCP, host, port, socketHints);
             System.out.println("server [" + host + "] connected @" + port);
 
+            try {
+                oos = new ObjectOutputStream(socket.getOutputStream());
+                ois = new ObjectInputStream(socket.getInputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             new Thread(this).start();
         }
+
 
         @Override
         public void run() {
 
-            if (socket.isConnected()) {
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            while (true) {
 
                 try {
 
-                    while (true) {
+                    Event event = (Event) ois.readObject();
 
-                        final String line = reader.readLine();
+                    if (event instanceof GameEvent)
+                        ((GameEvent) event).apply(game);
 
-                        // parse received line
-                        if (line != null) {
-
-                            // start
-                            if (line.charAt(0) == START) {
-//                                started = true;
-                            }
-
-                            // end
-                            else if (line.charAt(0) == END) {
-//                                started = false;
-                            }
-
-                            // id
-                            else if (line.charAt(0) == ID) {
-                                final String args[] = line.split(" ");
-                                final int id = Integer.parseInt(args[1]);
-
-                                player.setID(id);
-                                System.out.println("id assigned: " + id);
-                            }
-
-                            // add
-                            else if (line.charAt(0) == ADD) {
-                                final String args[] = line.split(" ");
-                                final int id = Integer.parseInt(args[1]);
-
-                                // post to main rendering thread, important!
-                                Gdx.app.postRunnable(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        addPlayer(id);
-                                    }
-                                });
-
-                            }
+                    else if (event instanceof PlayerEvent)
+                        ((PlayerEvent) event).apply(player);
 
 
-                            // position
-                            else if (line.charAt(0) == POSITION) {
-                                final String args[] = line.split(" ");
-                                final int id = Integer.parseInt(args[1]);
-                                final float px = Float.parseFloat(args[2]);
-                                final float py = Float.parseFloat(args[3]);
-
-
-                                players.get(id).getPlayer().setPosition(px, py);
-                            }
-
-                            // state
-                            else if (line.charAt(0) == STATE) {
-                                final String args[] = line.split(" ");
-                                final int id = Integer.parseInt(args[1]);
-                                final int state = Integer.parseInt(args[2]);
-
-
-                                players.get(id).getPlayer().setState(state);
-
-//                                System.out.println("state received: " + state);
-                            }
-
-
-                            // System.out.println("message reseived: " + line);
-                        }
-                    }
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
             }
         }
 
-
-        public void writePosition() {
-            write(POSITION + " " + player.getID() + " " + player.getX() + " " + player.getY());
-        }
-
-        public void writeState() {
-            write(STATE + " " + player.getID() + " " + player.getState());
-        }
-
-        public void writeVelocity() {
-//            write(VELOCITY + " " + player.getID() + " " + player.getVelocity().x + " " + player.getVelocity().y);
-        }
-
-        /**
-         * writes a message to the output stream of the client.
-         * <p/>
-         * connect() should be called before writing a message!
-         *
-         * @param message that will be send
-         */
-        public void write(String message) {
-
-            try {
-                socket.getOutputStream().write((message + "\n").getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
+        public void write(Serializable obj) throws IOException {
+            oos.reset();
+            oos.writeObject(obj);
         }
 
         @Override
