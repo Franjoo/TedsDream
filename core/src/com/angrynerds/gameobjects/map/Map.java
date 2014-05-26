@@ -443,14 +443,14 @@ public class Map {
         // set camera
         renderer.getSpriteBatch().setProjectionMatrix(camera.combined);
         for(Enemy e : enemies) {
-            shadowRenderer.renderShadow(shapeRenderer,camera,e);
+            shadowRenderer.renderShadow(batch,camera,e);
         }
 
         for(Item item : items){
-            shadowRenderer.renderShadow(shapeRenderer,camera,item);
+            shadowRenderer.renderShadow(batch,camera,item);
         }
 
-        shadowRenderer.renderShadow(shapeRenderer,camera,player);
+        shadowRenderer.renderShadow(batch,camera,player);
         // enemies in background
         for (int i = 0; i < enemies.size; i++) {
             Enemy e = enemies.get(i);

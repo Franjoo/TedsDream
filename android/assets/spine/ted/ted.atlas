@@ -1,5 +1,6 @@
 
-ted-1.png
+ted.png
+size: 1002,1002
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
@@ -11,7 +12,8 @@ max_2.0
   offset: 0, 0
   index: -1
 
-ted-2.png
+ted2.png
+size: 1017,1022
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
