@@ -2,7 +2,6 @@ package com.angrynerds.tedsdream.net;
 
 import com.angrynerds.tedsdream.screens.game.AddPlayerEvent;
 import com.angrynerds.tedsdream.screens.game.AssignIDEvent;
-import com.angrynerds.tedsdream.screens.game.Event;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.net.ServerSocket;
@@ -10,7 +9,6 @@ import com.badlogic.gdx.net.ServerSocketHints;
 import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import sun.misc.IOUtils;
 
 import java.io.*;
 import java.net.Inet4Address;
@@ -89,7 +87,7 @@ public class GameServer implements Disposable {
      */
     public void printHosts() {
 
-        List<String> addresses = new ArrayList<String>();
+        List<String> addresses = new ArrayList<>();
         try {
             Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
             for (NetworkInterface ni : Collections.list(interfaces)) {
@@ -201,11 +199,6 @@ public class GameServer implements Disposable {
         public void write(byte[] buffer, int count) throws IOException {
             connection.getOutputStream().write(buffer, 0, count);
         }
-
-        public void write(byte[] buffer) throws IOException {
-//            connection.getOutputStream().write(buffer,0,count);
-        }
-
 
         @Override
         public void dispose() {

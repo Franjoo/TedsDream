@@ -7,10 +7,8 @@ import com.angrynerds.tedsdream.gameobjects.PlayerRemote;
 import com.angrynerds.tedsdream.gameobjects.map.Map;
 import com.angrynerds.tedsdream.input.KeyboardInput;
 import com.angrynerds.tedsdream.input.RemoteInput;
-import com.angrynerds.tedsdream.net.Update;
 import com.angrynerds.tedsdream.ui.TimeDisplay;
 import com.angrynerds.tedsdream.util.C;
-import com.angrynerds.tedsdream.util.State;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.Screen;
@@ -18,7 +16,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.net.SocketHints;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 import java.io.*;
@@ -170,12 +167,12 @@ public class _MPGame implements Screen {
 
     private void buildClientNameString() {
         stringBuilder.delete(0, stringBuilder.length());
-        stringBuilder.append("Player " + player.getID() + " ( ME ) \n");
+        stringBuilder.append("Player ").append(player.getID()).append(" ( ME ) \n");
 
         players.forEach(new BiConsumer<Integer, PlayerRemote>() {
             @Override
             public void accept(Integer integer, PlayerRemote playerRemote) {
-                stringBuilder.append("Player " + integer + "\n");
+                stringBuilder.append("Player ").append(integer).append("\n");
             }
         });
 
@@ -238,9 +235,7 @@ public class _MPGame implements Screen {
                         ((PlayerEvent) event).apply(player);
 
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
+                } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                 }
             }

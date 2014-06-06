@@ -43,7 +43,7 @@ public class TimeDisplay {
         font.setScale(1.2f);
 
 
-        time = new String();
+        time = "";
         timeBuilder = new StringBuilder();
     }
 

@@ -14,7 +14,4 @@ public final class State implements Serializable {
     public static final int ATTACK = 7;
     public static final int DEAD = 8;
 
-
-
-
 }

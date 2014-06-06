@@ -3,10 +3,7 @@ package com.angrynerds.tedsdream.screens.game;
 import com.angrynerds.tedsdream.gameobjects.Player;
 
 /**
- * Created with IntelliJ IDEA.
  * User: Franjo
- * Date: 25.05.2014
- * Time: 19:09
  */
 public class AssignIDEvent implements PlayerEvent {
 

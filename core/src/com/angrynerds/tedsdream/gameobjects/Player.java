@@ -6,8 +6,6 @@ import com.angrynerds.tedsdream.gameobjects.items.HealthPotion;
 import com.angrynerds.tedsdream.gameobjects.items.Item;
 import com.angrynerds.tedsdream.gameobjects.map.Map;
 import com.angrynerds.tedsdream.input.IGameInputController;
-import com.angrynerds.tedsdream.input.RemoteInput;
-import com.angrynerds.tedsdream.net.Update;
 import com.angrynerds.tedsdream.screens.game.UpdatePlayerEvent;
 import com.angrynerds.tedsdream.util.C;
 import com.angrynerds.tedsdream.util.State;
@@ -35,6 +33,7 @@ public class Player extends Creature {
     private Map map;
 
     // movement
+    private float z;
     private float velocityX;
     private float velocityY;
     private float velocityX_MAX = 320;
@@ -94,7 +93,8 @@ public class Player extends Creature {
         detector = Detector.getInstance();
 
         x = 500;
-        y = 150;
+//        y = 150;
+        z = 150;
         actHP = maxHP;
         width = 32;
         height = 32;

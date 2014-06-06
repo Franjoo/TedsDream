@@ -24,7 +24,6 @@ public class UpdatePlayerEvent implements GameEvent {
     public void apply(_MPGame game) {
         Player player = game.getPlayers().get(id).getPlayer();
 
-
         player.setPosition(x, y);
         player.setState(animationState);
         player.setFlip(flip);

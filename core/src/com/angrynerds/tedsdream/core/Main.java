@@ -26,12 +26,12 @@ public class Main implements ApplicationListener {
         controller = new Controller();
         fpsLogger = new FPSLogger();
 
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                resize(400,240);
-            }
-        });
+//        Gdx.app.postRunnable(new Runnable() {
+//            @Override
+//            public void run() {
+//                resize(400,240);
+//            }
+//        });
     }
 
     @Override

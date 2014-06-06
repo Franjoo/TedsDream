@@ -1,7 +1,5 @@
 package com.angrynerds.tedsdream.input;
 
-import com.angrynerds.tedsdream.util.State;
-
 /**
  * User: Franjo
  * Date: 25.10.13

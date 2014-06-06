@@ -7,6 +7,7 @@ import aurelienribon.tweenengine.equations.Sine;
 import com.angrynerds.tedsdream.core.Controller;
 import com.angrynerds.tedsdream.tweens.MenuAccessor;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -25,7 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
  * Time: 16:26
  * To change this template use File | Settings | File Templates.
  */
-public class MainMenu extends AbstractScreen implements TweenAccessor<Sound> {
+public class MainMenu extends AbstractScreen implements Screen,TweenAccessor<Sound> {
 
 
     private Stage stage;
@@ -197,10 +198,8 @@ public class MainMenu extends AbstractScreen implements TweenAccessor<Sound> {
         sound_title.dispose();
         bg.dispose();
         stage.dispose();
-
     }
 
-    @Override
     public void update(float deltaTime) {
 
     }

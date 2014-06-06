@@ -12,7 +12,7 @@ public class AndroidStarterActivity extends AndroidApplication {
         super.onCreate(savedInstanceState);
         
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
-        cfg.useGL20 = true;
+//        cfg.useGL20 = true;
         
         initialize(new Main(), cfg);
     }
