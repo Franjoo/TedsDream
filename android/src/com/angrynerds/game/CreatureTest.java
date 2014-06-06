@@ -88,7 +88,7 @@ public class CreatureTest extends AndroidApplication implements ApplicationListe
         super.onCreate(savedInstanceState);
 
         AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
-        cfg.useGL20 = true;
+//        cfg.useGL20 = true;
 
         initialize(new CreatureTest(), cfg);
     }

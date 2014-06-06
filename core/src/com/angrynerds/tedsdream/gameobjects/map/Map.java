@@ -73,7 +73,7 @@ public class Map {
     private int[] renderLayers;
     private OrthographicCamera camera;
     private OrthographicCamera fixedCamera;
-    private Player player;
+//    private Player player;
 
     private SpawnController spawnController;
     private Array<Enemy> enemies;
@@ -444,43 +444,46 @@ public class Map {
             shadowRenderer.renderShadow(shapeRenderer,camera,item);
         }
 
-        shadowRenderer.renderShadow(shapeRenderer,camera,player);
-        // enemies in background
-        for (int i = 0; i < enemies.size; i++) {
-            Enemy e = enemies.get(i);
-            if (player.getY() <= e.getY()) {
-                e.render(batch);
-            }
+        for (int i = 0; i < players.size; i++) {
+            shadowRenderer.renderShadow(shapeRenderer,camera,players.get(i));
         }
 
-        // render items
-        for (int i = 0; i < items.size; i++) {
-            Item item =items.get(i);
-            if (player.getY() <= item.getY()) {
-                item.render(batch);
-            }
-        }
+//        // enemies in background
+//        for (int i = 0; i < enemies.size; i++) {
+//            Enemy e = enemies.get(i);
+//            if (player.getY() <= e.getY()) {
+//                e.render(batch);
+//            }
+//        }
+//
+//        // render items
+//        for (int i = 0; i < items.size; i++) {
+//            Item item =items.get(i);
+//            if (player.getY() <= item.getY()) {
+//                item.render(batch);
+//            }
+//        }
 
         // player (middleground)
         for(Player p:players){
             p.render(batch);
         }
 
-        // enemies in foreground
-        for (int i = 0; i < enemies.size; i++) {
-            Enemy e = enemies.get(i);
-            if (player.getY() > e.getY()) {
-                e.render(batch);
-            }
-        }
-
-        // render items
-        for (int i = 0; i < items.size; i++) {
-            Item item =items.get(i);
-            if (player.getY() > item.getY()) {
-                item.render(batch);
-            }
-        }
+//        // enemies in foreground
+//        for (int i = 0; i < enemies.size; i++) {
+//            Enemy e = enemies.get(i);
+//            if (player.getY() > e.getY()) {
+//                e.render(batch);
+//            }
+//        }
+//
+//        // render items
+//        for (int i = 0; i < items.size; i++) {
+//            Item item =items.get(i);
+//            if (player.getY() > item.getY()) {
+//                item.render(batch);
+//            }
+//        }
 
 //        for(Item i: items) if(i != null) i.render(batch);
 
@@ -969,12 +972,6 @@ public class Map {
         return height;
     }
 
-    /**
-     * returns the player
-     */
-    public Player getPlayer() {
-        return player;
-    }
 
     /**
      * returns the map spawn

@@ -3,15 +3,9 @@ apply plugin: "java"
 sourceCompatibility = 1.7
 sourceSets.main.java.srcDirs = [ "src/" ]
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-project.ext.mainClassName = "com.angrynerds.game.desktop.DesktopLauncher"
-=======
+
 project.ext.mainClassName = "com.angrynerds.tedsdream.game.desktop.DesktopLauncher"
->>>>>>> refactoring
-=======
-project.ext.mainClassName = "com.angrynerds.game.desktop.DesktopLauncher"
->>>>>>> 463d5cba55790eb171a998aba93b383c97140693
+
 project.ext.assetsDir = new File("../android/assets");
 
 task run(dependsOn: classes, type: JavaExec) {

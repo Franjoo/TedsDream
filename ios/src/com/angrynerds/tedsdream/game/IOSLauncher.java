@@ -1,5 +1,6 @@
 package com.angrynerds.tedsdream.game;
 
+import com.angrynerds.tedsdream.core.Main;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 
