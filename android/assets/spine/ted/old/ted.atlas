@@ -1,0 +1,185 @@
+
+ted-1.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+max_2.0
+  rotate: false
+  xy: 2, 2
+  size: 1000, 1000
+  orig: 1000, 1000
+  offset: 0, 0
+  index: -1
+
+ted-2.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+kopf_profil
+  rotate: false
+  xy: 469, 763
+  size: 277, 259
+  orig: 321, 311
+  offset: 19, 39
+  index: -1
+kopf_seitlich
+  rotate: false
+  xy: 86, 454
+  size: 277, 259
+  orig: 332, 272
+  offset: 34, 5
+  index: -1
+max_01
+  rotate: true
+  xy: 2, 7
+  size: 185, 73
+  orig: 301, 134
+  offset: 59, 32
+  index: -1
+max_02
+  rotate: true
+  xy: 77, 2
+  size: 29, 92
+  orig: 132, 161
+  offset: 52, 48
+  index: -1
+max_03
+  rotate: false
+  xy: 86, 193
+  size: 277, 259
+  orig: 362, 318
+  offset: 61, 19
+  index: -1
+max_04
+  rotate: false
+  xy: 748, 779
+  size: 193, 243
+  orig: 1000, 1000
+  offset: 401, 395
+  index: -1
+max_05
+  rotate: true
+  xy: 365, 164
+  size: 103, 145
+  orig: 1000, 1000
+  offset: 518, 496
+  index: -1
+max_06
+  rotate: true
+  xy: 615, 656
+  size: 105, 131
+  orig: 267, 285
+  offset: 88, 91
+  index: -1
+max_07
+  rotate: false
+  xy: 943, 765
+  size: 71, 86
+  orig: 256, 219
+  offset: 79, 102
+  index: -1
+max_08
+  rotate: false
+  xy: 489, 58
+  size: 68, 104
+  orig: 180, 190
+  offset: 64, 56
+  index: -1
+max_09
+  rotate: false
+  xy: 528, 532
+  size: 66, 113
+  orig: 207, 217
+  offset: 72, 77
+  index: -1
+max_10
+  rotate: false
+  xy: 458, 532
+  size: 68, 113
+  orig: 169, 143
+  offset: 61, 30
+  index: -1
+max_11
+  rotate: true
+  xy: 748, 708
+  size: 69, 143
+  orig: 214, 174
+  offset: 81, 24
+  index: -1
+max_12
+  rotate: true
+  xy: 748, 651
+  size: 55, 137
+  orig: 1000, 1000
+  offset: 538, 464
+  index: -1
+max_14
+  rotate: false
+  xy: 2, 715
+  size: 465, 307
+  orig: 679, 460
+  offset: 112, 91
+  index: -1
+max_15
+  rotate: false
+  xy: 365, 481
+  size: 91, 232
+  orig: 227, 304
+  offset: 74, 39
+  index: -1
+rennen bein_01
+  rotate: false
+  xy: 221, 33
+  size: 120, 158
+  orig: 1000, 1000
+  offset: 486, 268
+  index: -1
+rennen bein_02
+  rotate: true
+  xy: 365, 269
+  size: 210, 163
+  orig: 1000, 1000
+  offset: 387, 264
+  index: -1
+rennen bein_03
+  rotate: false
+  xy: 596, 563
+  size: 70, 82
+  orig: 1000, 1000
+  offset: 506, 266
+  index: -1
+rennen bein_04
+  rotate: false
+  xy: 943, 853
+  size: 74, 169
+  orig: 1000, 1000
+  offset: 508, 158
+  index: -1
+rennen bein_05
+  rotate: false
+  xy: 343, 48
+  size: 144, 114
+  orig: 1000, 1000
+  offset: 511, 95
+  index: -1
+rennen_neu_01
+  rotate: false
+  xy: 77, 33
+  size: 142, 158
+  orig: 233, 203
+  offset: 49, 29
+  index: -1
+schuh_vorne
+  rotate: false
+  xy: 469, 647
+  size: 144, 114
+  orig: 193, 135
+  offset: 26, 16
+  index: -1
+waffe_01
+  rotate: false
+  xy: 2, 194
+  size: 82, 519
+  orig: 347, 634
+  offset: 155, 70
+  index: -1
