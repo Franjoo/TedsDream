@@ -185,7 +185,7 @@ public class Player extends Creature {
         super.update(deltaTime);
         shadowHeight = getSkeletonBounds().getHeight();
         shadowWidth = getSkeletonBounds().getWidth();
-        if(alive) {
+        if(alive){
             // set v in x and y direction
             velocityX = input.get_stickX() * deltaTime * velocityX_MAX;
             velocityY = input.get_stickY() * deltaTime * velocityY_MAX;
