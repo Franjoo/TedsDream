@@ -1,9 +1,7 @@
 package com.angrynerds.game;
 
 import android.os.Bundle;
-import com.angrynerds.gameobjects.creatures.Boy;
-import com.angrynerds.gameobjects.creatures.Creature;
-import com.angrynerds.gameobjects.creatures.Goblin;
+import com.angrynerds.tedsdream.gameobjects.creatures.Creature;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
