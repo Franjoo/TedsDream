@@ -30,11 +30,11 @@ public class SpawnController {
     }
 
     public void update(float delta) {
-        if(map.getPlayer() == null) return;
+        if(map.getPlayers() == null) return;
 
         for (int i = 0; i < objects.size; i++) {
             SpawnObject o = objects.get(i);
-            if (o.rectangle.x - o.distance <= map.getPlayer().getX()) {
+            if (o.rectangle.x - o.distance <= map.getPlayers().getX()) {
                 o.spawn();
                 objects.removeIndex(i);
             }

@@ -213,10 +213,6 @@ public class Player extends Creature {
             else
                 skeleton.setFlipX(velocityX < 0);
 
-
-
-
-
             setCurrentState();
 
             updatePositionAttributes(deltaTime, collisionPosition);
@@ -249,7 +245,6 @@ public class Player extends Creature {
 
 
         updateEvent.set(id,x,y,input.getState(),skeleton.getFlipX());
-
     } }
 
     private void letPlayerDontRunOut() {
@@ -365,7 +360,6 @@ public class Player extends Creature {
         }
         if (input.getState() != State.DEAD && input.getState() != State.RUN)
             input.setState(State.IDLE);
-
     }
 
 
