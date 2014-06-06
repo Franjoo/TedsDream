@@ -619,6 +619,7 @@ public class Map {
     }
 
 
+
     /**
      * returns an array of rectangles which contains the assigned point
      *
@@ -1027,5 +1028,9 @@ public class Map {
     public void removeFromMap(Enemy e) {
         enemies.removeValue(e, true);
         deadEnemies++;
+    }
+
+    public Array<Player> getPlayers(){
+        return players;
     }
 }

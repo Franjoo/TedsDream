@@ -1,6 +1,7 @@
 package com.angrynerds.tedsdream.game.desktop;
 
 import com.angrynerds.tedsdream.core.Main;
+import com.angrynerds.tedsdream.gameobjects.map.MapInitializer;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
@@ -17,6 +18,7 @@ public class DesktopLauncher {
         Main main = new Main();
 
         new LwjglApplication(main, config);
+//        new LwjglApplication(new MapInitializer("maps/map_05.tmx"), config);
 
     }
 }
