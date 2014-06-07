@@ -34,7 +34,7 @@ public class SpawnController {
 
         for (int i = 0; i < objects.size; i++) {
             SpawnObject o = objects.get(i);
-            if (o.rectangle.x - o.distance <= map.getPlayers().getX()) {
+            if (o.rectangle.x - o.distance <= map.getPlayers().get(0).getX()) {
                 o.spawn();
                 objects.removeIndex(i);
             }

@@ -160,7 +160,10 @@ public class Enemy extends Creature implements Disposable {
     public void update(float deltatime) {
         super.update(deltatime);
 
-        if (map.getPlayer() != null) {
+        if (map.getPlayers() != null) {
+            if(player == null)
+                player = map.getPlayers().get(0);
+
             updatePositions();
             bloodParticle.update(deltatime);
             // find new path
