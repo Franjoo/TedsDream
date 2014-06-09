@@ -38,14 +38,10 @@ public class DebugRenderer {
     }
 
     private void init(){
-
-        // draw tile grid
         if (SHOW_TILE_GRID) drawTileGrid();
 
-        // draw collision shapes
         if (SHOW_COLLISION_SHAPES) drawCollisionShapes();
 
-        // draw collision tiles
         if (SHOW_COLLISION_TILES) drawCollisionTiles();
     }
 

@@ -239,9 +239,6 @@ public class Player extends Creature {
 
         state.apply(skeleton);
 
-//        System.out.println("set state: " + input.getState());
-
-
         updateEvent.set(id,x,y,input.getState(),skeleton.getFlipX());
     } }
 
@@ -360,7 +357,6 @@ public class Player extends Creature {
             input.setState(State.IDLE);
     }
 
-
     public void setCurrentState(int state) {
         input.setState(state);
     }
@@ -376,12 +372,6 @@ public class Player extends Creature {
      * position and dimension
      */
     private Vector2 getCollisionPosition() {
-        /* --- COLLISION DETECTION --- */
-
-        // helper variables
-        float qX = x + velocityX;
-        float qY = y + velocityY;
-
         float nX;
         float nY;
 
@@ -553,14 +543,14 @@ public class Player extends Creature {
         float qY = pY + vY;
 
        /* MAP COLLISION */
-        if (qX < map.getX() + map.borderWidth)
-            qX = map.getX() + map.borderWidth;
-        else if (qX + width > map.getX() + map.getWidth() - map.borderWidth)
-            qX = map.getX() + map.getWidth() - map.borderWidth - width;
+        if (qX < map.borderWidth)
+            qX = map.borderWidth;
+        else if (qX + width > map.getWidth() - map.borderWidth)
+            qX =  map.getWidth() - map.borderWidth - width;
         if (qY > map.getHeight() - map.borderWidth - 64)// map.getOffsetX() * map.getTileHeight())
             qY = map.getHeight() - map.borderWidth - 64;//map.getOffsetX() * map.getTileHeight();
-        else if (qY < map.getY() + map.borderWidth + 64)
-            qY = map.getY() + map.borderWidth + 64;
+        else if (qY < map.borderWidth + 64)
+            qY = map.borderWidth + 64;
 
         vec2.set(qX, qY);
         return vec2;

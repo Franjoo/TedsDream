@@ -14,7 +14,6 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObjects;
@@ -32,21 +31,22 @@ import com.badlogic.gdx.utils.Array;
  * the Map contains
  */
 public class Map {
-    private static enum Flip {HORIZONTAL, VERTICAL, BOTH}
-
-    private Array<Player> players = new Array<Player>();
+    // tmx map path
+    public static final String mapPath = "maps/map_05.tmx";
 
     // map instance
     private static Map instance;
 
+    private static enum Flip {HORIZONTAL, VERTICAL, BOTH;}
+
+    private Array<Player> players = new Array<Player>();
+
     private Texture dreamOver;
-    private ShapeRenderer shapeRenderer = new ShapeRenderer();
 
     // map relevant attributes
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer renderer;
     private OrthogonalTiledMapRenderer fixedRenderer;
-    private int[] renderLayers;
     private OrthographicCamera camera;
     private OrthographicCamera fixedCamera;
 
@@ -64,40 +64,27 @@ public class Map {
     private int mapHeight;
     public final int borderWidth = 5;
 
-    private float x;
-    private float y;
     private float width;
     private float height;
 
     // player relevant subjects
     private Vector2 spawn;
-    private ShadowRenderer shadowRenderer = new ShadowRenderer();
+    private ShadowRenderer shadowRenderer;
 
-    // map lists
-//    private Array<TiledMapTileLayer> collisionTileLayers;
-//    private Array<Rectangle> collisionObjects = new Array<Rectangle>();
-    private Array<Layer> layers_background = new Array<Layer>();
     private Array<Layer> layers_foreground = new Array<Layer>();
+    private Array<Layer> layers_background = new Array<Layer>();
 
     private TextureAtlas atlas;
 
     // loading screen
     private Texture texture_loading;
 
-    // tmx map path
-    public static final String mapPath = "maps/map_05.tmx";
-
-    // global helper variables
-//    private Array<Rectangle> qArray = new Array<Rectangle>();
-
     private Sound sound_background;
 
     private int deadEnemies;
 
-
     /**
      * creates a new Map
-     *
      */
     public Map(OrthographicCamera camera) {
 
@@ -118,6 +105,7 @@ public class Map {
         AStarPathFinder.initialize(this, 200, true, new ClosestHeuristic());
 
         spawnController = new SpawnController(this);
+        this.shadowRenderer = new ShadowRenderer(camera);
 
         createEnemies();
     }
@@ -196,8 +184,6 @@ public class Map {
         mapHeight = numTilesY * tileHeight;
 
         // position and size
-        x = 0;
-        y = 0;
         width = mapWidth;
         height = mapHeight;
 
@@ -215,19 +201,6 @@ public class Map {
 
         // set player relevant attributes
         spawn = findSpawn();
-
-        // initialize Collision Detector
-        Detector.initialize(tiledMap);
-        Detector detector = Detector.getInstance();
-//
-//        // draw tile grid
-//        if (SHOW_TILE_GRID) drawTileGrid();
-//
-//        // draw collision shapes
-//        if (SHOW_COLLISION_SHAPES) drawCollisionShapes();
-//
-//        // draw collision tiles
-//        if (SHOW_COLLISION_TILES) drawCollisionTiles();
 
         // sound
         sound_background = Gdx.audio.newSound(Gdx.files.internal("sounds/ingame/game_background.mp3"));
@@ -274,10 +247,8 @@ public class Map {
                         layers_foreground.add(layer);
                     }
                 }
-
             }
         }
-
     }
 
     /**
@@ -295,67 +266,13 @@ public class Map {
                 System.out.println(layer.getName() + " : " + i);
             }
         }
-
-        // set render layer integers
-        this.renderLayers = new int[renderLayers.size];
-        for (int i = 0; i < renderLayers.size; i++) {
-            this.renderLayers[i] = renderLayers.get(i).intValue();
-//            System.out.println("layer: " + renderLayers.get(i).intValue());
-        }
     }
-//
-//    /**
-//     * returns an array of hashmaps which contains the object properties of tmx map object<br>
-//     * note: MapLayer m -> m.getObjects.get(n).getProperties() is incorrect
-//     *
-//     * @param layer MapLayer which should be parsed
-//     */
-//    private Array<HashMap<String, String>> getObjectGroups(final MapLayer layer) {
-//
-//        final String layername = layer.getName();
-//        Array<HashMap<String, String>> objects = new Array<HashMap<String, String>>();
-//
-//        try {
-//            BufferedReader reader = new BufferedReader(new FileReader(mapPath));
-//            String line = reader.readLine();
-//            while (line != null) {
-//                parseObjectGroups(layername, objects, reader, line);
-//                line = reader.readLine();
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return objects;
-//    }
-//
-//    private void parseObjectGroups(String layername, Array<HashMap<String, String>> objects, BufferedReader reader, String line) throws IOException {
-//        if (line.trim().startsWith("<objectgroup") && line.contains("name=\"" + layername + "\"")) {
-//            line = reader.readLine();
-//            while (line.trim().startsWith("<object")) {
-//                CreateObjectGroupAndAddIt(objects, line);
-//                line = reader.readLine();
-//            }
-//        }
-//    }
-//
-//    private void CreateObjectGroupAndAddIt(Array<HashMap<String, String>> objects, String line) {
-//        HashMap<String, String> hm = new HashMap<String, String>();
-//        objects.add(hm);
-//        String[] properties = line.trim().split(" ");
-//        for (int i = 1; i < properties.length; i++) {
-//            String key = properties[i].split("=")[0];
-//            String value = properties[i].split("=")[1].replace("\"", "").trim().replace("/>", "");
-//
-//            hm.put(key, value);
-//        }
-//    }
 
     /**
      * renders all objects which are located on the map
      *
      * @param batch SpriteBatch that is used for rendering
      */
-
     public void render(SpriteBatch batch) {
 
         // background
@@ -364,80 +281,47 @@ public class Map {
         // set camera
         renderer.getSpriteBatch().setProjectionMatrix(camera.combined);
 
-        renderShadowsForGameObjects();
         renderGameObjects(batch);
 
         renderLayers(layers_foreground);
 
 //        renderParticles(batch);
 
-//        drawDebugTextures(batch);
-
-
 //        if(player.getActualHP() <= 0){
 //            batch.draw(dreamOver,fixedCamera.position.x-dreamOver.getWidth()/2,fixedCamera.position.y-dreamOver.getHeight()/2);
 //        }
-
     }
-//
-//    private void drawDebugTextures(SpriteBatch batch) {
-//        batch.begin();
-//        if (SHOW_TILE_GRID) batch.draw(gridTexture, 0, 0);
-//
-//        if (SHOW_COLLISION_SHAPES) batch.draw(collisionShapesTexture, 0, 0);
-//
-//        if (SHOW_COLLISION_TILES) batch.draw(collisionTilesTexture, 0, 0);
-//        batch.end();
-//    }
 
     private void renderGameObjects(SpriteBatch batch) {
-        //        // enemies in background
-        for (int i = 0; i < enemies.size; i++) {
-            Enemy e = enemies.get(i);
-            if (players.get(0).getY() <= e.getY()) {
-                e.render(batch);
+        // enemies in background
+        for (Enemy enemy : enemies){
+            if (players.get(0).getY() <= enemy.getY()) {
+                shadowRenderer.renderShadow(enemy);
+                enemy.render(batch);
             }
         }
-//
-//        // render items
         for (Item item : items) {
             if (players.get(0).getY() <= item.getY()) {
+                shadowRenderer.renderShadow(item);
                 item.render(batch);
             }
         }
-
-        // player (middleground)
-        for(Player p : players){
-            p.render(batch);
+        for(Player player : players){
+            shadowRenderer.renderShadow(player);
+            player.render(batch);
         }
-
         // enemies in foreground
-        for (int i = 0; i < enemies.size; i++) {
-            Enemy e = enemies.get(i);
-            if (players.get(0).getY() > e.getY()) {
-                e.render(batch);
+        for (Enemy enemy : enemies) {
+            if (players.get(0).getY() > enemy.getY()) {
+                shadowRenderer.renderShadow(enemy);
+                enemy.render(batch);
             }
         }
-//
-//        // render items
         for (Item item : items) {
             if (players.get(0).getY() > item.getY()) {
+                shadowRenderer.renderShadow(item);
                 item.render(batch);
             }
-        }
-    }
-
-    private void renderShadowsForGameObjects() {
-        for(Enemy e : enemies) {
-            shadowRenderer.renderShadow(shapeRenderer,camera,e);
-        }
-
-        for(Item item : items){
-            shadowRenderer.renderShadow(shapeRenderer,camera,item);
-        }
-
-        for (Player player : players) {
-            shadowRenderer.renderShadow(shapeRenderer,camera,player);
         }
     }
 
@@ -464,27 +348,12 @@ public class Map {
         fixedCamera.update();
     }
 
-    private void renderShadows(){
-        camera.update();
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        shapeRenderer.setProjectionMatrix(camera.combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-
-        for(Enemy enemy : enemies){
-            enemy.renderShadow(shapeRenderer);
-        }
-           shapeRenderer.end();
-        Gdx.gl.glDisable(GL20.GL_BLEND);
-    }
-
     /**
      * updates the map
      *
      * @param deltaTime time since last frame
      */
     public void update(float deltaTime) {
-
         // update layers
         for (Layer backgroundLayer : layers_background) backgroundLayer.update(deltaTime);
         for (Layer ForegroundLayer : layers_foreground) ForegroundLayer.update(deltaTime);
@@ -497,48 +366,13 @@ public class Map {
 
         spawnController.update(deltaTime);
 
-        for (int i = 0; i < enemies.size; i++) {
-            enemies.get(i).update(deltaTime);
+        for (Enemy enemy : enemies) {
+            enemy.update(deltaTime);
         }
 
         renderer.setView(camera);
         fixedRenderer.setView(fixedCamera);
     }
-//
-//    /**
-//     * checks whether there is a solid tile at specified position
-//     *
-//     * @param x position x
-//     * @param y position y
-//     * @return whether point collides with solid tile or not
-//     */
-//    public boolean isSolid(final float x, final float y) {
-//
-//        for (int i = 0; i < collisionTileLayers.size; i++) {
-//            TiledMapTileLayer.Cell cell = collisionTileLayers.get(i).getCell((int) (x) / tileWidth, (int) (y) / tileHeight);
-//            if (cell != null) {
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
-//
-//
-//    /**
-//     * returns an array of rectangles which contains the assigned point
-//     *
-//     * @param x position x of the point
-//     * @param y position y of the point
-//     */
-//    public Array<Rectangle> getCollisionObjects(final float x, final float y) {
-//        if (qArray.size != 0) qArray.clear();
-//        for (int i = 0; i < collisionObjects.size; i++) {
-//            if (collisionObjects.get(i).contains(x, y)) {
-//                qArray.add(collisionObjects.get(i));
-//            }
-//        }
-//        return qArray;
-//    }
 
     public float getXmin(Array<Rectangle> rectangles) {
         throwIllegalArgumentExceptionIfRectanglesEmpty(rectangles);
@@ -666,21 +500,6 @@ public class Map {
         return false;
     }
 
-
-    /**
-     * returns x position
-     */
-    public float getX() {
-        return x;
-    }
-
-    /**
-     * returns y position
-     */
-    public float getY() {
-        return y;
-    }
-
     public float getWidth() {
         return width;
     }
@@ -736,7 +555,6 @@ public class Map {
     public TiledMap getTiledMap() {
         return tiledMap;
     }
-
 
     public void removeFromMap(Enemy e) {
         enemies.removeValue(e, true);

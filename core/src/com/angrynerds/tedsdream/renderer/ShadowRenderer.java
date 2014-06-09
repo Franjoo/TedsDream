@@ -12,10 +12,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  */
 public class ShadowRenderer {
 
+    private ShapeRenderer renderer = new ShapeRenderer();
+    private Camera camera;
 
-    void ShadowRenderer(){
-
-
+    public ShadowRenderer(Camera camera){
+        this.camera = camera;
     }
 
     public void update(float deltaTime){
@@ -28,7 +29,7 @@ public class ShadowRenderer {
 
     }
 
-    public void renderShadow(ShapeRenderer renderer,Camera camera,GameObject object){
+    public void renderShadow(GameObject object){
         camera.update();
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -37,6 +38,5 @@ public class ShadowRenderer {
         renderer.setColor(0,0,0,0.5f);
         renderer.ellipse(object.getX()-object.getWidth()/2,object.getY(),object.getWidth()*0.7f,object.getHeight()/3);
         renderer.end();
-
     }
 }
