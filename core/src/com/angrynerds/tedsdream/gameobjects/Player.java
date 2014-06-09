@@ -6,6 +6,7 @@ import com.angrynerds.tedsdream.gameobjects.items.HealthPotion;
 import com.angrynerds.tedsdream.gameobjects.items.Item;
 import com.angrynerds.tedsdream.gameobjects.map.Map;
 import com.angrynerds.tedsdream.input.IGameInputController;
+import com.angrynerds.tedsdream.renderer.CollisionHandler;
 import com.angrynerds.tedsdream.screens.game.UpdatePlayerEvent;
 import com.angrynerds.tedsdream.util.C;
 import com.angrynerds.tedsdream.util.State;
@@ -31,6 +32,7 @@ public class Player extends Creature {
     // map
 //    private Camera camera;
     private Map map;
+    private CollisionHandler collisionHandler;
 
     // movement
     private float z;
@@ -85,15 +87,13 @@ public class Player extends Creature {
 //        jumpAnimation = skeletonData.findAnimation("jump");
 //        showBounds = true;
 
-
-
         init();
-
     }
 
     public void init() {
 //        map = Map.getInstance();
         detector = Detector.getInstance();
+        collisionHandler = new CollisionHandler(map);
 
         x = 500;
 //        y = 150;
@@ -107,7 +107,6 @@ public class Player extends Creature {
         //*** sounds
         sound_sword = Gdx.audio.newSound(Gdx.files.internal("sounds/ingame/lightsaber.mp3"));
         sound_dash = Gdx.audio.newSound(Gdx.files.internal("sounds/ingame/dash.wav"));
-
 
         setCurrentState();
 
@@ -191,7 +190,6 @@ public class Player extends Creature {
             velocityY = input.get_stickY() * deltaTime * velocityY_MAX;
             if (velocityX != 0 && velocityY != 0 && input.getState() == State.IDLE)
                 input.setState(State.RUN);
-
 
             if (alive) {
 
@@ -395,7 +393,6 @@ public class Player extends Creature {
         return vec2;
     }
 
-
     private void setTileCollisionPosition() {
         //LEFT
         if (velocityX < 0) {
@@ -433,7 +430,7 @@ public class Player extends Creature {
 
         // left
         if (vX < 0) {
-            rectangles = map.getCollisionObjects(pX + vX, pY, pX + vX, pY + height);
+            rectangles = collisionHandler.getCollisionObjects(pX + vX, pY, pX + vX, pY + height);
             if (rectangles.size != 0) {
                 _x = map.getXmax(rectangles) + 0.001f;
                 System.out.println("collision");
@@ -442,7 +439,7 @@ public class Player extends Creature {
 
         // right
         else if (vX > 0) {
-            rectangles = map.getCollisionObjects(pX + vX + width, pY, pX + vX + width, pY + height);
+            rectangles = collisionHandler.getCollisionObjects(pX + vX + width, pY, pX + vX + width, pY + height);
             if (rectangles.size != 0) {
                 _x = map.getXmin(rectangles) - width - 0.001f;
                 System.out.println("collision");
@@ -451,7 +448,7 @@ public class Player extends Creature {
 
         // top
         if (vY > 0) {
-            rectangles = map.getCollisionObjects(pX, pY + height + vY, pX + width, pY + height + vY);
+            rectangles = collisionHandler.getCollisionObjects(pX, pY + height + vY, pX + width, pY + height + vY);
             System.out.println("solid: " + detector.isSolid(x, y));
             if (rectangles.size != 0) {
                 System.out.println("top");
@@ -461,7 +458,7 @@ public class Player extends Creature {
 
         // bottom
         else if (vY < 0) {
-            rectangles = map.getCollisionObjects(pX, pY + vY, pX + width, pY + vY);
+            rectangles = collisionHandler.getCollisionObjects(pX, pY + vY, pX + width, pY + vY);
             if (rectangles.size != 0) {
                 _y = map.getYmax(rectangles) + 0.001f;
                 System.out.println("collision");
@@ -483,10 +480,10 @@ public class Player extends Creature {
     }
 
     private void checkForWall(int downY, int upY, int leftX, int rightX) {
-        upleft = map.isSolid(leftX, upY);
-        downleft = map.isSolid(leftX, downY);
-        upright = map.isSolid(rightX, upY);
-        downright = map.isSolid(rightX, downY);
+        upleft = collisionHandler.isSolid(leftX, upY);
+        downleft = collisionHandler.isSolid(leftX, downY);
+        upright = collisionHandler.isSolid(rightX, upY);
+        downright = collisionHandler.isSolid(rightX, downY);
     }
 
     private Vector2 getTileCollisionPosition(float pX, float pY, float vX, float vY) {
@@ -505,18 +502,18 @@ public class Player extends Creature {
                 _x = ((int) (pX) / map.getTileWidth()) * map.getTileWidth();
             }
             // top left
-            else if (map.isSolid(qX, pY + height)) {
+            else if (collisionHandler.isSolid(qX, pY + height)) {
                 _x = ((int) (pX) / map.getTileWidth()) * map.getTileWidth();
             } else {
                 _x = qX;
             }
         } else if (vX > 0)
             // bottom right
-            if (map.isSolid(qX + width, pY)) {
+            if (collisionHandler.isSolid(qX + width, pY)) {
                 _x = ((int) (qX) / map.getTileWidth()) * map.getTileWidth() - epsilon;
             }
             // top right
-            else if (map.isSolid(qX + width, pY + height)) {
+            else if (collisionHandler.isSolid(qX + width, pY + height)) {
                 _x = ((int) (qX) / map.getTileWidth()) * map.getTileWidth() - epsilon;
             } else {
                 _x = qX;
@@ -525,22 +522,22 @@ public class Player extends Creature {
         /* Y_AXIS */
         if (vY < 0) {
             // bottom left
-            if (map.isSolid(pX, qY)) {
+            if (collisionHandler.isSolid(pX, qY)) {
                 _y = ((int) (pY) / map.getTileHeight()) * map.getTileHeight();
             }
             // bottom right
-            else if (map.isSolid(pX + width, qY)) {
+            else if (collisionHandler.isSolid(pX + width, qY)) {
                 _y = ((int) (pY) / map.getTileHeight()) * map.getTileHeight();
             } else {
                 _y = qY;
             }
         } else if (vY > 0) {
             // top left
-            if (map.isSolid(pX, qY + height)) {
+            if (collisionHandler.isSolid(pX, qY + height)) {
                 _y = ((int) (qY) / map.getTileHeight()) * map.getTileHeight() - epsilon;
             }
             // top right
-            else if (map.isSolid(pX + width, qY + height)) {
+            else if (collisionHandler.isSolid(pX + width, qY + height)) {
                 _y = ((int) (qY) / map.getTileHeight()) * map.getTileHeight() - epsilon;
             } else {
                 _y = qY;
@@ -568,7 +565,6 @@ public class Player extends Creature {
         vec2.set(qX, qY);
         return vec2;
     }
-
 
     private void drawRectangularShape() {
         // draw rectangular shape
