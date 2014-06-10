@@ -37,7 +37,7 @@ public class Map {
     // map instance
     private static Map instance;
 
-    private static enum Flip {HORIZONTAL, VERTICAL, BOTH;}
+    private static enum Flip {HORIZONTAL, VERTICAL, BOTH}
 
     private Array<Player> players = new Array<Player>();
 
@@ -76,9 +76,6 @@ public class Map {
 
     private TextureAtlas atlas;
 
-    // loading screen
-    private Texture texture_loading;
-
     private Sound sound_background;
 
     private int deadEnemies;
@@ -86,17 +83,11 @@ public class Map {
     /**
      * creates a new Map
      */
-    public Map(OrthographicCamera camera) {
+    public Map(OrthographicCamera camera, TiledMap tiledMap) {
 
         this.camera = camera;
+        this.tiledMap = tiledMap;
         SpriteBatch batch = new SpriteBatch();
-        // loading texture
-        texture_loading = new Texture(Gdx.files.internal("ui/menus/main/loadingScreen.png"));
-
-        // draw loading screen
-        batch.begin();
-        batch.draw(texture_loading,0,0);
-        batch.end();
 
         init();
 
@@ -151,8 +142,6 @@ public class Map {
      * initializes the map
      */
     private void init() {
-        // load tmx
-        tiledMap = new TmxMapLoader().load(mapPath);
         renderer = new OrthogonalTiledMapRenderer(tiledMap);
         renderer.setView(camera);
 
@@ -235,7 +224,6 @@ public class Map {
                         float mY = Float.parseFloat(mapProperties.get("my").toString());
                         layer = new Layer(x, y, vX, vY, tileLayer, mX, mY);
                     }
-
 
                     // background layer
                     if (tileLayer.getName().startsWith("bg")) {
@@ -358,7 +346,7 @@ public class Map {
         for (Layer backgroundLayer : layers_background) backgroundLayer.update(deltaTime);
         for (Layer ForegroundLayer : layers_foreground) ForegroundLayer.update(deltaTime);
 
-        for(Player player :players){
+        for(Player player : players){
             player.update(deltaTime);
         }
 

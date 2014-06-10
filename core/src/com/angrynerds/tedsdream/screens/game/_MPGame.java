@@ -58,7 +58,7 @@ public class _MPGame implements Screen {
         camera = new OrthographicCamera(C.VIEWPORT_WIDTH, C.VIEWPORT_HEIGHT);
 
         // world objects
-        map = new Map(camera);
+        map = new Map(camera, game.tiledMap);
         players = new HashMap<>();
         player = new Player(new KeyboardInput(), map);
 

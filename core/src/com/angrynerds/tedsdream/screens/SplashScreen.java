@@ -41,8 +41,6 @@ public class SplashScreen extends AbstractScreen {
         batch.begin();
         batch.draw(logo,stage.getWidth()/2 - logo.getWidth()/2,stage.getHeight()/2 - logo.getHeight()/2,logo.getWidth(),logo.getHeight());
         batch.end();
-
-
     }
 
     @Override

@@ -5,6 +5,8 @@ import aurelienribon.tweenengine.TweenAccessor;
 import aurelienribon.tweenengine.TweenManager;
 import aurelienribon.tweenengine.equations.Sine;
 import com.angrynerds.tedsdream.core.Controller;
+import com.angrynerds.tedsdream.screens.game._MPGame;
+import com.angrynerds.tedsdream.screens.game._SPGame;
 import com.angrynerds.tedsdream.tweens.MenuAccessor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -112,7 +114,7 @@ public class MainMenu extends AbstractScreen implements Screen,TweenAccessor<Sou
 
                 // button play
                 if (event.getTarget() == buttonPlay) {
-                    game.setScreen(game.playScreen);
+                    game.setScreen(new _SPGame(game));
                     System.out.println("play pressed");
                 }
 

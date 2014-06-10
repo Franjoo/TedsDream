@@ -92,6 +92,7 @@ public class Player extends Creature {
 
     public void init() {
 //        map = Map.getInstance();
+        detector.initialize(map.getTiledMap());
         detector = Detector.getInstance();
         collisionHandler = new CollisionHandler(map);
 
