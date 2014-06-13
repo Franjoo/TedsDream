@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<structure101-builder version="1.0" format="state" vendor="headway" generated-at="Mon Jun 09 22:53:09 CEST 2014">
+  <builder-settings includeExternals="true" diagramsTimeStamp="0" actionsTimeStamp="0" settingsCheckInterval="5000" classPath="" compilationPath="">
+    <s101plugin-properties>
+      <isEnabled value="true"/>
+      <onDemand value="false"/>
+      <repository value="https://github.com/Franjoo/TedsDream.git"/>
+      <project value=""/>
+      <snapshot value=""/>
+      <violationsSeverity value="Warn"/>
+      <newViolationsSeverity value="Error"/>
+      <excludesEnabled value="true"/>
+      <excludesPaths value="core/src;"/>
+      <recents>
+        <recent value="C:\structure101-repository"/>
+        <recent value="https://github.com/Franjoo/TedsDream.git"/>
+      </recents>
+    </s101plugin-properties>
+    <excludes/>
+    <excludes-from-xs/>
+    <transformations/>
+  </builder-settings>
+</structure101-builder>
