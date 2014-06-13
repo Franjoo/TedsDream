@@ -263,12 +263,12 @@ public class Player extends Creature {
         return shadowWidth;
     }
     public float getX(){
-        return  x + 20;
+        return  x ;
     }
 
 
     public float getY(){
-        return  y -25;
+        return  y ;
     }
 
     private void updatePositionAttributes(float deltaTime, Vector2 collisionPosition) {

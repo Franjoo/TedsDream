@@ -238,31 +238,31 @@ public class Map {
         // enemies in background
         for (Enemy enemy : enemies) {
             if (players.get(0).getY() <= enemy.getY()) {
-                shadowRenderer.renderShadow(enemy);
+                shadowRenderer.renderShadow(batch,enemy);
                 enemy.render(batch);
             }
         }
 
         for (Item item : items) {
             if (players.get(0).getY() <= item.getY()) {
-                shadowRenderer.renderShadow(item);
+                shadowRenderer.renderShadow(batch,item);
                 item.render(batch);
             }
         }
         for (Player player : players) {
-            shadowRenderer.renderShadow(player);
+            shadowRenderer.renderShadow(batch,player);
             player.render(batch);
         }
         // enemies in foreground
         for (Enemy enemy : enemies) {
             if (players.get(0).getY() > enemy.getY()) {
-                shadowRenderer.renderShadow(enemy);
+                shadowRenderer.renderShadow(batch,enemy);
                 enemy.render(batch);
             }
         }
         for (Item item : items) {
             if (players.get(0).getY() > item.getY()) {
-                shadowRenderer.renderShadow(item);
+                shadowRenderer.renderShadow(batch,item);
                 item.render(batch);
             }
         }
