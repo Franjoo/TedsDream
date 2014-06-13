@@ -25,21 +25,18 @@ public class SpawnController {
         objects.add(new SpawnObject(mapObject));
     }
 
-    public int getMaxEnemies() {
+    public int getMaxEnemies(){
         return maxEnemies;
     }
 
     public void update(float delta) {
-        if (map.getPlayers().size == 0) return;
+        if(map.getPlayers() == null) return;
 
         for (int i = 0; i < objects.size; i++) {
             SpawnObject o = objects.get(i);
-            for (int j = 0; j < map.getPlayers().size; j++) {
-
-                if (o.rectangle.x - o.distance <= map.getPlayers().get(j).getX()) {
-                    o.spawn();
-                    objects.removeIndex(i);
-                }
+            if (o.rectangle.x - o.distance <= map.getPlayers().get(0).getX()) {
+                o.spawn();
+                objects.removeIndex(i);
             }
         }
 
@@ -76,7 +73,7 @@ public class SpawnController {
 
             // path (boss)
             String path = name;
-            if (p.containsKey("path")) path = p.get("path").toString();
+            if(p.containsKey("path")) path = p.get("path").toString();
 
             // skin of enemy
             String skin = null;
@@ -85,8 +82,8 @@ public class SpawnController {
             // hp & ap
             float ap = 3;
             float hp = 100;
-            if (p.containsKey("ap")) ap = Float.parseFloat(p.get("ap").toString());
-            if (p.containsKey("hp")) hp = Float.parseFloat(p.get("hp").toString());
+            if(p.containsKey("ap")) ap =Float.parseFloat(p.get("ap").toString());
+            if(p.containsKey("hp")) hp =Float.parseFloat(p.get("hp").toString());
 
             freeEnemies = new Array();
             for (int i = 0; i < num; i++) {
@@ -99,7 +96,7 @@ public class SpawnController {
                     scale = scaleMin + ((float) (Math.random() * (scaleMax - scaleMin)));
                 }
 
-                Enemy enemy = new Enemy(name, "spine/" + path + "/", skin, scale, ap, hp);
+                Enemy enemy = new Enemy(name, "spine/" + path + "/", skin, scale,ap,hp);
 
                 float _x = (float) (rectangle.x + Math.random() * rectangle.getWidth());
                 float _y = (float) (rectangle.y + Math.random() * rectangle.getHeight());

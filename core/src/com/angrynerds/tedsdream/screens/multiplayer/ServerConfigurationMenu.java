@@ -2,6 +2,7 @@ package com.angrynerds.tedsdream.screens.multiplayer;
 
 import com.angrynerds.tedsdream.core.Controller;
 import com.angrynerds.tedsdream.net.GameServer;
+import com.angrynerds.tedsdream.screens.game._MPGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -49,7 +50,7 @@ public class ServerConfigurationMenu implements Screen {
 
     final private Controller game;
 
-    public ServerConfigurationMenu(Controller game) {
+    public ServerConfigurationMenu(final Controller game) {
         this.game = game;
 
         // back button
@@ -106,6 +107,8 @@ public class ServerConfigurationMenu implements Screen {
                     System.out.println("start pressed");
                     _this.game.server.start();
 
+                    if(game.MPGame == null)
+                        game.MPGame = new _MPGame(game);
 
                     _this.game.MPGame.connect(tf_ip.getText(), Integer.parseInt(tf_port.getText()));
 

@@ -1,6 +1,7 @@
 package com.angrynerds.tedsdream.ai.pathfinding;
 
 import com.angrynerds.tedsdream.gameobjects.map.Map;
+import com.angrynerds.tedsdream.renderer.CollisionHandler;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,7 @@ public class AStarPathFinder {
     private Node[][] nodes;
     private ArrayList closedList = new ArrayList();
     private SortedList openList = new SortedList();
+    private CollisionHandler collisionHandler;
 
 
     private AStarPathFinder(Map map, int maxSearchDistance,
@@ -33,6 +35,7 @@ public class AStarPathFinder {
         this.map = map;
         this.maxSearchDistance = maxSearchDistance;
         this.allowDiagMovement = allowDiagMovement;
+        this.collisionHandler = new CollisionHandler(map);
 
         nodes = new Node[map.getNumTilesX()][map.getNumTilesY()];
         // System.out.println(map.getMapWidth());
@@ -46,15 +49,9 @@ public class AStarPathFinder {
     }
 
     public Path findPath(int enemieType, int sx, int sy, int tx, int ty) {
-
-        // return null;
-
-
         path.flushPath();
 
-
-        if (map.isSolid(tx * map.getTileWidth(), ty * map.getTileHeight())) {
-
+        if (collisionHandler.isSolid(tx * map.getTileWidth(), ty * map.getTileHeight())) {
             return null;
 
         }
@@ -70,12 +67,9 @@ public class AStarPathFinder {
 
         nodes[tx][ty].parent = null;
 
-
         int currentDepth = 0;
 
-
         while (currentDepth <= maxSearchDistance && openList.getSize() != 0) {
-
             Node currentNode = getFirstInOpen();
             if (currentNode == nodes[tx][ty])
                 break;
@@ -87,7 +81,6 @@ public class AStarPathFinder {
                     if (!(x == 0 && y == 0)) {
                         int xp = x + currentNode.getX();
                         int yp = y + currentNode.getY();
-
 
                         if (isValidLocation(1, sx, sy, xp, yp)) {
 
@@ -104,22 +97,14 @@ public class AStarPathFinder {
                                 }
                             }
 
-
                             if (!inOpenList(neighbour) && !(inClosedList(neighbour))) {
                                 neighbour.setCost(nextStepCost);
                                 neighbour.setHeuristic(getHeuristicCost(1, xp, yp, tx, ty));
                                 currentDepth = Math.max(currentDepth, neighbour.setParent(currentNode));
                                 addToOpen(neighbour);
-
                             }
-
-
                         }
-
-
                     }
-
-
                 }
             }
 
@@ -145,14 +130,10 @@ public class AStarPathFinder {
         boolean invalid = ((x < 0) || (y < 0)) || (x >= map.getNumTilesX() || (y >= map.getNumTilesY()));
 
         if ((!invalid) && ((sx != x) || (sy != y))) {
-            invalid = map.isSolid(x * map.getTileWidth(), y * map.getTileHeight());
-
-
+            invalid = collisionHandler.isSolid(x * map.getTileWidth(), y * map.getTileHeight());
         }
 
         return !invalid;
-
-        //return true;
     }
 
 

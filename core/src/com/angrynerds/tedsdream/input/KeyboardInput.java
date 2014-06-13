@@ -41,7 +41,7 @@ public class KeyboardInput extends InputAdapter implements IGameInputController 
         else if (get_isB() && get_stickX() >= 0) return State.DASH_RIGHT;
         else if (get_isB() && get_stickX() < 0) return State.DASH_LEFT;
         // attack
-        else if (get_isB()) return State.ATTACK;
+        else if (get_isD()) return State.ATTACK;
         // run
         else if (get_stickX() != 0 || get_stickY() != 0) return State.RUN;
 
@@ -57,6 +57,10 @@ public class KeyboardInput extends InputAdapter implements IGameInputController 
     @Override
     public boolean get_isB() {
         return Gdx.input.isKeyPressed(Keys.S);
+    }
+
+    public boolean get_isD() {
+        return Gdx.input.isKeyPressed(Keys.D);
     }
 
     @Override

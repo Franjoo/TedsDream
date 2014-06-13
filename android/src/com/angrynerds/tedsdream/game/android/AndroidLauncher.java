@@ -2,7 +2,6 @@ package com.angrynerds.tedsdream.game.android;
 
 import android.os.Bundle;
 
-import com.angrynerds.tedsdream.core.Main;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 

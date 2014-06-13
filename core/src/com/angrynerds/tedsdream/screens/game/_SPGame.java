@@ -9,6 +9,7 @@ import com.angrynerds.tedsdream.screens.AbstractScreen;
 import com.angrynerds.tedsdream.ui.TimeDisplay;
 import com.angrynerds.tedsdream.util.C;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -41,7 +42,7 @@ public class _SPGame extends AbstractScreen {
         camera = new OrthographicCamera(C.VIEWPORT_WIDTH, C.VIEWPORT_HEIGHT);
 
         // world objects
-        map = new Map(camera);
+        map = new Map(camera, game.tiledMap);
         players = new Array<>();
         player = new Player(new KeyboardInput(),map);
 
