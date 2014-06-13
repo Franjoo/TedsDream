@@ -244,14 +244,14 @@ public class Player extends Creature {
     } }
 
     private void letPlayerDontRunOut() {
-        if (y >= map.getTileHeight() * 6)
-            y = map.getTileHeight() * 6;
+        if (y >= map.getProperties().tileHeight * 6)
+            y = map.getProperties().tileHeight * 6;
         if (y <= 0)
             y = 0;
         if (x <= 20)
             x = 20;
-        if (x >= map.getWidth() - 20)
-            x = map.getWidth() - 20;
+        if (x >= map.getProperties().mapWidth - 20)
+            x = map.getProperties().mapWidth - 20;
     }
 
     @Override
@@ -461,10 +461,10 @@ public class Player extends Creature {
 
     public void getMyCorners(float pX, float pY) {
         // calculate corner coordinates
-        int downY = (int) Math.floor(map.getHeight() - (pY) / map.getTileHeight());
-        int upY = (int) Math.floor(map.getHeight() - (pY + map.getHeight()) / map.getTileHeight());
-        int leftX = (int) Math.floor((pX) / map.getTileWidth());
-        int rightX = (int) Math.floor((pX + map.getWidth()) / map.getTileWidth());
+        int downY = (int) Math.floor(map.getProperties().mapHeight - (pY) / map.getProperties().tileHeight);
+        int upY = (int) Math.floor(map.getProperties().mapHeight - (pY + map.getProperties().mapHeight) / map.getProperties().tileHeight);
+        int leftX = (int) Math.floor((pX) / map.getProperties().tileWidth);
+        int rightX = (int) Math.floor((pX + map.getProperties().mapWidth) / map.getProperties().tileWidth);
 
         // check if the corner is a wall
         checkForWall(downY, upY, leftX, rightX);
@@ -490,22 +490,22 @@ public class Player extends Creature {
         if (vX < 0) {
             // botton left
             if (downleft && upleft) {
-                _x = ((int) (pX) / map.getTileWidth()) * map.getTileWidth();
+                _x = ((int) (pX) / map.getProperties().tileWidth) * map.getProperties().tileWidth;
             }
             // top left
             else if (collisionHandler.isSolid(qX, pY + height)) {
-                _x = ((int) (pX) / map.getTileWidth()) * map.getTileWidth();
+                _x = ((int) (pX) / map.getProperties().tileWidth) * map.getProperties().tileWidth;
             } else {
                 _x = qX;
             }
         } else if (vX > 0)
             // bottom right
             if (collisionHandler.isSolid(qX + width, pY)) {
-                _x = ((int) (qX) / map.getTileWidth()) * map.getTileWidth() - epsilon;
+                _x = ((int) (qX) / map.getProperties().tileWidth) * map.getProperties().tileWidth - epsilon;
             }
             // top right
             else if (collisionHandler.isSolid(qX + width, pY + height)) {
-                _x = ((int) (qX) / map.getTileWidth()) * map.getTileWidth() - epsilon;
+                _x = ((int) (qX) / map.getProperties().tileWidth) * map.getProperties().tileWidth - epsilon;
             } else {
                 _x = qX;
             }
@@ -514,22 +514,22 @@ public class Player extends Creature {
         if (vY < 0) {
             // bottom left
             if (collisionHandler.isSolid(pX, qY)) {
-                _y = ((int) (pY) / map.getTileHeight()) * map.getTileHeight();
+                _y = ((int) (pY) / map.getProperties().tileHeight) * map.getProperties().tileHeight;
             }
             // bottom right
             else if (collisionHandler.isSolid(pX + width, qY)) {
-                _y = ((int) (pY) / map.getTileHeight()) * map.getTileHeight();
+                _y = ((int) (pY) / map.getProperties().tileHeight) * map.getProperties().tileHeight;
             } else {
                 _y = qY;
             }
         } else if (vY > 0) {
             // top left
             if (collisionHandler.isSolid(pX, qY + height)) {
-                _y = ((int) (qY) / map.getTileHeight()) * map.getTileHeight() - epsilon;
+                _y = ((int) (qY) / map.getProperties().tileHeight) * map.getProperties().tileHeight - epsilon;
             }
             // top right
             else if (collisionHandler.isSolid(pX + width, qY + height)) {
-                _y = ((int) (qY) / map.getTileHeight()) * map.getTileHeight() - epsilon;
+                _y = ((int) (qY) / map.getProperties().tileHeight) * map.getProperties().tileHeight - epsilon;
             } else {
                 _y = qY;
             }
@@ -544,14 +544,14 @@ public class Player extends Creature {
         float qY = pY + vY;
 
        /* MAP COLLISION */
-        if (qX < map.borderWidth)
-            qX = map.borderWidth;
-        else if (qX + width > map.getWidth() - map.borderWidth)
-            qX =  map.getWidth() - map.borderWidth - width;
-        if (qY > map.getHeight() - map.borderWidth - 64)// map.getOffsetX() * map.getTileHeight())
-            qY = map.getHeight() - map.borderWidth - 64;//map.getOffsetX() * map.getTileHeight();
-        else if (qY < map.borderWidth + 64)
-            qY = map.borderWidth + 64;
+        if (qX < map.getProperties().borderWidth)
+            qX = map.getProperties().borderWidth;
+        else if (qX + width > map.getProperties().mapWidth - map.getProperties().borderWidth)
+            qX =  map.getProperties().mapWidth - map.getProperties().borderWidth - width;
+        if (qY > map.getProperties().mapHeight - map.getProperties().borderWidth - 64)// map.getOffsetX() * map.getProperties().tileHeight)
+            qY = map.getProperties().mapHeight - map.getProperties().borderWidth - 64;//map.getOffsetX() * map.getProperties().tileHeight;
+        else if (qY < map.getProperties().borderWidth + 64)
+            qY = map.getProperties().borderWidth + 64;
 
         vec2.set(qX, qY);
         return vec2;

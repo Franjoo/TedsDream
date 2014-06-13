@@ -2,9 +2,6 @@ package com.angrynerds.tedsdream.gameobjects;
 
 /**
  * User: Franjo
- * Date: 07.11.13
- * Time: 15:13
- * Project: GameDemo
  */
 public abstract class GameObject {
 

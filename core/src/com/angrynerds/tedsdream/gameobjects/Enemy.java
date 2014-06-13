@@ -115,13 +115,13 @@ public class Enemy extends Creature implements Disposable {
 
     public void renderPath(ShapeRenderer shapeRenderer) {
 
-        shapeRenderer.rect(x, y, map.getTileWidth(), map.getTileHeight());
+        shapeRenderer.rect(x, y, map.getProperties().tileWidth, map.getProperties().tileHeight);
         if (path != null) {
             for (int i = 0; i < path.getLength() - 1; i++) {
-                float x1 = path.getStep(i).getX() * map.getTileWidth();
-                float x2 = path.getStep(i + 1).getX() * map.getTileWidth();
-                float y1 = path.getStep(i).getY() * map.getTileHeight();
-                float y2 = path.getStep(i + 1).getY() * map.getTileHeight();
+                float x1 = path.getStep(i).getX() * map.getProperties().tileWidth;
+                float x2 = path.getStep(i + 1).getX() * map.getProperties().tileWidth;
+                float y1 = path.getStep(i).getY() * map.getProperties().tileHeight;
+                float y2 = path.getStep(i + 1).getY() * map.getProperties().tileHeight;
                 shapeRenderer.line(x1, y1, x2, y2);
             }
 
@@ -227,17 +227,17 @@ public class Enemy extends Creature implements Disposable {
     }
 
     public void updatePositions() {
-        xTilePosition = (int) Math.floor((x) / map.getTileWidth());
-        yTilePosition = (int) Math.floor((y) / map.getTileHeight());
-        xTilePlayer = (int) Math.floor((player.x) / map.getTileWidth());
-        yTilePlayer = (int) Math.floor((player.y) / map.getTileHeight());
+        xTilePosition = (int) Math.floor((x) / map.getProperties().tileWidth);
+        yTilePosition = (int) Math.floor((y) / map.getProperties().tileHeight);
+        xTilePlayer = (int) Math.floor((player.x) / map.getProperties().tileWidth);
+        yTilePlayer = (int) Math.floor((player.y) / map.getProperties().tileHeight);
     }
 
 
     public Path getNewPath() {
         oldPath = path;
 
-        if (xTilePlayer + ranY < map.getNumTilesX() && xTilePlayer >= 0 && yTilePlayer + ranY < map.getNumTilesY() && yTilePlayer >= 0) {
+        if (xTilePlayer + ranY < map.getProperties().numTilesX && xTilePlayer >= 0 && yTilePlayer + ranY <map.getProperties().numTilesY && yTilePlayer >= 0) {
             if (pathFinder.findPath(1, xTilePosition, yTilePosition, xTilePlayer + ranX, yTilePlayer + ranY) != null)
                 return pathFinder.findPath(1, xTilePosition, yTilePosition, xTilePlayer + ranX, yTilePlayer + ranY);
         }
@@ -258,8 +258,8 @@ public class Enemy extends Creature implements Disposable {
         skeleton.setFlipX((player.x - x >= 0));
 
         if (path != null && nextStepInPath < path.getLength()) {
-            nextStep = new Vector2((float) path.getStep(nextStepInPath).getX() * map.getTileWidth(), (float) path.getStep(nextStepInPath).getY() * map.getTileHeight());
-            angle = (float) Math.atan2(path.getStep(nextStepInPath).getY() * map.getTileHeight() - y, path.getStep(nextStepInPath).getX() * map.getTileWidth() - x);
+            nextStep = new Vector2((float) path.getStep(nextStepInPath).getX() * map.getProperties().tileWidth, (float) path.getStep(nextStepInPath).getY() * map.getProperties().tileHeight);
+            angle = (float) Math.atan2(path.getStep(nextStepInPath).getY() * map.getProperties().tileHeight - y, path.getStep(nextStepInPath).getX() * map.getProperties().tileWidth - x);
             velocity.set((float) Math.cos(angle) * speed, (float) Math.sin(angle) * speed);
             if ((int) x != (int) nextStep.x) {
                 x = x + velocity.x * deltatime;
@@ -271,8 +271,8 @@ public class Enemy extends Creature implements Disposable {
     }
 
     private boolean isReached(int i) {
-        return Math.abs(path.getStep(i).getX() * map.getTileWidth() - getX()) <= speed / tolerance * Gdx.graphics.getDeltaTime() &&
-                Math.abs(path.getStep(i).getY() * map.getTileHeight() - getY()) <= speed / tolerance * Gdx.graphics.getDeltaTime();
+        return Math.abs(path.getStep(i).getX() * map.getProperties().tileWidth - getX()) <= speed / tolerance * Gdx.graphics.getDeltaTime() &&
+                Math.abs(path.getStep(i).getY() * map.getProperties().tileHeight - getY()) <= speed / tolerance * Gdx.graphics.getDeltaTime();
     }
 
     @Override

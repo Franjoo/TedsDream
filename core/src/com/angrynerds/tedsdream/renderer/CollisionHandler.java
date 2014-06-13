@@ -86,7 +86,7 @@ public class CollisionHandler {
                         float qW = Float.parseFloat(object.get("width"));
                         float qH = Float.parseFloat(object.get("height"));
 
-                        co.add(new Rectangle(qX, map.getHeight() - qY - qH, qW, qH));
+                        co.add(new Rectangle(qX, map.getProperties().mapHeight - qY - qH, qW, qH));
                     }
                 }
             }
@@ -161,7 +161,7 @@ public class CollisionHandler {
                     int qH = Integer.parseInt(object.get("height"));
                     String qT = object.get("type");
 
-                    TmxMapObject tmxMapObject = new TmxMapObject(atlas.findRegion(qT), qX, (int) map.getHeight() - qH - qY, qW, qH);
+                    TmxMapObject tmxMapObject = new TmxMapObject(atlas.findRegion(qT), qX, (int) map.getProperties().mapHeight - qH - qY, qW, qH);
                     tmxMapObjects.add(tmxMapObject);
                 }
 
@@ -229,7 +229,7 @@ public class CollisionHandler {
     public boolean isSolid(final float x, final float y) {
 
         for (int i = 0; i < collisionTileLayers.size; i++) {
-            TiledMapTileLayer.Cell cell = collisionTileLayers.get(i).getCell((int) (x) / map.getTileWidth(), (int) (y) / map.getTileHeight());
+            TiledMapTileLayer.Cell cell = collisionTileLayers.get(i).getCell((int) (x) / map.getProperties().tileWidth, (int) (y) / map.getProperties().tileHeight);
             if (cell != null) {
                 return true;
             }

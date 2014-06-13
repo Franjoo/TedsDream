@@ -56,8 +56,8 @@ public class SpawnController {
             // position and dimension of spawn rectangle
             float x = Float.parseFloat(p.get("x").toString());
             float y = Float.parseFloat(p.get("y").toString());
-            float w = Float.parseFloat(p.get("width").toString()) * map.getTileWidth();
-            float h = Float.parseFloat(p.get("height").toString()) * map.getTileHeight();
+            float w = Float.parseFloat(p.get("width").toString()) * map.getProperties().tileWidth;
+            float h = Float.parseFloat(p.get("height").toString()) * map.getProperties().tileHeight;
             rectangle = new Rectangle(x, y, w, h);
 
             // distance (spawn enemy when distance from player to rectangle <= distance)

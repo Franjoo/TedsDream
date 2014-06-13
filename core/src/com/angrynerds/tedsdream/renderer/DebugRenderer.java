@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -31,8 +30,8 @@ public class DebugRenderer {
 
     public DebugRenderer(Map map, CollisionHandler collisionHandler){
         this.map = map;
-        this.mapWidth = (int) map.getWidth();
-        this.mapHeight = (int) map.getHeight();
+        this.mapWidth = (int) map.getProperties().mapWidth;
+        this.mapHeight = (int) map.getProperties().mapHeight;
         this.collisionHandler = collisionHandler;
         init();
     }
@@ -53,7 +52,7 @@ public class DebugRenderer {
         pixmap.setColor(0, 0, 0, 1);
         for (int h = 0; h < mapHeight; h++) {
             for (int w = 0; w < mapWidth; w++) {
-                pixmap.drawRectangle(w * map.getTileHeight(), h * map.getTileHeight(), map.getTileWidth(), map.getTileHeight());
+                pixmap.drawRectangle(w * map.getProperties().tileHeight, h * map.getProperties().tileHeight, map.getProperties().tileWidth, map.getProperties().tileHeight);
             }
         }
         gridTexture = new Texture(pixmap);
@@ -71,12 +70,12 @@ public class DebugRenderer {
 
     private void drawCollisionTiles(Pixmap pixmap, Color color_outline, Color color_fill) {
         for (int j = 0; j < collisionHandler.getCollisionTileLayers().size; j++) {
-            for (int h = 0; h < map.getNumTilesY(); h++) {
-                for (int w = 0; w < map.getNumTilesX() / 100; w++) {
+            for (int h = 0; h < map.getProperties().numTilesY; h++) {
+                for (int w = 0; w < map.getProperties().numTilesX / 100; w++) {
                     TiledMapTileLayer layer = (collisionHandler.getCollisionTileLayers().get(j));
                     TiledMapTileLayer.Cell cell = layer.getCell(w, h);
                     if (cell != null) {
-                        Rectangle rectangle = flipY(new Rectangle(w * map.getTileWidth(), h * map.getTileHeight(), map.getTileWidth(), map.getTileHeight()));
+                        Rectangle rectangle = flipY(new Rectangle(w * map.getProperties().tileWidth, h * map.getProperties().tileHeight, map.getProperties().tileWidth, map.getProperties().tileHeight));
                         drawRectangleOnPixmap(pixmap, color_outline, color_fill, rectangle);
                     }
                 }

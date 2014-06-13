@@ -37,10 +37,10 @@ public class AStarPathFinder {
         this.allowDiagMovement = allowDiagMovement;
         this.collisionHandler = new CollisionHandler(map);
 
-        nodes = new Node[map.getNumTilesX()][map.getNumTilesY()];
+        nodes = new Node[map.getProperties().numTilesX][map.getProperties().numTilesY];
         // System.out.println(map.getMapWidth());
-        for (int x = 0; x < map.getNumTilesX(); x++) {
-            for (int y = 0; y < map.getNumTilesY(); y++) {
+        for (int x = 0; x < map.getProperties().numTilesX; x++) {
+            for (int y = 0; y < map.getProperties().numTilesY; y++) {
                 nodes[x][y] = new Node(x, y);
             }
         }
@@ -51,7 +51,7 @@ public class AStarPathFinder {
     public Path findPath(int enemieType, int sx, int sy, int tx, int ty) {
         path.flushPath();
 
-        if (collisionHandler.isSolid(tx * map.getTileWidth(), ty * map.getTileHeight())) {
+        if (collisionHandler.isSolid(tx * map.getProperties().tileWidth, ty * map.getProperties().tileHeight)) {
             return null;
 
         }
@@ -127,10 +127,10 @@ public class AStarPathFinder {
 
 
     protected boolean isValidLocation(int mover, int sx, int sy, int x, int y) {
-        boolean invalid = ((x < 0) || (y < 0)) || (x >= map.getNumTilesX() || (y >= map.getNumTilesY()));
+        boolean invalid = ((x < 0) || (y < 0)) || (x >= map.getProperties().numTilesX || (y >= map.getProperties().numTilesY));
 
         if ((!invalid) && ((sx != x) || (sy != y))) {
-            invalid = collisionHandler.isSolid(x * map.getTileWidth(), y * map.getTileHeight());
+            invalid = collisionHandler.isSolid(x * map.getProperties().tileWidth, y * map.getProperties().tileHeight);
         }
 
         return !invalid;
