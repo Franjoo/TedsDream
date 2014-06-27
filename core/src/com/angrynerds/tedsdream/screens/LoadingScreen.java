@@ -21,16 +21,12 @@ public class LoadingScreen extends AbstractScreen {
 
     private Stage stage;
 
-    private Image logo;
     private Image loadingFrame;
-    private Image loadingBarHidden;
     private Image screenBg;
     private Image loadingBg;
-
-    private float startX, endX;
-    private float percent;
-
     private Actor loadingBar;
+
+    private float percent;
 
     private Controller game;
 
@@ -44,38 +40,29 @@ public class LoadingScreen extends AbstractScreen {
     public void show() {
         // Tell the manager to load assets for the loading screen
         manager = new AssetManager();
-        manager.load("ui/loading.pack", TextureAtlas.class);
+        manager.load("ui/loading_screen/loadingscreen.pack", TextureAtlas.class);
+
         // Wait until they are finished loading
         manager.finishLoading();
 
-        // Initialize the stage where we will place everything
         stage = new Stage();
 
         // Get our textureatlas from the manager
-        TextureAtlas atlas = manager.get("ui/loading.pack", TextureAtlas.class);
+        TextureAtlas atlas = manager.get("ui/loading_screen/loadingscreen.pack", TextureAtlas.class);
 
-        // Grab the regions from the atlas and create some images
-        logo = new Image(atlas.findRegion("libgdx-logo"));
-        loadingFrame = new Image(atlas.findRegion("loading-frame"));
-        loadingBarHidden = new Image(atlas.findRegion("loading-bar-hidden"));
-        screenBg = new Image(atlas.findRegion("screen-bg"));
-        loadingBg = new Image(atlas.findRegion("loading-frame-bg"));
+        loadingFrame = new Image(atlas.findRegion("loading_frame"));
+        screenBg = new Image(atlas.findRegion("screen_background"));
+        loadingBg = new Image(atlas.findRegion("loading_background"));
+        loadingBar = new Image(atlas.findRegion("loading_bar"));
 
-        // Or if you only need a static bar, you can do
-        loadingBar = new Image(atlas.findRegion("loading-bar1"));
-
-        // Add all the actors to the stage
         stage.addActor(screenBg);
-        stage.addActor(loadingBar);
         stage.addActor(loadingBg);
-        stage.addActor(loadingBarHidden);
         stage.addActor(loadingFrame);
-        stage.addActor(logo);
+        stage.addActor(loadingBar);
 
         // Add everything to be loaded, for instance:
         manager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
         manager.load(Map.mapPath, TiledMap.class);
-        // game.manager.load("data/assets1.pack", TextureAtlas.class);
     }
 
     @Override
@@ -83,34 +70,25 @@ public class LoadingScreen extends AbstractScreen {
         // Set our screen to always be XXX x 480 in size
         width = 480 * width / height;
         height = 480;
-//        stage.setViewport(width , height, false);
 
-        // Make the background fill the screen
-        screenBg.setSize(width, height);
+        float scalingFactor = height / screenBg.getHeight();
+        screenBg.setSize(screenBg.getWidth() * scalingFactor, screenBg.getHeight() * scalingFactor);
+        screenBg.setX((width - screenBg.getWidth()) / 2);
+        screenBg.setY((height - screenBg.getHeight()) / 2);
 
-        // Place the logo in the middle of the screen and 100 px up
-        logo.setX((width - logo.getWidth()) / 2);
-        logo.setY((height - logo.getHeight()) / 2 + 100);
+        scalingFactor = height / loadingBg.getHeight();
+        loadingBg.setSize(loadingBg.getWidth() * scalingFactor, loadingBg.getHeight() * scalingFactor);
 
-        // Place the loading frame in the middle of the screen
+        scalingFactor =  (loadingBg.getWidth() / loadingFrame.getWidth()) / 1.7f;
+        loadingFrame.setSize(loadingFrame.getWidth() * scalingFactor, loadingFrame.getHeight() * scalingFactor);
         loadingFrame.setX((stage.getWidth() - loadingFrame.getWidth()) / 2);
         loadingFrame.setY((stage.getHeight() - loadingFrame.getHeight()) / 2);
 
-        // Place the loading bar at the same spot as the frame, adjusted a few px
+        loadingBar.setSize(loadingBar.getWidth() * scalingFactor, loadingBar.getHeight() * scalingFactor);
         loadingBar.setX(loadingFrame.getX() + 15);
-        loadingBar.setY(loadingFrame.getY() + 5);
+        loadingBar.setY(loadingFrame.getY() + 35);
 
-        // Place the image that will hide the bar on top of the bar, adjusted a few px
-        loadingBarHidden.setX(loadingBar.getX() + 35);
-        loadingBarHidden.setY(loadingBar.getY() - 3);
-        // The start position and how far to move the hidden loading bar
-        startX = loadingBarHidden.getX();
-        endX = 440;
-
-        // The rest of the hidden bar
-        loadingBg.setSize(450, 50);
-        loadingBg.setX(loadingBarHidden.getX() + 30);
-        loadingBg.setY(loadingBarHidden.getY() + 3);
+        loadingBg.setX(loadingFrame.getX() - (loadingBg.getWidth() - loadingFrame.getWidth()) / 2);
     }
 
     @Override
@@ -133,11 +111,7 @@ public class LoadingScreen extends AbstractScreen {
         // Interpolate the percentage to make it more smooth
         percent = Interpolation.linear.apply(percent, manager.getProgress(), 0.1f);
 
-        // Update positions (and size) to match the percentage
-        loadingBarHidden.setX(startX + endX * percent);
-        loadingBg.setX(loadingBarHidden.getX() + 30);
-        loadingBg.setWidth(450 - 450 * percent);
-        loadingBg.invalidate();
+        loadingBar.setWidth((loadingFrame.getWidth() - 30) * percent);
 
         // Show the loading screen
         stage.act();
