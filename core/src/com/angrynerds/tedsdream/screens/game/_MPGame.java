@@ -5,10 +5,13 @@ import com.angrynerds.tedsdream.core.Controller;
 import com.angrynerds.tedsdream.gameobjects.Player;
 import com.angrynerds.tedsdream.gameobjects.PlayerRemote;
 import com.angrynerds.tedsdream.gameobjects.map.Map;
+import com.angrynerds.tedsdream.gameobjects.map.EnemyInitialization;
 import com.angrynerds.tedsdream.input.KeyboardInput;
 import com.angrynerds.tedsdream.input.RemoteInput;
+import com.angrynerds.tedsdream.ui.ControllerUI;
 import com.angrynerds.tedsdream.ui.TimeDisplay;
 import com.angrynerds.tedsdream.util.C;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.Screen;
@@ -17,6 +20,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.net.SocketHints;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.Json;
 
 import java.io.*;
 import java.util.HashMap;
@@ -27,6 +31,7 @@ import java.util.function.BiConsumer;
  */
 public class _MPGame implements Screen {
 
+    private EnemyInitialization enemyInitialization;
     // TimeDisplay
     private TimeDisplay timer;
 
@@ -47,9 +52,13 @@ public class _MPGame implements Screen {
     private String clientNames = "";
 
     private final Controller game;
+    private final boolean isServer;
 
-    public _MPGame(Controller game) {
+    private ControllerUI ui;
+
+    public _MPGame(Controller game, boolean isServer) {
         this.game = game;
+        this.isServer = isServer;
 
         client = new GameClient(this);
 
@@ -57,10 +66,23 @@ public class _MPGame implements Screen {
         timer = new TimeDisplay();
         camera = new OrthographicCamera(C.VIEWPORT_WIDTH, C.VIEWPORT_HEIGHT);
 
-        // world objects
         map = new Map(camera, game.tiledMap);
+
+        // world objects
+        if (isServer) {
+            enemyInitialization = new EnemyInitialization(game.tiledMap);
+            map.initEnemies(enemyInitialization);
+        }
+
         players = new HashMap<>();
-        player = new Player(new KeyboardInput(), map);
+
+        ui = new ControllerUI();
+        if (Gdx.app.getType() == Application.ApplicationType.Android) {
+            player = new Player(ui.getListener(), map);
+
+        } else {
+            player = new Player(new KeyboardInput(), map);
+        }
 
         map.addPlayer(player);
 
@@ -74,6 +96,11 @@ public class _MPGame implements Screen {
     public void update(float delta) {
 
         timer.update(delta);
+
+        if (Gdx.app.getType() == Application.ApplicationType.Android) {
+            ui.update(delta);
+
+        }
 
         player.update(delta);
         for (int i = 0; i <= players.size(); i++) {
@@ -112,6 +139,12 @@ public class _MPGame implements Screen {
 
         timer.render(batch);
         map.render(batch);
+
+
+        if (Gdx.app.getType() == Application.ApplicationType.Android) {
+            ui.render(delta);
+        }
+
     }
 
     HashMap<Integer, PlayerRemote> getPlayers() {
@@ -186,7 +219,7 @@ public class _MPGame implements Screen {
 
     /**
      * class GameClient
-     * <p/>
+     * <p>
      * is responsible for server communication,
      * provides some methods to send game relevant data to server
      */
@@ -215,7 +248,7 @@ public class _MPGame implements Screen {
                 e.printStackTrace();
             }
 
-            new Thread(this).start();
+          //  new Thread(this).start();
         }
 
 
@@ -228,12 +261,34 @@ public class _MPGame implements Screen {
 
                     Event event = (Event) ois.readObject();
 
-                    if (event instanceof GameEvent)
-                        ((GameEvent) event).apply(game);
+                    if (event instanceof AssignIDEvent) ((AssignIDEvent) event).apply(player);
+                    else if (event instanceof AddPlayerEvent) {
+                        ((AddPlayerEvent) event).apply(game);
+//                        if (isServer) {
+//                            try {
+//                              //  client.write(new EnemyInitializationEvent(enemyInitialization.getSerializationString()));
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
 
-                    else if (event instanceof PlayerEvent)
-                        ((PlayerEvent) event).apply(player);
+                    }
+                    else if (event instanceof UpdatePlayerEvent) ((UpdatePlayerEvent) event).apply(game);
 
+
+//                    if (event instanceof GameEvent)
+//                        ((GameEvent) event).apply(game);
+//
+//                    else if (event instanceof PlayerEvent)
+//                        ((PlayerEvent) event).apply(player);
+
+                    else if (event instanceof EnemyInitializationEvent) {
+                        Json json = new Json();
+                        EnemyInitialization s = json.fromJson(EnemyInitialization.class, ((EnemyInitializationEvent) event).getSerialization());
+                        game.map.initEnemies(s);
+
+                        System.out.println("INIT RECEIVED!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    }
 
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();

@@ -82,7 +82,7 @@ public class ServerConfigurationMenu implements Screen {
 
         // textfields
         tf_ip = new TextField(ip, skin);
-        tf_port = new TextField(""+GameServer.PORT, skin);
+        tf_port = new TextField("" + GameServer.PORT, skin);
 
         tf_ip.setSize(Gdx.graphics.getWidth() / 4, 40);
         tf_port.setSize(Gdx.graphics.getWidth() / 4, 40);
@@ -107,8 +107,8 @@ public class ServerConfigurationMenu implements Screen {
                     System.out.println("start pressed");
                     _this.game.server.start();
 
-                    if(game.MPGame == null)
-                        game.MPGame = new _MPGame(game);
+
+                    game.MPGame = new _MPGame(game,true);
 
                     _this.game.MPGame.connect(tf_ip.getText(), Integer.parseInt(tf_port.getText()));
 

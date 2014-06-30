@@ -42,14 +42,14 @@ public class Controller extends Game {
 //        playScreen = new _SPGame(this);
 
         // create multiplayer screens
-        multiplayer_choose = new MultiplayerChooseMenu(this);
-        multiplayer_configuration = new ServerConfigurationMenu(this);
-        multiplayer_connect = new ServerConnectMenu(this);
-        multiplayer_lobby = new ServerLobby(this);
+//        multiplayer_choose = new MultiplayerChooseMenu(this);
+//        multiplayer_configuration = new ServerConfigurationMenu(this);
+//        multiplayer_connect = new ServerConnectMenu(this);
+//        multiplayer_lobby = new ServerLobby(this);
 //        MPGame = new _MPGame(this);
 
         // create server
-        server = new GameServer();
+//        server = new GameServer();
 
         // set splash screen on game start
     }

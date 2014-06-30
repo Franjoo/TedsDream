@@ -14,7 +14,7 @@ import com.badlogic.gdx.graphics.GL20;
 public class Main implements ApplicationListener {
 
     // ENABLE LOGGING
-    private static final boolean FPS_LOGGING = false;
+    private static final boolean FPS_LOGGING = true;
 
     private Controller controller;
     private FPSLogger fpsLogger;
@@ -26,12 +26,6 @@ public class Main implements ApplicationListener {
         controller = new Controller();
         fpsLogger = new FPSLogger();
 
-//        Gdx.app.postRunnable(new Runnable() {
-//            @Override
-//            public void run() {
-//                resize(400,240);
-//            }
-//        });
     }
 
     @Override

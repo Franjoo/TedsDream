@@ -93,7 +93,7 @@ public class ServerConnectMenu implements Screen {
                     System.out.println("connect pressed");
 
                     // connect to server
-                    game.MPGame = new _MPGame(game);
+                    game.MPGame = new _MPGame(game, false);
                     game.MPGame.connect(tf_ip.getText(),Integer.parseInt(tf_port.getText()));
 
                     // show _this

@@ -160,7 +160,7 @@
     <property name="width" value="10"/>
    </properties>
   </object>
-  <object type="spawn" x="2505" y="310" width="478" height="180">
+  <object type="spawn" x="2512" y="352" width="478" height="180">
    <properties>
     <property name="ap" value="5"/>
     <property name="dist" value="400"/>
@@ -241,7 +241,7 @@
     <property name="width" value="10"/>
    </properties>
   </object>
-  <object type="spawn" x="5665" y="246" width="478" height="180">
+  <object type="spawn" x="5664" y="288" width="478" height="180">
    <properties>
     <property name="ap" value="8"/>
     <property name="dist" value="400"/>

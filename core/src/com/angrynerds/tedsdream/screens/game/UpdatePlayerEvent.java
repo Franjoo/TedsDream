@@ -22,6 +22,8 @@ public class UpdatePlayerEvent implements GameEvent {
 
     @Override
     public void apply(_MPGame game) {
+        System.out.println("UPDATE");
+
         Player player = game.getPlayers().get(id).getPlayer();
 
         player.setPosition(x, y);

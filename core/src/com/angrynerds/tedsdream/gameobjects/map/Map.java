@@ -3,9 +3,7 @@ package com.angrynerds.tedsdream.gameobjects.map;
 import com.angrynerds.tedsdream.ai.pathfinding.AStarPathFinder;
 import com.angrynerds.tedsdream.ai.pathfinding.ClosestHeuristic;
 import com.angrynerds.tedsdream.Layer;
-import com.angrynerds.tedsdream.collision.Detector;
 import com.angrynerds.tedsdream.gameobjects.Enemy;
-import com.angrynerds.tedsdream.gameobjects.GameObject;
 import com.angrynerds.tedsdream.gameobjects.Player;
 import com.angrynerds.tedsdream.gameobjects.items.Item;
 import com.angrynerds.tedsdream.renderer.ShadowRenderer;
@@ -21,13 +19,11 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-
-import java.util.HashMap;
+import com.badlogic.gdx.utils.Json;
 
 /**
  * represents the Map in which the game is taking place.
@@ -39,7 +35,10 @@ public class Map {
 
     // map instance
     private static Map instance;
+    private EnemyInitialization enemyInitialization;
     private Properties properties;
+
+
 
     private static enum Flip {HORIZONTAL, VERTICAL, BOTH}
 
@@ -80,22 +79,48 @@ public class Map {
 
         this.camera = camera;
         this.tiledMap = tiledMap;
-        SpriteBatch batch = new SpriteBatch();
+        instance = this;
 
         properties = new Properties();
 
 
-        init();
+        renderer = new OrthogonalTiledMapRenderer(tiledMap);
+        renderer.setView(camera);
+
+        dreamOver = new Texture("ui/ingame/dreamover.png");
+
+        // fixed camera & renderer
+        fixedCamera = new OrthographicCamera(C.VIEWPORT_WIDTH, C.VIEWPORT_HEIGHT);
+        fixedRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        fixedRenderer.setView(fixedCamera);
+
+        // fill collision relevant lists
+        createMapLayers();
+
+        setRenderLayers();
+
+        // set player relevant attributes
+        spawn = findSpawn();
+
+        // sound
+        sound_background = Gdx.audio.newSound(Gdx.files.internal("sounds/ingame/game_background.mp3"));
+        sound_background.loop();
 
 
-        instance = this;
+
 
         AStarPathFinder.initialize(this, 200, true, new ClosestHeuristic());
 
-        spawnController = new SpawnController(this);
         this.shadowRenderer = new ShadowRenderer(camera);
 
-        createEnemies();
+
+//        spawnController = new SpawnController(this);
+//        createEnemies();
+    }
+
+    public void getJSON() {
+        Json json = new Json();
+        System.out.println(json.prettyPrint(this));
     }
 
     public void addPlayer(Player player) {
@@ -135,32 +160,6 @@ public class Map {
         return instance;
     }
 
-    /**
-     * initializes the map
-     */
-    private void init() {
-        renderer = new OrthogonalTiledMapRenderer(tiledMap);
-        renderer.setView(camera);
-
-        dreamOver = new Texture("ui/ingame/dreamover.png");
-
-        // fixed camera & renderer
-        fixedCamera = new OrthographicCamera(C.VIEWPORT_WIDTH, C.VIEWPORT_HEIGHT);
-        fixedRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        fixedRenderer.setView(fixedCamera);
-
-        // fill collision relevant lists
-        createMapLayers();
-
-        setRenderLayers();
-
-        // set player relevant attributes
-        spawn = findSpawn();
-
-        // sound
-        sound_background = Gdx.audio.newSound(Gdx.files.internal("sounds/ingame/game_background.mp3"));
-        sound_background.loop();
-    }
 
     private void createMapLayers() {
         for (int i = 0; i < tiledMap.getLayers().getCount(); i++) {
@@ -246,38 +245,50 @@ public class Map {
 //        }
     }
 
+    public void initEnemies(EnemyInitialization enemyInitialization) {
+        // fill enemy list
+        for (int i = 0; i < enemyInitialization.spawnArray.size; i++) {
+            EnemyInitialization.Spawn s = enemyInitialization.spawnArray.get(i);
+            Enemy e = new Enemy(s.name, s.path, s.skin, s.scale, s.ap, s.hp);
+            e.init(s.x,s.y);
+            enemies.add(e);
+        }
+    }
+
     private void renderGameObjects(SpriteBatch batch) {
+
+
         // enemies in background
         for (Enemy enemy : enemies) {
-            if (players.get(0).getY() <= enemy.getY()) {
-                shadowRenderer.renderShadow(batch,enemy);
+            if (players.get(0).getY() <= enemy.getY() && Math.abs(players.get(0).getX() - enemy.getX()) < 500) {
+                shadowRenderer.renderShadow(batch, enemy);
                 enemy.render(batch);
             }
         }
 
         for (Item item : items) {
             if (players.get(0).getY() <= item.getY()) {
-                shadowRenderer.renderShadow(batch,item);
+                shadowRenderer.renderShadow(batch, item);
                 item.render(batch);
             }
         }
         for (Player player : players) {
-            shadowRenderer.renderShadow(batch,player);
+            shadowRenderer.renderShadow(batch, player);
             player.render(batch);
         }
         // enemies in foreground
-        for (Enemy enemy : enemies) {
-            if (players.get(0).getY() > enemy.getY()) {
-                shadowRenderer.renderShadow(batch,enemy);
-                enemy.render(batch);
-            }
-        }
-        for (Item item : items) {
-            if (players.get(0).getY() > item.getY()) {
-                shadowRenderer.renderShadow(batch,item);
-                item.render(batch);
-            }
-        }
+//        for (Enemy enemy : enemies) {
+//            if (players.get(0).getY() > enemy.getY()) {
+//                shadowRenderer.renderShadow(batch, enemy);
+//                enemy.render(batch);
+//            }
+//        }
+//        for (Item item : items) {
+//            if (players.get(0).getY() > item.getY()) {
+//                shadowRenderer.renderShadow(batch, item);
+//                item.render(batch);
+//            }
+//        }
     }
 
     private void renderLayers(Array<Layer> layers) {
@@ -309,20 +320,21 @@ public class Map {
      * @param deltaTime time since last frame
      */
     public void update(float deltaTime) {
+
         // update layers
         for (Layer backgroundLayer : layers_background) backgroundLayer.update(deltaTime);
         for (Layer ForegroundLayer : layers_foreground) ForegroundLayer.update(deltaTime);
 
-        for (Player player : players) {
-            player.update(deltaTime);
-        }
+//        for (Player player : players) {
+//            player.update(deltaTime);
+//        }
 
         for (Item item : items) if (item != null) item.update(deltaTime);
 
-        spawnController.update(deltaTime);
+//         spawnController.update(deltaTime);
 
         for (Enemy enemy : enemies) {
-            enemy.update(deltaTime);
+            //enemy.update(deltaTime);
         }
 
         renderer.setView(camera);
@@ -467,14 +479,6 @@ public class Map {
         return players;
     }
 
-    public int getMaxEnemies() {
-        return spawnController.getMaxEnemies();
-    }
-
-    public int getDeadEnemies() {
-        return deadEnemies;
-    }
-
     public TextureAtlas getAtlas() {
         return atlas;
     }
@@ -488,7 +492,7 @@ public class Map {
         deadEnemies++;
     }
 
-    public Properties getProperties(){
+    public Properties getProperties() {
         return properties;
     }
 

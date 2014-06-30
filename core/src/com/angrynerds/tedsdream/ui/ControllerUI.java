@@ -167,6 +167,7 @@ public class ControllerUI {
 
     public void update(float delta) {
         stage.act(delta);
+        manager.update(delta);
     }
 
     // public void render() {
@@ -211,7 +212,6 @@ public class ControllerUI {
     }
 
     public void render(float delta) {
-            manager.update(delta);
             stage.draw();
 //        Tween.to(lifeBar, -1 , 1.0f)
 //        .target(-1, -1)

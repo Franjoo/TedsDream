@@ -166,9 +166,11 @@ public class Enemy extends Creature implements Disposable {
 
             updatePositions();
             bloodParticle.update(deltatime);
+
             // find new path
-            if (getNewPath() != null)
-                path = getNewPath();
+            Path p = getNewPath();
+            if(p != null) path = p;
+
 
             if (alive) {
                 // update pathfinding attributes

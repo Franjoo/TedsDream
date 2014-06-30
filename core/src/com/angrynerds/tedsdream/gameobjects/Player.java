@@ -98,7 +98,7 @@ public class Player extends Creature {
 
         x = 500;
 //        y = 150;
-        z = 150;
+        y = 150;
         actHP = maxHP;
         width = 32;
         height = 32;
