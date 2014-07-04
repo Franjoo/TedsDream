@@ -13,10 +13,12 @@ public class Step {
 
     private int x;
     private int y;
+    private int z;
 
-    public Step(int x, int y) {
+    public Step(int x, int z) {
         this.x = x;
-        this.y = y;
+        this.y = 0;
+        this.z = z;
     }
     public int getX() {
         return x;
@@ -32,5 +34,13 @@ public class Step {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public int getZ() {
+        return z;
+    }
+
+    public void setZ(int z) {
+        this.z = z;
     }
 }

@@ -226,11 +226,12 @@ public class CollisionHandler {
      * @param y position y
      * @return whether point collides with solid tile or not
      */
-    public boolean isSolid(final float x, final float y) {
+    public boolean isSolid(final float x, final float z) {
 
         for (int i = 0; i < collisionTileLayers.size; i++) {
-            TiledMapTileLayer.Cell cell = collisionTileLayers.get(i).getCell((int) (x) / map.getProperties().tileWidth, (int) (y) / map.getProperties().tileHeight);
+            TiledMapTileLayer.Cell cell = collisionTileLayers.get(i).getCell((int) (x) / map.getProperties().tileWidth, (int) (z) / map.getProperties().tileHeight);
             if (cell != null) {
+                System.out.println("Colliding");
                 return true;
             }
         }

@@ -13,6 +13,8 @@ public class Node implements Comparable {
     /** The y coordinate of the node */
     private int y;
 
+    private int z;
+
 
 
     /** The path cost for this node */
@@ -37,9 +39,10 @@ public class Node implements Comparable {
      * @param x The x coordinate of the node
      * @param y The y coordinate of the node
      */
-    public Node(int x, int y) {
+    public Node(int x, int z) {
         this.x = x;
-        this.y = y;
+        this.y = 0;
+        this.z = z;
     }
     public float getCost() {
         return cost;
@@ -71,6 +74,14 @@ public class Node implements Comparable {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public int getZ() {
+        return z;
+    }
+
+    public void setZ(int z) {
+        this.z = z;
     }
 
     public float getHeuristic() {

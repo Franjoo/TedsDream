@@ -15,6 +15,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObjects;
@@ -322,6 +323,7 @@ public class Map {
         spawnController.update(deltaTime);
 
         for (Enemy enemy : enemies) {
+
             enemy.update(deltaTime);
         }
 
@@ -430,8 +432,8 @@ public class Map {
                         if (layer.getCell(k, j) != null && layer.getCell(k, j).getTile().getProperties().containsKey("spawn")) {
                             System.out.println("SPAWN FOUND");
                             float qX = k * properties.tileWidth;
-                            float qY = j * properties.tileHeight;
-                            return new Vector2(qX, qY);
+                            float qZ = j * properties.tileHeight;
+                            return new Vector2(qX, qZ);
                         }
                     }
                 }
@@ -445,9 +447,9 @@ public class Map {
         return enemies;
     }
 
-    public boolean blockedByEnemie(int x, int y) {
+    public boolean blockedByEnemie(int x, int z) {
         for (int i = 0; i < enemies.size; i++) {
-            if (x == enemies.get(i).getTilePostionX() && y == enemies.get(i).getTilePostionY())
+            if (x == enemies.get(i).getTilePostionX() && z == enemies.get(i).getTilePostionZ())
                 return true;
             else
                 return false;
@@ -496,7 +498,7 @@ public class Map {
 
         // map properties
         public final int numTilesX;
-        public final int numTilesY;
+        public final int numTilesZ;
         public final int tileWidth;
         public final int tileHeight;
         public final int mapWidth;
@@ -507,11 +509,11 @@ public class Map {
         public Properties() {
             // parse map properties
             numTilesX = Integer.parseInt(tiledMap.getProperties().get("width").toString());
-            numTilesY = Integer.parseInt(tiledMap.getProperties().get("height").toString());
+            numTilesZ = Integer.parseInt(tiledMap.getProperties().get("height").toString());
             tileWidth = Integer.parseInt(tiledMap.getProperties().get("tilewidth").toString());
             tileHeight = Integer.parseInt(tiledMap.getProperties().get("tileheight").toString());
             mapWidth = numTilesX * tileWidth;
-            mapHeight = numTilesY * tileHeight;
+            mapHeight = numTilesZ * tileHeight;
         }
 
     }

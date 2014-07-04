@@ -7,6 +7,7 @@ public abstract class GameObject {
 
     protected float x;
     protected float y;
+    protected float z;
     protected float width;
     protected float height;
 
@@ -16,6 +17,7 @@ public abstract class GameObject {
     public float getY(){
         return y;
     }
+    public float getZ() { return z; }
 
 
     public float getWidth() { return width;}

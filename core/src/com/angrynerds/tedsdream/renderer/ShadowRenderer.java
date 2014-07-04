@@ -38,9 +38,10 @@ public class ShadowRenderer {
     public void renderShadow(Batch batch,GameObject object) {
         tex = new Texture(Gdx.files.internal("test/shadow.png"));
         batch.begin();
+//        batch.draw(tex, object.getX() - 100, object.getY() - 50, object.getWidth(), object.getHeight());
 
+        batch.draw(tex, object.getX()-30, object.getY()-30, 75, 50);
 
-        batch.draw(tex, object.getX() - 100, object.getY() - 50, 200, 100);
         batch.end();
     }
 

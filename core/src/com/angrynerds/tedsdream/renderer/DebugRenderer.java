@@ -70,7 +70,7 @@ public class DebugRenderer {
 
     private void drawCollisionTiles(Pixmap pixmap, Color color_outline, Color color_fill) {
         for (int j = 0; j < collisionHandler.getCollisionTileLayers().size; j++) {
-            for (int h = 0; h < map.getProperties().numTilesY; h++) {
+            for (int h = 0; h < map.getProperties().numTilesZ; h++) {
                 for (int w = 0; w < map.getProperties().numTilesX / 100; w++) {
                     TiledMapTileLayer layer = (collisionHandler.getCollisionTileLayers().get(j));
                     TiledMapTileLayer.Cell cell = layer.getCell(w, h);

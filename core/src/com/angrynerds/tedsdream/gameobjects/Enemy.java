@@ -34,10 +34,13 @@ public class Enemy extends Creature implements Disposable {
     private int nextStepInPath = 1;
     private int ranX;
     private int ranY;
+    private int ranZ;
     private int xTilePosition;
     private int yTilePosition;
+    private int zTilePosition;
     private int xTilePlayer;
     private int yTilePlayer;
+    private int zTilePlayer;
     private float angle;
     private Vector2 velocity = new Vector2();
     private int speed = 120;
@@ -58,6 +61,7 @@ public class Enemy extends Creature implements Disposable {
     private float health = 100f;
     private float nextAttackTime = 0;
     private float alpha = 1;
+    private ShapeRenderer shapeRenderer = new ShapeRenderer();
 
     // animation
     private AnimationState state;
@@ -105,33 +109,30 @@ public class Enemy extends Creature implements Disposable {
     }
 
 
-    public void renderShadow(ShapeRenderer shapeRenderer) {
-
-        shapeRenderer.setColor(0, 0, 0, 0.5f);
-        shapeRenderer.ellipse(getX() - getSkeletonBounds().getWidth() / 2, getY(), getSkeletonBounds().getWidth() * 0.7f, getSkeletonBounds().getHeight() / 3);
-
-
-    }
-
     public void renderPath(ShapeRenderer shapeRenderer) {
-
-        shapeRenderer.rect(x, y, map.getProperties().tileWidth, map.getProperties().tileHeight);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(1,0,0,1);
+        shapeRenderer.rect(x, z, map.getProperties().tileWidth, map.getProperties().tileHeight);
         if (path != null) {
             for (int i = 0; i < path.getLength() - 1; i++) {
                 float x1 = path.getStep(i).getX() * map.getProperties().tileWidth;
+
                 float x2 = path.getStep(i + 1).getX() * map.getProperties().tileWidth;
-                float y1 = path.getStep(i).getY() * map.getProperties().tileHeight;
-                float y2 = path.getStep(i + 1).getY() * map.getProperties().tileHeight;
-                shapeRenderer.line(x1, y1, x2, y2);
+                float z1 = path.getStep(i).getZ() * map.getProperties().tileHeight;
+                float z2 = path.getStep(i + 1).getZ() * map.getProperties().tileHeight;
+                System.out.println(x2 + "    " + z2);
+                shapeRenderer.line(x1, z1, x2, z2);
             }
 
         }
+        shapeRenderer.end();
     }
 
 
-    public void init(float x, float y) {
+    public void init(float x, float y, float z) {
         this.x = x;
         this.y = y;
+        this.z = z;
 
         map = Map.getInstance();
         pathFinder = AStarPathFinder.getInstance();
@@ -152,7 +153,7 @@ public class Enemy extends Creature implements Disposable {
     public void render(SpriteBatch batch) {
         super.render(batch);
         batch.begin();
-        bloodParticle.setPosition(x, y + this.getSkeletonBounds().getHeight() / 1.5f);
+        bloodParticle.setPosition(x, z + this.getSkeletonBounds().getHeight() / 1.5f);
         bloodParticle.draw(batch);
         batch.end();
     }
@@ -218,7 +219,7 @@ public class Enemy extends Creature implements Disposable {
                 if (alpha <= 0) map.removeFromMap(this);
             }
         }
-
+       renderPath(shapeRenderer);
         // update animation
         state.apply(skeleton);
         state.update(deltatime);
@@ -228,18 +229,18 @@ public class Enemy extends Creature implements Disposable {
 
     public void updatePositions() {
         xTilePosition = (int) Math.floor((x) / map.getProperties().tileWidth);
-        yTilePosition = (int) Math.floor((y) / map.getProperties().tileHeight);
+        zTilePosition = (int) Math.floor((z) / map.getProperties().tileHeight);
         xTilePlayer = (int) Math.floor((player.x) / map.getProperties().tileWidth);
-        yTilePlayer = (int) Math.floor((player.y) / map.getProperties().tileHeight);
+        zTilePlayer = (int) Math.floor((player.z) / map.getProperties().tileHeight);
     }
 
 
     public Path getNewPath() {
         oldPath = path;
 
-        if (xTilePlayer + ranY < map.getProperties().numTilesX && xTilePlayer >= 0 && yTilePlayer + ranY <map.getProperties().numTilesY && yTilePlayer >= 0) {
-            if (pathFinder.findPath(1, xTilePosition, yTilePosition, xTilePlayer + ranX, yTilePlayer + ranY) != null)
-                return pathFinder.findPath(1, xTilePosition, yTilePosition, xTilePlayer + ranX, yTilePlayer + ranY);
+        if (xTilePlayer  < map.getProperties().numTilesX && xTilePlayer >= 0 && zTilePlayer  <map.getProperties().numTilesZ && zTilePlayer >= 0) {
+            if (pathFinder.findPath(1, xTilePosition, zTilePosition, xTilePlayer , zTilePlayer ) != null)
+                return pathFinder.findPath(1, xTilePosition, zTilePosition, xTilePlayer , zTilePlayer );
         }
         return oldPath;
     }
@@ -252,20 +253,24 @@ public class Enemy extends Creature implements Disposable {
         return yTilePosition;
     }
 
+    public int getTilePostionZ() {
+        return zTilePosition;
+    }
+
     public void moveToPlayer(float deltatime) {
         // todo hier steckt wird der fehler stecken, der das flackern verursacht
 
         skeleton.setFlipX((player.x - x >= 0));
 
         if (path != null && nextStepInPath < path.getLength()) {
-            nextStep = new Vector2((float) path.getStep(nextStepInPath).getX() * map.getProperties().tileWidth, (float) path.getStep(nextStepInPath).getY() * map.getProperties().tileHeight);
-            angle = (float) Math.atan2(path.getStep(nextStepInPath).getY() * map.getProperties().tileHeight - y, path.getStep(nextStepInPath).getX() * map.getProperties().tileWidth - x);
+            nextStep = new Vector2((float) path.getStep(nextStepInPath).getX() * map.getProperties().tileWidth, (float) path.getStep(nextStepInPath).getZ() * map.getProperties().tileHeight);
+            angle = (float) Math.atan2(path.getStep(nextStepInPath).getZ() * map.getProperties().tileHeight - z, path.getStep(nextStepInPath).getX() * map.getProperties().tileWidth - x);
             velocity.set((float) Math.cos(angle) * speed, (float) Math.sin(angle) * speed);
             if ((int) x != (int) nextStep.x) {
                 x = x + velocity.x * deltatime;
             }
-            if (yTilePosition != (int) nextStep.y) {
-                y = (y + velocity.y * deltatime);
+            if (zTilePosition != (int) nextStep.y) {
+                z = (z + velocity.y * deltatime);
             }
         }
     }

@@ -86,7 +86,7 @@ public abstract class Creature extends GameObject {
     public void update(float deltaTime) {
         // set skeleton position
         skeleton.setX(x);
-        skeleton.setY(y);
+        skeleton.setY(z);
 
         // update state
         skeleton.updateWorldTransform();

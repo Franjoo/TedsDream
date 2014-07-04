@@ -35,11 +35,14 @@ public class Player extends Creature {
     private CollisionHandler collisionHandler;
 
     // movement
-    private float z;
+   // private float z;
     private float velocityX;
     private float velocityY;
+    private float velocityZ;
     private float velocityX_MAX = 320;
     private float velocityY_MAX = 220;
+    private float velocityZ_MAX = 220;
+
     private  float shadowHeight;
     private float shadowWidth;
 
@@ -188,8 +191,8 @@ public class Player extends Creature {
         if(alive){
             // set v in x and y direction
             velocityX = input.get_stickX() * deltaTime * velocityX_MAX;
-            velocityY = input.get_stickY() * deltaTime * velocityY_MAX;
-            if (velocityX != 0 && velocityY != 0 && input.getState() == State.IDLE)
+            velocityZ = input.get_stickY() * deltaTime * velocityZ_MAX;
+            if (velocityX != 0 && velocityZ != 0 && input.getState() == State.IDLE)
                 input.setState(State.RUN);
 
             if (alive) {
@@ -197,11 +200,11 @@ public class Player extends Creature {
 //            if (!(input instanceof RemoteInput)) {
                 // set v in x and y direction
                 velocityX = input.get_stickX() * deltaTime * velocityX_MAX;
-                velocityY = input.get_stickY() * deltaTime * velocityY_MAX;
-                if (velocityX != 0 && velocityY != 0 && input.getState() == State.IDLE)
+                velocityZ= input.get_stickY() * deltaTime * velocityZ_MAX;
+                if (velocityX != 0 && velocityZ!= 0 && input.getState() == State.IDLE) {
                     input.setState(State.RUN);
-
-                if (velocityX == 0 && velocityY == 0 && input.getState() == State.RUN)
+                }
+                if (velocityX == 0 && velocityZ == 0 && input.getState() == State.RUN)
                     input.setState(State.IDLE);
             }
 
@@ -240,14 +243,14 @@ public class Player extends Creature {
 
         state.apply(skeleton);
 
-        updateEvent.set(id,x,y,input.getState(),skeleton.getFlipX());
+        updateEvent.set(id,x,z,input.getState(),skeleton.getFlipX());
     } }
 
     private void letPlayerDontRunOut() {
-        if (y >= map.getProperties().tileHeight * 6)
-            y = map.getProperties().tileHeight * 6;
-        if (y <= 0)
-            y = 0;
+        if (z >= map.getProperties().tileHeight * 6)
+            z = map.getProperties().tileHeight * 6;
+        if (z <= 0)
+            z = 0;
         if (x <= 20)
             x = 20;
         if (x >= map.getProperties().mapWidth - 20)
@@ -270,25 +273,29 @@ public class Player extends Creature {
     public float getY(){
         return  y ;
     }
+    public float getZ(){
+        return  z ;
+    }
 
     private void updatePositionAttributes(float deltaTime, Vector2 collisionPosition) {
+        System.out.println(z);
         if (state.getCurrent(0).toString().equals("dash")) {
             x += dash(deltaTime);
         } else {
             x = collisionPosition.x;
         }
-        y = collisionPosition.y;
+        z = collisionPosition.y;
     }
 
     private void checkForNextToItem() {
         int tolerance = 30;
         float playerPositionX = x + this.getSkeletonBounds().getWidth() / 2;
-        float playerPositionY = y + this.getSkeletonBounds().getHeight() / 2;
+        float playerPositionZ = z + this.getSkeletonBounds().getHeight() / 2;
         for (Item item : map.getItems()) {
             float itemPositionX = item.getX() + item.region.getTexture().getWidth() / 2;
-            float itemPositionY = item.getY() + item.region.getTexture().getHeight() / 2;
+            float itemPositionZ = item.getZ() + item.region.getTexture().getHeight() / 2;
             if (itemPositionX > playerPositionX - tolerance && itemPositionX < playerPositionX + tolerance) {
-                if (itemPositionY > playerPositionY - tolerance && itemPositionY < playerPositionY + tolerance) {
+                if (itemPositionZ > playerPositionZ - tolerance && itemPositionZ < playerPositionZ+ tolerance) {
                     collectItem(item);
                 }
             }
@@ -362,9 +369,10 @@ public class Player extends Creature {
         input.setState(state);
     }
 
-    public void setPosition(float x, float y) {
+    public void setPosition(float x,float y, float z) {
         this.x = x;
         this.y = y;
+        this.z = z;
     }
 
     /**
@@ -375,11 +383,12 @@ public class Player extends Creature {
     private Vector2 getCollisionPosition() {
         float nX;
         float nY;
+        float nZ;
 
-        _pt.set(getTileCollisionPosition(x, y, velocityX, velocityY));
+        _pt.set(getTileCollisionPosition(x, z, velocityX, velocityZ));
         nX = _pt.x;
-        nY = _pt.y;
-        vec2.set(nX, nY);
+        nZ = _pt.y;
+        vec2.set(nX, nZ);
 
         return vec2;
     }
@@ -393,7 +402,7 @@ public class Player extends Creature {
 
             // RIGHT
         } else if (velocityX > 0) {
-            if (detector.isSolid(x + width, y) || detector.isSolid(x + width, y + height)) {
+            if (detector.isSolid(x + width, y) || detector.isSolid(x + width, z + height)) {
                 velocityX = 0;
             }
         }
@@ -459,15 +468,15 @@ public class Player extends Creature {
         return vec2;
     }
 
-    public void getMyCorners(float pX, float pY) {
+    public void getMyCorners(float pX, float pZ) {
         // calculate corner coordinates
-        int downY = (int) Math.floor(map.getProperties().mapHeight - (pY) / map.getProperties().tileHeight);
-        int upY = (int) Math.floor(map.getProperties().mapHeight - (pY + map.getProperties().mapHeight) / map.getProperties().tileHeight);
+        int downZ = (int) Math.floor(map.getProperties().mapHeight - (pZ) / map.getProperties().tileHeight);
+        int upZ = (int) Math.floor(map.getProperties().mapHeight - (pZ + map.getProperties().mapHeight) / map.getProperties().tileHeight);
         int leftX = (int) Math.floor((pX) / map.getProperties().tileWidth);
         int rightX = (int) Math.floor((pX + map.getProperties().mapWidth) / map.getProperties().tileWidth);
 
         // check if the corner is a wall
-        checkForWall(downY, upY, leftX, rightX);
+        checkForWall(downZ, upZ, leftX, rightX);
     }
 
     private void checkForWall(int downY, int upY, int leftX, int rightX) {
@@ -477,15 +486,15 @@ public class Player extends Creature {
         downright = collisionHandler.isSolid(rightX, downY);
     }
 
-    private Vector2 getTileCollisionPosition(float pX, float pY, float vX, float vY) {
+    private Vector2 getTileCollisionPosition(float pX, float pZ, float vX, float vZ) {
         float _x = pX;
-        float _y = pY;
+        float _z = pZ;
 
         float qX = pX + vX;
-        float qY = pY + vY;
+        float qZ = pZ + vZ;
 
         /* COLLIDED TILES */
-        getMyCorners(qX, qY);
+        getMyCorners(qX, qZ);
         /* X-AXIS */
         if (vX < 0) {
             // botton left
@@ -493,48 +502,48 @@ public class Player extends Creature {
                 _x = ((int) (pX) / map.getProperties().tileWidth) * map.getProperties().tileWidth;
             }
             // top left
-            else if (collisionHandler.isSolid(qX, pY + height)) {
+            else if (collisionHandler.isSolid(qX, pZ + height)) {
                 _x = ((int) (pX) / map.getProperties().tileWidth) * map.getProperties().tileWidth;
             } else {
                 _x = qX;
             }
         } else if (vX > 0)
             // bottom right
-            if (collisionHandler.isSolid(qX + width, pY)) {
+            if (collisionHandler.isSolid(qX + width, pZ)) {
                 _x = ((int) (qX) / map.getProperties().tileWidth) * map.getProperties().tileWidth - epsilon;
             }
             // top right
-            else if (collisionHandler.isSolid(qX + width, pY + height)) {
+            else if (collisionHandler.isSolid(qX + width, pZ + height)) {
                 _x = ((int) (qX) / map.getProperties().tileWidth) * map.getProperties().tileWidth - epsilon;
             } else {
                 _x = qX;
             }
 
         /* Y_AXIS */
-        if (vY < 0) {
+        if (vZ < 0) {
             // bottom left
-            if (collisionHandler.isSolid(pX, qY)) {
-                _y = ((int) (pY) / map.getProperties().tileHeight) * map.getProperties().tileHeight;
+            if (collisionHandler.isSolid(pX, qZ)) {
+                _z = ((int) (pZ) / map.getProperties().tileHeight) * map.getProperties().tileHeight;
             }
             // bottom right
-            else if (collisionHandler.isSolid(pX + width, qY)) {
-                _y = ((int) (pY) / map.getProperties().tileHeight) * map.getProperties().tileHeight;
+            else if (collisionHandler.isSolid(pX + width, qZ)) {
+                _z = ((int) (pZ) / map.getProperties().tileHeight) * map.getProperties().tileHeight;
             } else {
-                _y = qY;
+                _z = qZ;
             }
-        } else if (vY > 0) {
+        } else if (vZ > 0) {
             // top left
-            if (collisionHandler.isSolid(pX, qY + height)) {
-                _y = ((int) (qY) / map.getProperties().tileHeight) * map.getProperties().tileHeight - epsilon;
+            if (collisionHandler.isSolid(pX, qZ + height)) {
+                _z = ((int) (qZ) / map.getProperties().tileHeight) * map.getProperties().tileHeight - epsilon;
             }
             // top right
-            else if (collisionHandler.isSolid(pX + width, qY + height)) {
-                _y = ((int) (qY) / map.getProperties().tileHeight) * map.getProperties().tileHeight - epsilon;
+            else if (collisionHandler.isSolid(pX + width, qZ + height)) {
+                _z = ((int) (qZ) / map.getProperties().tileHeight) * map.getProperties().tileHeight - epsilon;
             } else {
-                _y = qY;
+                _z = qZ;
             }
         }
-        vec2.set(_x, _y);
+        vec2.set(_x, _z);
         return vec2;
     }
 

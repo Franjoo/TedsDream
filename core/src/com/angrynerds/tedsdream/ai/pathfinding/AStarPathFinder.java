@@ -37,55 +37,55 @@ public class AStarPathFinder {
         this.allowDiagMovement = allowDiagMovement;
         this.collisionHandler = new CollisionHandler(map);
 
-        nodes = new Node[map.getProperties().numTilesX][map.getProperties().numTilesY];
+        nodes = new Node[map.getProperties().numTilesX][map.getProperties().numTilesZ];
         // System.out.println(map.getMapWidth());
         for (int x = 0; x < map.getProperties().numTilesX; x++) {
-            for (int y = 0; y < map.getProperties().numTilesY; y++) {
-                nodes[x][y] = new Node(x, y);
+            for (int z = 0; z < map.getProperties().numTilesZ; z++) {
+                nodes[x][z] = new Node(x, z);
             }
         }
         path = new Path();
         instance = this;
     }
 
-    public Path findPath(int enemieType, int sx, int sy, int tx, int ty) {
+    public Path findPath(int enemieType, int sx, int sz, int tx, int tz) {
         path.flushPath();
 
-        if (collisionHandler.isSolid(tx * map.getProperties().tileWidth, ty * map.getProperties().tileHeight)) {
+        if (collisionHandler.isSolid(tx * map.getProperties().tileWidth, tz * map.getProperties().tileHeight)) {
             return null;
 
         }
-        if (tx < 0 || ty < 0)
+        if (tx < 0 || tz < 0)
             return null;
 
         /** Init A Star */
-        nodes[sx][sy].setDepth(0);
-        nodes[sx][sy].setCost(0);
+        nodes[sx][sz].setDepth(0);
+        nodes[sx][sz].setCost(0);
         closedList.clear();
         openList.clear();
-        openList.add(nodes[sx][sy]);
+        openList.add(nodes[sx][sz]);
 
-        nodes[tx][ty].parent = null;
+        nodes[tx][tz].parent = null;
 
         int currentDepth = 0;
 
         while (currentDepth <= maxSearchDistance && openList.getSize() != 0) {
             Node currentNode = getFirstInOpen();
-            if (currentNode == nodes[tx][ty])
+            if (currentNode == nodes[tx][tz])
                 break;
 
             removeFromOpen(currentNode);
             addToClosed(currentNode);
             for (int x = -1; x <= 1; x++) {
-                for (int y = -1; y <= 1; y++) {
-                    if (!(x == 0 && y == 0)) {
+                for (int z = -1; z <= 1; z++) {
+                    if (!(x == 0 && z == 0)) {
                         int xp = x + currentNode.getX();
-                        int yp = y + currentNode.getY();
+                        int zp = z + currentNode.getZ();
 
-                        if (isValidLocation(1, sx, sy, xp, yp)) {
+                        if (isValidLocation(1, sx, sz, xp, zp)) {
 
                             float nextStepCost = currentNode.getCost() + getMovementCost();
-                            Node neighbour = nodes[xp][yp];
+                            Node neighbour = nodes[xp][zp];
 //                            map.pathFinderVisited(xp, yp);
 
                             if (nextStepCost < neighbour.getCost()) {
@@ -99,7 +99,7 @@ public class AStarPathFinder {
 
                             if (!inOpenList(neighbour) && !(inClosedList(neighbour))) {
                                 neighbour.setCost(nextStepCost);
-                                neighbour.setHeuristic(getHeuristicCost(1, xp, yp, tx, ty));
+                                neighbour.setHeuristic(getHeuristicCost(1, xp, zp, tx, tz));
                                 currentDepth = Math.max(currentDepth, neighbour.setParent(currentNode));
                                 addToOpen(neighbour);
                             }
@@ -110,27 +110,27 @@ public class AStarPathFinder {
 
         }
 
-        if (nodes[tx][ty].parent == null)
+        if (nodes[tx][tz].parent == null)
             return null;
 
 
-        Node target = nodes[tx][ty];
-        while (target != nodes[sx][sy]) {
-            path.prependStep(target.getX(), target.getY());
+        Node target = nodes[tx][tz];
+        while (target != nodes[sx][sz]) {
+            path.prependStep(target.getX(), target.getZ());
             target = target.parent;
         }
-        path.prependStep(sx, sy);
+        path.prependStep(sx, sz);
         //  for(int f = 0; f<path.getLength(); f++)
         // System.out.println(path.getStep(f).getX() + "   "  + path.getStep(f).getY());
         return path;
     }
 
 
-    protected boolean isValidLocation(int mover, int sx, int sy, int x, int y) {
-        boolean invalid = ((x < 0) || (y < 0)) || (x >= map.getProperties().numTilesX || (y >= map.getProperties().numTilesY));
+    protected boolean isValidLocation(int mover, int sx, int sz, int x, int z) {
+        boolean invalid = ((x < 0) || (z < 0)) || (x >= map.getProperties().numTilesX || (z >= map.getProperties().numTilesZ));
 
-        if ((!invalid) && ((sx != x) || (sy != y))) {
-            invalid = collisionHandler.isSolid(x * map.getProperties().tileWidth, y * map.getProperties().tileHeight);
+        if ((!invalid) && ((sx != x) || (sz != z))) {
+            invalid = collisionHandler.isSolid(x * map.getProperties().tileWidth, z * map.getProperties().tileHeight);
         }
 
         return !invalid;
@@ -143,8 +143,8 @@ public class AStarPathFinder {
         return openList.contains(o);
     }
 
-    private float getHeuristicCost(int TYPE, int xp, int yp, int tx, int ty) {
-        return heuristic.getCost(map, TYPE, xp, yp, tx, ty);
+    private float getHeuristicCost(int TYPE, int xp, int zp, int tx, int tz) {
+        return heuristic.getCost(map, TYPE, xp, zp, tx, tz);
     }
 
     boolean inClosedList(Object o) {

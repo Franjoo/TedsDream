@@ -99,10 +99,10 @@ public class SpawnController {
                 Enemy enemy = new Enemy(name, "spine/" + path + "/", skin, scale,ap,hp);
 
                 float _x = (float) (rectangle.x + Math.random() * rectangle.getWidth());
-                float _y = (float) (rectangle.y + Math.random() * rectangle.getHeight());
+                float _z = (float) (rectangle.y + Math.random() * rectangle.getHeight());
 
                 // initial position
-                enemy.init(_x, _y);
+                enemy.init(_x,0, _z);
 
                 freeEnemies.add(enemy);
                 maxEnemies++;
