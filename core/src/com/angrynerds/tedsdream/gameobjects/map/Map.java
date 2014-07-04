@@ -81,13 +81,10 @@ public class Map {
 
         this.camera = camera;
         this.tiledMap = tiledMap;
-        SpriteBatch batch = new SpriteBatch();
 
         properties = new Properties();
 
-
         init();
-
 
         instance = this;
 
@@ -213,7 +210,6 @@ public class Map {
 
         Array<Integer> renderLayers = new Array<Integer>();
 
-        // get number of render layers
         for (int i = 0; i < tiledMap.getLayers().getCount(); i++) {
             MapLayer layer = tiledMap.getLayers().get(i);
             if (!layer.getName().startsWith("$c") && !layer.getName().startsWith("$s")) {
@@ -229,8 +225,6 @@ public class Map {
      * @param batch SpriteBatch that is used for rendering
      */
     public void render(SpriteBatch batch) {
-
-        // background
         renderLayers(layers_background);
 
         // set camera
@@ -239,12 +233,6 @@ public class Map {
         renderGameObjects(batch);
 
         renderLayers(layers_foreground);
-
-//        renderParticles(batch);
-
-//        if(player.getActualHP() <= 0){
-//            batch.draw(dreamOver,fixedCamera.position.x-dreamOver.getWidth()/2,fixedCamera.position.y-dreamOver.getHeight()/2);
-//        }
     }
 
     private void renderGameObjects(SpriteBatch batch) {
@@ -495,7 +483,6 @@ public class Map {
     }
 
     public class Properties {
-
         // map properties
         public final int numTilesX;
         public final int numTilesZ;
@@ -504,7 +491,6 @@ public class Map {
         public final int mapWidth;
         public final int mapHeight;
         public final int borderWidth = 5;
-
 
         public Properties() {
             // parse map properties

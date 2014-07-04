@@ -22,7 +22,6 @@ import java.util.HashMap;
  */
 public class CollisionHandler {
 
-
     private final TextureAtlas atlas;
     private Array<TiledMapTileLayer> collisionTileLayers;
     private TiledMap tiledMap;

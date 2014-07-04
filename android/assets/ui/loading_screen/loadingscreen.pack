@@ -1,0 +1,32 @@
+loadingscreen.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+screen_background
+  rotate: false
+  xy: 2, 2
+  size: 1408, 640
+  orig: 1408, 640
+  offset: 0, 0
+  index: -1
+loading_background
+  rotate: false
+  xy: 2, 644
+  size: 815, 416
+  orig: 915, 416
+  offset: 49, 0
+  index: -1
+loading_bar
+  rotate: false
+  xy: 1412, 98
+  size: 473, 39
+  orig: 503, 61
+  offset: 9, 15
+  index: -1
+loading_frame
+  rotate: false
+  xy: 1412, 2
+  size: 504, 94
+  orig: 532, 100
+  offset: 10, 3
+  index: -1
