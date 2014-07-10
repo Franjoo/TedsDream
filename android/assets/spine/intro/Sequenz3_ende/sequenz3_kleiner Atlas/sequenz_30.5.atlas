@@ -1,0 +1,33 @@
+
+sequenz_30.5-1.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+intro/startsequenz 2 hintergrund
+  rotate: false
+  xy: 2, 2
+  size: 300, 200
+  orig: 300, 200
+  offset: 0, 0
+  index: -1
+intro/startsequenz 2 ted
+  rotate: false
+  xy: 908, 120
+  size: 88, 82
+  orig: 111, 96
+  offset: 18, 8
+  index: -1
+intro/startsequenz 2 wirbel
+  rotate: false
+  xy: 304, 2
+  size: 300, 200
+  orig: 300, 200
+  offset: 0, 0
+  index: -1
+intro/startsequenz 2 wirbel 2
+  rotate: false
+  xy: 606, 2
+  size: 300, 200
+  orig: 300, 200
+  offset: 0, 0
+  index: -1

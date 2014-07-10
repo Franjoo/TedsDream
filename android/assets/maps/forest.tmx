@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="1" tilewidth="256" tileheight="640">
+ <properties>
+  <property name="boundsY" value="0,384"/>
+ </properties>
+ <tileset firstgid="1" name="bg_00" tilewidth="256" tileheight="640">
+  <image source="../../../../../../Medienprojekt/Design/grafiken/LevelLayer/32bit/bg_00.png" width="1408" height="640"/>
+ </tileset>
+ <tileset firstgid="6" name="bg_01" tilewidth="256" tileheight="640">
+  <image source="../../../../../../Medienprojekt/Design/grafiken/LevelLayer/32bit/bg_01.png" width="1408" height="640"/>
+ </tileset>
+ <tileset firstgid="11" name="bg_02" tilewidth="256" tileheight="640">
+  <image source="../../../../../../Medienprojekt/Design/grafiken/LevelLayer/32bit/bg_02.png" width="1408" height="640"/>
+ </tileset>
+ <tileset firstgid="16" name="clouds_00" tilewidth="256" tileheight="640">
+  <image source="../../../../../../Medienprojekt/Design/grafiken/LevelLayer/32bit/clouds_00.png" width="1408" height="640"/>
+ </tileset>
+ <tileset firstgid="21" name="clouds_01" tilewidth="256" tileheight="640">
+  <image source="../../../../../../Medienprojekt/Design/grafiken/LevelLayer/32bit/clouds_01.png" width="1408" height="640"/>
+ </tileset>
+ <tileset firstgid="26" name="fbg_00" tilewidth="256" tileheight="640">
+  <image source="../../../../../../Medienprojekt/Design/grafiken/LevelLayer/32bit/fbg_00.png" width="1408" height="640"/>
+ </tileset>
+ <tileset firstgid="31" name="fbg_02" tilewidth="256" tileheight="640">
+  <image source="../../../../../../Medienprojekt/Design/grafiken/LevelLayer/32bit/fbg_02.png" width="1408" height="640"/>
+ </tileset>
+ <tileset firstgid="36" name="fg_00" tilewidth="256" tileheight="640">
+  <image source="../../../../../../Medienprojekt/Design/grafiken/LevelLayer/32bit/fg_00.png" width="1408" height="640"/>
+ </tileset>
+ <tileset firstgid="41" name="fg_01" tilewidth="256" tileheight="640">
+  <image source="../../../../../../Medienprojekt/Design/grafiken/LevelLayer/32bit/fg_01.png" width="1408" height="640"/>
+ </tileset>
+ <tileset firstgid="46" name="fbg_01" tilewidth="256" tileheight="640">
+  <image source="../../../../../../Medienprojekt/Design/grafiken/LevelLayer/32bit/fbg_01.png" width="1408" height="640"/>
+ </tileset>
+ <tileset firstgid="51" name="gl_00" tilewidth="256" tileheight="640">
+  <image source="../../../../../../Medienprojekt/Design/grafiken/LevelLayer/32bit/gl_00.png" width="1408" height="640"/>
+ </tileset>
+ <tileset firstgid="56" name="gl_01" tilewidth="256" tileheight="640">
+  <image source="../../../../../../Medienprojekt/Design/grafiken/LevelLayer/32bit/gl_01.png" width="1408" height="640"/>
+ </tileset>
+ <tileset firstgid="61" name="gl_02" tilewidth="256" tileheight="640">
+  <image source="../../../../../../Medienprojekt/Design/grafiken/LevelLayer/32bit/gl_02.png" width="1408" height="640"/>
+ </tileset>
+ <tileset firstgid="66" name="gl_03" tilewidth="256" tileheight="640">
+  <image source="../../../../../../Medienprojekt/Design/grafiken/LevelLayer/32bit/gl_03.png" width="1408" height="640"/>
+ </tileset>
+ <tileset firstgid="71" name="gl_04" tilewidth="256" tileheight="640">
+  <image source="../../../../../../Medienprojekt/Design/grafiken/LevelLayer/32bit/gl_04.png" width="1408" height="640"/>
+ </tileset>
+ <layer name="Kachelebene 1" width="100" height="1">
+  <properties>
+   <property name="v" value="0.3,0.3"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztyscNgEAMBMAjvQgFkKEUUl1XOiPxQ5TASiN5bSchhJSMnIKSiprmEc3RLrrFd2/9dPQMjEzMLKxs7BycXOHPV24hbwcI
+  </data>
+ </layer>
+ <objectgroup draworder="topdown" name="Objektebene 1" width="100" height="1">
+  <object x="7360" y="320"/>
+  <object x="7296" y="320"/>
+  <object x="7424" y="320"/>
+  <object x="7232" y="320"/>
+  <object x="7168" y="320"/>
+ </objectgroup>
+</map>

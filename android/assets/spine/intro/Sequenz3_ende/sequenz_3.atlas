@@ -1,0 +1,32 @@
+sequenz_3.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+intro/startsequenz 2 hintergrund
+  rotate: false
+  xy: 2, 569
+  size: 600, 400
+  orig: 600, 400
+  offset: 0, 0
+  index: -1
+intro/startsequenz 2 ted
+  rotate: false
+  xy: 2, 2
+  size: 174, 163
+  orig: 222, 192
+  offset: 37, 17
+  index: -1
+intro/startsequenz 2 wirbel
+  rotate: false
+  xy: 2, 167
+  size: 600, 400
+  orig: 600, 400
+  offset: 0, 0
+  index: -1
+intro/startsequenz 2 wirbel 2
+  rotate: true
+  xy: 604, 369
+  size: 600, 400
+  orig: 600, 400
+  offset: 0, 0
+  index: -1

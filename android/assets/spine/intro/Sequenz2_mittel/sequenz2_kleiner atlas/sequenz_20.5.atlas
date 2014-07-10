@@ -1,0 +1,19 @@
+
+sequenz_20.5-1.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+intro/ted startsequenze3 - ted
+  rotate: false
+  xy: 304, 5
+  size: 208, 209
+  orig: 300, 212
+  offset: 45, 0
+  index: -1
+intro/ted startsequenze3_1
+  rotate: false
+  xy: 2, 2
+  size: 300, 212
+  orig: 300, 212
+  offset: 0, 0
+  index: -1

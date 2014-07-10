@@ -1,0 +1,156 @@
+{"bones": [
+    {
+        "name": "root"
+    },
+    {
+        "name": "ted",
+        "parent": "root",
+        "length": 354.12,
+        "x": 12.49,
+        "y": 122.17,
+        "rotation": 86.84
+    },
+    {
+        "name": "zimmer",
+        "parent": "root",
+        "length": 398.69,
+        "x": -52.79,
+        "y": -13.1,
+        "rotation": 88.64
+    }
+], "slots": [
+    {
+        "name": "ted startsequenze3_1",
+        "bone": "zimmer",
+        "attachment": "intro/ted startsequenze3_1"
+    },
+    {
+        "name": "ted startsequenze3 - ted",
+        "bone": "ted",
+        "attachment": "intro/ted startsequenze3 - ted"
+    }
+], "skins": {
+    "default": {
+        "ted startsequenze3 - ted": {
+            "intro/ted startsequenze3 - ted": {
+                "x": -16.66,
+                "y": -5.62,
+                "scaleX": 0.5,
+                "scaleY": 0.5,
+                "rotation": -88.19,
+                "width": 600,
+                "height": 424
+            }
+        },
+        "ted startsequenze3_1": {
+            "intro/ted startsequenze3_1": {
+                "x": 121.61,
+                "y": -64.9,
+                "scaleX": 0.5,
+                "scaleY": 0.5,
+                "rotation": -88.64,
+                "width": 600,
+                "height": 424
+            }
+        }
+    }
+}, "animations": {
+    "mittel": {
+        "bones": {
+            "root": {
+                "rotate": [
+                    {
+                        "time": 0,
+                        "angle": 0
+                    }
+                ],
+                "translate": [
+                    {
+                        "time": 0,
+                        "x": 0,
+                        "y": 0
+                    }
+                ],
+                "scale": [
+                    {
+                        "time": 0,
+                        "x": 1,
+                        "y": 1
+                    }
+                ]
+            },
+            "ted": {
+                "rotate": [
+                    {
+                        "time": 0,
+                        "angle": 0
+                    },
+                    {
+                        "time": 4.1666,
+                        "angle": 4.03
+                    }
+                ],
+                "translate": [
+                    {
+                        "time": 0,
+                        "x": -5.3,
+                        "y": 0
+                    },
+                    {
+                        "time": 4.1666,
+                        "x": -3.33,
+                        "y": 20.3
+                    }
+                ],
+                "scale": [
+                    {
+                        "time": 0,
+                        "x": 1,
+                        "y": 1
+                    },
+                    {
+                        "time": 4.1666,
+                        "x": 1.25,
+                        "y": 1.25
+                    }
+                ]
+            },
+            "zimmer": {
+                "rotate": [
+                    {
+                        "time": 0,
+                        "angle": 0
+                    },
+                    {
+                        "time": 4.1666,
+                        "angle": 2.25
+                    }
+                ],
+                "translate": [
+                    {
+                        "time": 0,
+                        "x": 0,
+                        "y": 0
+                    },
+                    {
+                        "time": 4.1666,
+                        "x": 14,
+                        "y": 1.32
+                    }
+                ],
+                "scale": [
+                    {
+                        "time": 0,
+                        "x": 1,
+                        "y": 1
+                    },
+                    {
+                        "time": 4.1666,
+                        "x": 1.099,
+                        "y": 1.099
+                    }
+                ]
+            }
+        }
+    }
+}}

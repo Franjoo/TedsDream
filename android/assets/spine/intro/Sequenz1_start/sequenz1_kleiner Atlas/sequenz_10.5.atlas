@@ -1,0 +1,33 @@
+
+sequenz_10.5-1.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ted startsequenze hase
+  rotate: false
+  xy: 344, 109
+  size: 110, 133
+  orig: 118, 140
+  offset: 0, 0
+  index: -1
+ted startsequenze traumfänger
+  rotate: false
+  xy: 456, 134
+  size: 111, 108
+  orig: 173, 108
+  offset: 33, 0
+  index: -1
+ted startsequenze zimmer
+  rotate: false
+  xy: 2, 2
+  size: 340, 240
+  orig: 340, 240
+  offset: 0, 0
+  index: -1
+ted startsequenze_ted
+  rotate: true
+  xy: 344, 17
+  size: 90, 108
+  orig: 119, 122
+  offset: 14, 10
+  index: -1
