@@ -1,11 +1,13 @@
 package com.angrynerds.tedsdream.input;
 
+import com.angrynerds.tedsdream.util.States;
+
 /**
  * User: Franjo
  */
 public class RemoteInput implements IGameInputController {
 
-    private int state;
+    private States.Animation state;
 
     @Override
     public float get_stickX() {
@@ -28,12 +30,12 @@ public class RemoteInput implements IGameInputController {
     }
 
     @Override
-    public void setState(int state) {
+    public void setState(States.Animation state) {
         this.state = state;
     }
 
     @Override
-    public int getState() {
+    public States.Animation getState() {
         return state;
     }
 }

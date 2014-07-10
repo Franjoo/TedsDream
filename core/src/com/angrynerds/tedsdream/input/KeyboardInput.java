@@ -1,15 +1,12 @@
 package com.angrynerds.tedsdream.input;
 
-import com.angrynerds.tedsdream.util.State;
+import com.angrynerds.tedsdream.util.States;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 
 /**
- * User: Franjo
- * Date: 26.10.13
- * Time: 10:47
- * Project: Main
+ * Author: Franz Benthin
  */
 public class KeyboardInput extends InputAdapter implements IGameInputController {
 
@@ -34,18 +31,18 @@ public class KeyboardInput extends InputAdapter implements IGameInputController 
     }
 
     @Override
-    public int getState() {
+    public States.Animation getState() {
         // jump
-        if (get_isA()) return State.JUMP;
+        if (get_isA()) return States.Animation.JUMP;
         // dash
-        else if (get_isB() && get_stickX() >= 0) return State.DASH_RIGHT;
-        else if (get_isB() && get_stickX() < 0) return State.DASH_LEFT;
+        else if (get_isB() && get_stickX() >= 0) return States.Animation. DASH_RIGHT;
+        else if (get_isB() && get_stickX() < 0) return States.Animation. DASH_LEFT;
         // attack
-        else if (get_isD()) return State.ATTACK;
+        else if (get_isD()) return States.Animation. ATTACK;
         // run
-        else if (get_stickX() != 0 || get_stickY() != 0) return State.RUN;
+        else if (get_stickX() != 0 || get_stickY() != 0) return States.Animation. RUN;
 
-        return State.IDLE;
+        return States.Animation. IDLE;
 
     }
 
@@ -64,7 +61,7 @@ public class KeyboardInput extends InputAdapter implements IGameInputController 
     }
 
     @Override
-    public void setState(int state) {
+    public void setState(States.Animation state) {
 //        this.state = state;
     }
 }

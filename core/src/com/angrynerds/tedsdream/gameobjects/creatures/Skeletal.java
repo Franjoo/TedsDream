@@ -7,65 +7,63 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.esotericsoftware.spine.*;
 
 /**
- * User: Franjo
- * Date: 07.11.13
- * Time: 14:38
- * Project: GameDemo
+ * Author: Franz Benthin
  */
-public abstract class Creature extends GameObject {
+public class Skeletal extends GameObject {
+
     // debug attributes
-    public boolean showBounds;
+    protected boolean showBounds;
 
     // skeleton
     protected SkeletonData skeletonData;
-    public Skeleton skeleton;
-    private SkeletonJson skeletonJson;
-    private SkeletonBounds skeletonBounds;
+    protected SkeletonBounds skeletonBounds;
+    protected Skeleton skeleton;
 
     // renderer
     protected SkeletonRenderer skeletonRenderer;
     protected SkeletonRendererDebug skeletonDebugRenderer;
 
-    // atlas
+    // constructor params
+    private String path;
+    protected float scale;
+    private String skin;
     private TextureAtlas atlas;
 
-    // constructor params
-    private String name;
-    private String path;
-    private float scale;
-    private String skin;
-
-    public Creature(String name, String path, String skin, float scale) {
-        this.name = name;
+    public Skeletal(TextureAtlas atlas, String path, float scale, String skin) {
         this.path = path;
         this.scale = scale;
         this.skin = skin;
+        this.atlas = atlas;
 
-        create();
+        setup();
     }
 
-    public Creature(String name, String path, String skin) {
-        this(name, path, skin, 1);
+    public Skeletal(TextureAtlas atlas, String path, float scale) {
+        this(atlas, path, scale, null);
     }
 
-    private void create() {
+    public Skeletal(TextureAtlas atlas, String path) {
+        this(atlas, path, 1, null);
+    }
+
+    private void setup() {
         // atlas
-        atlas = new TextureAtlas(Gdx.files.internal(path + name + ".atlas"));
+        // atlas = new TextureAtlas(Gdx.files.internal(path + name + ".atlas"));
         showBounds = true;
 
         // skeleton json
-        skeletonJson = new SkeletonJson(atlas);
+        SkeletonJson skeletonJson = new SkeletonJson(atlas);
 
         // set scale
         skeletonJson.setScale(scale);
 
         // get skeletonData
-        skeletonData = skeletonJson.readSkeletonData(Gdx.files.internal(path + name + ".json"));
+        skeletonData = skeletonJson.readSkeletonData(Gdx.files.internal(path + ".json"));
 
-        // create skeleton
+        // setup skeleton
         skeleton = new Skeleton(skeletonData);
 
-        // create skeleton Bounds
+        // setup skeleton Bounds
         skeletonBounds = new SkeletonBounds();
 
         if (skin != null) {
@@ -78,35 +76,42 @@ public abstract class Creature extends GameObject {
             skeleton.updateWorldTransform();
         }
 
-        // create renderer
+        // setup renderer
         skeletonRenderer = new SkeletonRenderer();
         skeletonDebugRenderer = new SkeletonRendererDebug();
     }
 
-    public void update(float deltaTime) {
+
+    @Override
+    public void draw(SpriteBatch batch) {
+        if(showBounds){
+            skeletonDebugRenderer.draw(skeleton);
+        }
+
+        skeletonRenderer.draw(batch, skeleton);
+    }
+
+    @Override
+    public void update(float delta) {
         // set skeleton position
         skeleton.setX(x);
         skeleton.setY(y);
 
         // update state
         skeleton.updateWorldTransform();
-        skeleton.update(deltaTime);
-        skeletonBounds.update(skeleton,true);
+        skeleton.update(delta);
+        skeletonBounds.update(skeleton, true);
     }
 
-    public void render(SpriteBatch batch) {
-        // draw skeleton
-        //batch.draw(skeletonDebugRenderer.draw(skeleton);
-        //skeletonDebugRenderer.draw(skeleton);
-
-        batch.begin();
-        skeletonRenderer.draw(batch, skeleton);
-        batch.end();
-    }
-
-    public SkeletonBounds getSkeletonBounds(){
+    public SkeletonBounds getSkeletonBounds() {
         return skeletonBounds;
     }
 
-    public abstract void attack();
+    public SkeletonData getSkeletonData() {
+        return skeletonData;
+    }
+
+    public Skeleton getSkeleton() {
+        return skeleton;
+    }
 }

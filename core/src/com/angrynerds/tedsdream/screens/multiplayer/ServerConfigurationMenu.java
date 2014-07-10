@@ -2,7 +2,7 @@ package com.angrynerds.tedsdream.screens.multiplayer;
 
 import com.angrynerds.tedsdream.core.Controller;
 import com.angrynerds.tedsdream.net.GameServer;
-import com.angrynerds.tedsdream.screens.game._MPGame;
+import com.angrynerds.tedsdream.screens.GameController;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -108,9 +108,9 @@ public class ServerConfigurationMenu implements Screen {
                     _this.game.server.start();
 
 
-                    game.MPGame = new _MPGame(game,true);
+                    game.playScreen = new GameController(game,true,true);
 
-                    _this.game.MPGame.connect(tf_ip.getText(), Integer.parseInt(tf_port.getText()));
+                    _this.game.playScreen.connect(tf_ip.getText(), Integer.parseInt(tf_port.getText()));
 
                     _this.game.setScreen(_this.game.multiplayer_lobby);
                     return true;

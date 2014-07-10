@@ -2,24 +2,27 @@ package com.angrynerds.tedsdream.core;
 
 import com.angrynerds.tedsdream.net.GameServer;
 import com.angrynerds.tedsdream.screens.*;
-import com.angrynerds.tedsdream.screens.game._MPGame;
-import com.angrynerds.tedsdream.screens.game._SPGame;
+import com.angrynerds.tedsdream.screens.GameController;
 import com.angrynerds.tedsdream.screens.multiplayer.*;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 
 /**
- * class that is reponsible for updating and rendering all the
- * screen which are in use
+ * Author: Franz Benthin
  */
 public class Controller extends Game {
+
+    // settings (should be in settings menu)
+    public float difficulty = 1.2f;
+
     public TiledMap tiledMap;
 
     // screens
     public AbstractScreen loadingScreen;
-    public AbstractScreen playScreen;
-    public AbstractScreen mainMenu;
+    public GameController playScreen;
+    public MainMenu mainMenu;
+    public Screen introScreen;
     public AbstractScreen splashScreen;
 
     // multiplayer sceens
@@ -27,31 +30,33 @@ public class Controller extends Game {
     public Screen multiplayer_configuration;
     public Screen multiplayer_connect;
     public Screen multiplayer_lobby;
-    public _MPGame MPGame;
+    public GameController MPGame;
 
     // game server
     public GameServer server;
+    public Screen nextScreen;
 
     public Controller() {
 
         // create screens
         loadingScreen = new LoadingScreen(this);
-        this.setScreen(loadingScreen);
         splashScreen = new SplashScreen(this);
         mainMenu = new MainMenu(this);
-//        playScreen = new _SPGame(this);
+        introScreen = new IntroScreen(this,);
 
         // create multiplayer screens
-//        multiplayer_choose = new MultiplayerChooseMenu(this);
-//        multiplayer_configuration = new ServerConfigurationMenu(this);
-//        multiplayer_connect = new ServerConnectMenu(this);
-//        multiplayer_lobby = new ServerLobby(this);
-//        MPGame = new _MPGame(this);
+        multiplayer_choose = new MultiplayerChooseMenu(this);
+        multiplayer_configuration = new ServerConfigurationMenu(this);
+        multiplayer_connect = new ServerConnectMenu(this);
+        multiplayer_lobby = new ServerLobby(this);
 
         // create server
-//        server = new GameServer();
+        server = new GameServer();
 
         // set splash screen on game start
+        this.setScreen(loadingScreen);
+
+
     }
 
     @Override
@@ -61,6 +66,8 @@ public class Controller extends Game {
 
     @Override
     public void dispose() {
-        server.dispose();
+//        server.dispose();
     }
+
+
 }

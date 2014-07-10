@@ -15,33 +15,22 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class ShadowRenderer {
 
 
-    Texture tex;
+    Texture tex_shadow;
 
-    private ShapeRenderer renderer = new ShapeRenderer();
-
-
-    public ShadowRenderer(Camera camera){
-
-    }
-
-    public void update(float deltaTime){
-
-
-    }
-
-    public void render(SpriteBatch batch){
-
-
+    public ShadowRenderer(){
+        tex_shadow = new Texture(Gdx.files.internal("test/shadow.png"));
     }
 
 
     public void renderShadow(Batch batch,GameObject object) {
-        tex = new Texture(Gdx.files.internal("test/shadow.png"));
-        batch.begin();
+//        tex_shadow = new Texture(Gdx.files.internal("test/shadow.png"));
+//        batch.begin();
+//        batch.draw(tex_shadow, object.getX() - 100, object.getY() - 50, 200, 100);
+//        batch.end();
+    }
 
-
-        batch.draw(tex, object.getX() - 100, object.getY() - 50, 200, 100);
-        batch.end();
+    public void drawShadows(SpriteBatch batch, GameObject go){
+        batch.draw(tex_shadow,go.getX() - 100, go.getY() - 50, 200, 100);
     }
 
 }

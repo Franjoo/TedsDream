@@ -48,7 +48,7 @@ public class AStarPathFinder {
         instance = this;
     }
 
-    public Path findPath(int enemieType, int sx, int sy, int tx, int ty) {
+    public Path findPath(int sx, int sy, int tx, int ty) {
         path.flushPath();
 
         if (collisionHandler.isSolid(tx * map.getProperties().tileWidth, ty * map.getProperties().tileHeight)) {

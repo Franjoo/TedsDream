@@ -23,13 +23,14 @@ public class Item extends GameObject {
         region = new TextureRegion(new Texture(Gdx.files.internal(path)));
     }
 
-    public void update(float delta){
+    @Override
+    public void draw(SpriteBatch batch) {
+        batch.draw(region,x,y);
     }
 
-    public void render(SpriteBatch batch){
-        batch.begin();
-        batch.draw(region,x,y);
-        batch.end();
+    @Override
+    public void update(float delta) {
+
     }
 
     public float getWidth() { return region.getRegionWidth();}

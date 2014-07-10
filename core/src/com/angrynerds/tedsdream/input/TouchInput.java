@@ -2,7 +2,7 @@ package com.angrynerds.tedsdream.input;
 
 import com.angrynerds.tedsdream.ui.ControllerUI;
 import com.angrynerds.tedsdream.ui.MyButton;
-import com.angrynerds.tedsdream.util.State;
+import com.angrynerds.tedsdream.util.States;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
@@ -27,7 +27,7 @@ public class TouchInput extends DragListener implements IGameInputController {
     private Array<Integer> dashOrderRight;
     private Array<Integer> dashOrderLeft;
 
-    int  state;
+    States.Animation state;
 
     public TouchInput(ControllerUI controller) {
         this.controller = controller;
@@ -38,14 +38,14 @@ public class TouchInput extends DragListener implements IGameInputController {
     }
 
     private void init() {
-        state = State.IDLE;
+        state = States.Animation.IDLE;
 
-        jumpOrder = new Array<Integer>(new Integer[]{controller.getMidButton().getId(), controller.getTopButton().getId()});
-        smashOrder = new Array<Integer>(new Integer[]{controller.getMidButton().getId(), controller.getTopButton().getId(), controller.getBotButton().getId()});
-        turnAroundOrder = new Array<Integer>(new Integer[]{controller.getTopButton().getId(), controller.getRightButton().getId(), controller.getBotButton().getId(), controller.getLeftButton().getId()});
-        attackOrder = new Array<Integer>(new Integer[]{controller.getMidButton().getId()});
-        dashOrderRight = new Array<Integer>(new Integer[]{controller.getLeftButton().getId(), controller.getMidButton().getId(), controller.getRightButton().getId()});
-        dashOrderLeft = new Array<Integer>(new Integer[]{controller.getRightButton().getId(), controller.getMidButton().getId(), controller.getLeftButton().getId()});
+        jumpOrder = new Array<>(new Integer[]{controller.getMidButton().getId(), controller.getTopButton().getId()});
+        smashOrder = new Array<>(new Integer[]{controller.getMidButton().getId(), controller.getTopButton().getId(), controller.getBotButton().getId()});
+        turnAroundOrder = new Array<>(new Integer[]{controller.getTopButton().getId(), controller.getRightButton().getId(), controller.getBotButton().getId(), controller.getLeftButton().getId()});
+        attackOrder = new Array<>(new Integer[]{controller.getMidButton().getId()});
+        dashOrderRight = new Array<>(new Integer[]{controller.getLeftButton().getId(), controller.getMidButton().getId(), controller.getRightButton().getId()});
+        dashOrderLeft = new Array<>(new Integer[]{controller.getRightButton().getId(), controller.getMidButton().getId(), controller.getLeftButton().getId()});
     }
 
 
@@ -61,20 +61,20 @@ public class TouchInput extends DragListener implements IGameInputController {
             MyButton.overCounter = 0;
         }
         if (touchOrder.equals(attackOrder)) {
-            state = State.ATTACK;
+            state = States.Animation.ATTACK;
         } else if (touchOrder.equals(jumpOrder)) {
             System.out.println("jump to the sky");
-            state = State.JUMP;
+            state = States.Animation.JUMP;
         } else if (touchOrder.equals(smashOrder)) {
             System.out.println("smaaaaaaash");
-            state = State.SMASH;
+            state = States.Animation.SMASH;
         } else if (touchOrder.equals(turnAroundOrder))
             System.out.println("turn around");
 
         else if (touchOrder.equals(dashOrderRight)) {
-            state = State.DASH_RIGHT;
+            state = States.Animation.DASH_RIGHT;
         } else if (touchOrder.equals(dashOrderLeft)) {
-            state = State.DASH_LEFT;
+            state = States.Animation.DASH_LEFT;
         }
         //state = State.IDLE;
         touchOrder.clear();
@@ -109,7 +109,7 @@ public class TouchInput extends DragListener implements IGameInputController {
     }
 
     @Override
-    public int getState() {
+    public States.Animation getState() {
         return state;
     }
 
@@ -123,7 +123,7 @@ public class TouchInput extends DragListener implements IGameInputController {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public void setState(int state) {
+    public void setState(States.Animation state) {
         this.state = state;
 
     }

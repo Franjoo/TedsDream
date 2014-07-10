@@ -1,6 +1,6 @@
 package com.angrynerds.tedsdream.collision;
 
-import com.angrynerds.tedsdream.gameobjects.creatures.Creature;
+import com.angrynerds.tedsdream.gameobjects.creatures.Skeletal;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -99,7 +99,7 @@ public class Detector {
         return ctl;
     }
 
-    public boolean polygonCollision(Creature c1, Creature c2){
+    public boolean polygonCollision(Skeletal c1, Skeletal c2){
 
 
         // Search BoundingBox with name "weapon"

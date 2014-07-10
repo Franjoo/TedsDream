@@ -1,9 +1,11 @@
-package com.angrynerds.tedsdream.screens.game;
+package com.angrynerds.tedsdream.events;
+
+import java.io.Serializable;
 
 /**
  * Author: Franz Benthin
  */
-public class EnemyInitializationEvent implements Event{
+public class EnemyInitializationEvent implements Serializable {
 
     private String serialization;
 

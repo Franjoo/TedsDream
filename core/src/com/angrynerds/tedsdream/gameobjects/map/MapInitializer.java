@@ -1,6 +1,6 @@
 package com.angrynerds.tedsdream.gameobjects.map;
 
-import com.angrynerds.tedsdream.gameobjects.Enemy;
+import com.angrynerds.tedsdream.gameobjects.Creature;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Array;
  */
 public class MapInitializer implements ApplicationListener{
 
-    private Array<Enemy> enemies;
+    private Array<Creature> enemies;
 
     public MapInitializer(String path){
 

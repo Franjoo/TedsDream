@@ -1,6 +1,6 @@
 package com.angrynerds.tedsdream.input;
 
-import com.angrynerds.tedsdream.util.State;
+import com.angrynerds.tedsdream.util.States;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.math.Vector2;
 
@@ -184,19 +184,19 @@ public class X360Input implements IGameInputController {
     }
 
     @Override
-    public int getState() {
+    public States.Animation getState() {
         // jump
-        if(is_A_pressed()) return State.JUMP;
+        if(is_A_pressed()) return States.Animation.JUMP;
         // attack
-        if(is_X_pressed()) return State.ATTACK;
+        if(is_X_pressed()) return States.Animation.ATTACK;
         // dash
-        if(is_B_pressed() && stick_left_X() >= 0) return State.DASH_RIGHT;
-        if(is_B_pressed() && stick_left_X() < 0) return State.DASH_LEFT;
+        if(is_B_pressed() && stick_left_X() >= 0) return States.Animation.DASH_RIGHT;
+        if(is_B_pressed() && stick_left_X() < 0) return States.Animation.DASH_LEFT;
 
         // run
-        if(stick_left_X() != 0 || stick_left_Y() != 0) return State.RUN;
+        if(stick_left_X() != 0 || stick_left_Y() != 0) return States.Animation.RUN;
 
-        return State.IDLE;
+        return States.Animation.IDLE;
 
     }
 
@@ -211,7 +211,7 @@ public class X360Input implements IGameInputController {
     }
 
     @Override
-    public void setState(int state) {
+    public void setState(States.Animation state) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 }

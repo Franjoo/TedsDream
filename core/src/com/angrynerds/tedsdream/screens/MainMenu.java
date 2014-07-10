@@ -5,8 +5,6 @@ import aurelienribon.tweenengine.TweenAccessor;
 import aurelienribon.tweenengine.TweenManager;
 import aurelienribon.tweenengine.equations.Sine;
 import com.angrynerds.tedsdream.core.Controller;
-import com.angrynerds.tedsdream.screens.game._MPGame;
-import com.angrynerds.tedsdream.screens.game._SPGame;
 import com.angrynerds.tedsdream.tweens.MenuAccessor;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -28,7 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
  * Time: 16:26
  * To change this template use File | Settings | File Templates.
  */
-public class MainMenu extends AbstractScreen implements Screen,TweenAccessor<Sound> {
+public class MainMenu  implements Screen, TweenAccessor<Sound> {
 
 
     private Stage stage;
@@ -58,7 +56,7 @@ public class MainMenu extends AbstractScreen implements Screen,TweenAccessor<Sou
         // sound
         sound_title = Gdx.audio.newSound(Gdx.files.internal("sounds/menus/titelmusik.wav"));
         sound_title.setLooping(0, true);
-        sound_title.setVolume(0,0);
+        sound_title.setVolume(0, 0);
 
         stage = new Stage();
         atlas = new TextureAtlas("ui/menus/main/mainMenuButton.pack");
@@ -114,8 +112,17 @@ public class MainMenu extends AbstractScreen implements Screen,TweenAccessor<Sou
 
                 // button play
                 if (event.getTarget() == buttonPlay) {
-                    game.setScreen(new _SPGame(game));
-                    System.out.println("play pressed");
+                    game.playScreen = new GameController(game, false, false);
+                    game.nextScreen = game.playScreen;
+                    Gdx.app.postRunnable(new Runnable() {
+                        @Override
+                        public void run() {
+                            game.setScreen(game.introScreen);
+                            System.out.println("play pressed");
+                        }
+                    });
+
+
                 }
 
                 // button settings
@@ -176,6 +183,8 @@ public class MainMenu extends AbstractScreen implements Screen,TweenAccessor<Sou
 
     }
 
+
+
     @Override
     public void hide() {
         sound_title.stop();
@@ -215,7 +224,6 @@ public class MainMenu extends AbstractScreen implements Screen,TweenAccessor<Sou
     public void setValues(Sound target, int tweenType, float[] newValues) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
-
 
 
 }

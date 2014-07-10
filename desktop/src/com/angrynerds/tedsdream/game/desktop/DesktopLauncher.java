@@ -14,11 +14,7 @@ public class DesktopLauncher {
         config.height = 480;
         config.vSyncEnabled = false;
 
-        Main main = new Main();
-
-////        new LwjglApplication(main, config);
-//        new LwjglApplication(new MapInitializer("maps/map_05.tmx"), config);
-        new LwjglApplication(main, config);
+        new LwjglApplication(new Main(), config);
 
     }
 }

@@ -1,5 +1,7 @@
 package com.angrynerds.tedsdream.input;
 
+import com.angrynerds.tedsdream.util.States;
+
 /**
  * User: Franjo
  * Date: 25.10.13
@@ -12,11 +14,11 @@ public interface IGameInputController {
 
     public float get_stickY();
 
-    public int getState();
+    public States.Animation getState();
 
     public boolean get_isA();
 
     public boolean get_isB();
 
-   public void setState(int state);
+   public void setState(States.Animation state);
 }

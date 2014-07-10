@@ -104,7 +104,7 @@ public class Skeleton {
 			bones.get(i).updateWorldTransform(flipX, flipY);
 	}
 
-	/** Sets the bones and slots to their setup pose values. */
+	/** Sets the bones and slots to their setupSkeleton pose values. */
 	public void setToSetupPose () {
 		setBonesToSetupPose();
 		setSlotsToSetupPose();
@@ -206,7 +206,7 @@ public class Skeleton {
 
 	/** Sets the skin used to look up attachments not found in the {@link SkeletonData#getDefaultSkin() default skin}. Attachments
 	 * from the new skin are attached if the corresponding attachment from the old skin was attached. If there was no old skin,
-	 * each slot's setup mode attachment is attached from the new skin.
+	 * each slot's setupSkeleton mode attachment is attached from the new skin.
 	 * @param newSkin May be null. */
 	public void setSkin (Skin newSkin) {
 		if (skin == null) {

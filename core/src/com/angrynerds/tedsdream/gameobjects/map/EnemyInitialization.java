@@ -1,5 +1,8 @@
 package com.angrynerds.tedsdream.gameobjects.map;
 
+import com.angrynerds.tedsdream.events.EnemyInitializationEvent;
+import com.angrynerds.tedsdream.events.Spawn;
+import com.angrynerds.tedsdream.gameobjects.Creature;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
@@ -8,14 +11,19 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 
+import java.io.Serializable;
+
 /**
  * Author: Franz Benthin
  */
-public class EnemyInitialization {
+public class EnemyInitialization implements Serializable{
 
     Array<Spawn> spawnArray;
+    Class<? extends Creature> type;
 
-    public EnemyInitialization(TiledMap tiledMap) {
+    public EnemyInitialization(){}
+
+    public EnemyInitialization(TiledMap tiledMap,float difficulty) {
 
         spawnArray = new Array<>();
 
@@ -60,6 +68,10 @@ public class EnemyInitialization {
                     if (p.containsKey("ap")) ap = Float.parseFloat(p.get("ap").toString());
                     if (p.containsKey("hp")) hp = Float.parseFloat(p.get("hp").toString());
 
+                    // difficulty
+                    ap *= difficulty;
+                    hp *= difficulty;
+
 
                     for (int k = 0; k < num; k++) {
 
@@ -92,30 +104,19 @@ public class EnemyInitialization {
     }
 
 
-    public String getSerializationString() {
+    public EnemyInitializationEvent getEnemyInitializationEvent() {
         Json json = new Json();
-        return json.toJson(this);
+        String serialization = json.toJson(this);
+        System.out.println(json.prettyPrint(this));
+        return new EnemyInitializationEvent(serialization);
     }
 
-    public class Spawn {
-        String name;
-        String path;
-        String skin;
-        float scale;
-        float ap, hp;
-        float x, y;
+//    @Override
+//    public void apply(_MPGame game) {
+//
+//    }
 
-        public Spawn(String name, String path, String skin, float scale, float ap, float hp, float _x, float _y) {
-            this.name = name;
-            this.path = path;
-            this.skin = skin;
-            this.scale = scale;
-            this.ap = ap;
-            this.hp = hp;
-            this.x = _x;
-            this.y = _y;
-        }
-    }
+
 
 
 }

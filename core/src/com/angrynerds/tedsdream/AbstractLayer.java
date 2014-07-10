@@ -1,15 +1,14 @@
 package com.angrynerds.tedsdream;
 
-import com.angrynerds.tedsdream.gameobjects.GameObject;
-
 /**
  * User: Franjo
  * Date: 20.11.13
  * Time: 21:12
  * Project: GameDemo
  */
-public abstract class AbstractLayer extends GameObject {
+public abstract class AbstractLayer {
 
+    protected float x,y;
     protected float velocityX;
     protected float velocityY;
 
@@ -20,7 +19,13 @@ public abstract class AbstractLayer extends GameObject {
         this.velocityY = velocityY;
     }
 
-    public abstract void update(float deltaTime);
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
 
     public float getVelocityX() {
         return velocityX;
@@ -28,4 +33,7 @@ public abstract class AbstractLayer extends GameObject {
     public float getVelocityY() {
         return velocityY;
     }
+
+    public abstract void update(float deltaTime);
+
 }

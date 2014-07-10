@@ -1,7 +1,6 @@
 package com.angrynerds.tedsdream.camera;
 
 import com.angrynerds.tedsdream.gameobjects.GameObject;
-import com.angrynerds.tedsdream.gameobjects.map.Map;
 import com.angrynerds.tedsdream.util.C;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -21,7 +20,6 @@ public class CameraHelper {
     private Vector2 position;
     private float zoom;
     private GameObject target;
-    private Map map;
 
     public float deltaX;
     public float deltaY;
@@ -42,9 +40,6 @@ public class CameraHelper {
             return;
         }
 
-        if (map == null) {
-            map = Map.getInstance();
-        }
 
         float focusY = 150;
 

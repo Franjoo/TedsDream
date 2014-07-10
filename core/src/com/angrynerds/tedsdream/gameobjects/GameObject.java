@@ -1,25 +1,25 @@
 package com.angrynerds.tedsdream.gameobjects;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 /**
- * User: Franjo
+ * Author: Franz Benthin
  */
 public abstract class GameObject {
 
     protected float x;
     protected float y;
-    protected float width;
-    protected float height;
 
-    public float getX(){
+    public float getX() {
         return x;
     }
-    public float getY(){
+
+    public float getY() {
         return y;
     }
 
+    public abstract void draw(SpriteBatch batch);
 
-    public float getWidth() { return width;}
-
-    public float getHeight() { return  height;}
+    public abstract void update(float delta);
 
 }

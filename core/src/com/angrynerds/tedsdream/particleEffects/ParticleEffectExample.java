@@ -14,13 +14,18 @@ public class ParticleEffectExample extends GameObject {
         this.effect = effect;
     }
 
-    public void draw(SpriteBatch batch, float parentAlpha) {
-        effect.draw(batch); //define behavior when stage calls Actor.draw()
-    }
-
     public ParticleEffect getEffect() {
         return effect;
     }
 
 
+    @Override
+    public void draw(SpriteBatch batch) {
+        effect.draw(batch);
+    }
+
+    @Override
+    public void update(float delta) {
+
+    }
 }

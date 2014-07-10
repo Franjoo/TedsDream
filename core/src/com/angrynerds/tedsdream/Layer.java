@@ -1,5 +1,6 @@
 package com.angrynerds.tedsdream;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
 /**

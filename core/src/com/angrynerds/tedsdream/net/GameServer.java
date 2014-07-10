@@ -1,7 +1,7 @@
 package com.angrynerds.tedsdream.net;
 
-import com.angrynerds.tedsdream.screens.game.AddPlayerEvent;
-import com.angrynerds.tedsdream.screens.game.AssignIDEvent;
+import com.angrynerds.tedsdream.events.AddPlayerEvent;
+import com.angrynerds.tedsdream.events.AssignIDEvent;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.net.ServerSocket;
@@ -182,7 +182,7 @@ public class GameServer implements Disposable {
 
                 while (true) {
 
-                    byte[] buffer = new byte[1024]; // Adjust if you want
+                    byte[] buffer = new byte[1024];
                     int bytesRead;
                     while ((bytesRead = connection.getInputStream().read(buffer)) != -1) {
                         broadcast(buffer, bytesRead, id);

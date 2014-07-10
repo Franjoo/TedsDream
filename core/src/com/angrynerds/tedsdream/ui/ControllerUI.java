@@ -8,6 +8,7 @@ import com.angrynerds.tedsdream.tweens.LifebarAccessor;
 import com.angrynerds.tedsdream.util.C;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -85,6 +86,7 @@ public class ControllerUI {
 //        stage.addActor(midButton);
         stage.addActor(lifeBar);
     }
+
 
     private void fillButtonArray() {
         buttons[0] = midButton;

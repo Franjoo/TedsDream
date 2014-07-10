@@ -1,6 +1,6 @@
 package com.angrynerds.tedsdream.gameobjects.map;
 
-import com.angrynerds.tedsdream.gameobjects.Enemy;
+import com.angrynerds.tedsdream.gameobjects.Creature;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.Rectangle;
@@ -46,7 +46,7 @@ public class SpawnController {
 
         public Rectangle rectangle;
         public float distance;
-        private Array<Enemy> freeEnemies;
+        private Array<Creature> freeEnemies;
 
         public SpawnObject(MapObject mapObject) {
 
@@ -96,15 +96,15 @@ public class SpawnController {
                     scale = scaleMin + ((float) (Math.random() * (scaleMax - scaleMin)));
                 }
 
-                Enemy enemy = new Enemy(name, "spine/" + path + "/", skin, scale,ap,hp);
+//                Creature creature = new Creature(name, "spine/" + path + "/", skin, scale,ap,hp);
 
                 float _x = (float) (rectangle.x + Math.random() * rectangle.getWidth());
                 float _y = (float) (rectangle.y + Math.random() * rectangle.getHeight());
 
                 // initial position
-                enemy.init(_x, _y);
+//                creature.init(_x, _y);
 
-                freeEnemies.add(enemy);
+//                freeEnemies.add(creature);
                 maxEnemies++;
             }
 
