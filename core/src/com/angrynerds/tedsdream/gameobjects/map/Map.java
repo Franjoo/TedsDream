@@ -256,13 +256,13 @@ public class Map {
         }
         // enemies in foreground
         for (Enemy enemy : enemies) {
-            if (players.get(0).getY() > enemy.getY()) {
+            if (players.get(0).getZ() > enemy.getZ()) {
                 shadowRenderer.renderShadow(batch,enemy);
                 enemy.render(batch);
             }
         }
         for (Item item : items) {
-            if (players.get(0).getY() > item.getY()) {
+            if (players.get(0).getZ() > item.getZ()) {
                 shadowRenderer.renderShadow(batch,item);
                 item.render(batch);
             }

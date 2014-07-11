@@ -305,7 +305,7 @@ public class Enemy extends Creature implements Disposable {
         this.health = health;
         if (health <= 0) {
             alive = false;
-            if (Math.random() >= 0.6) map.addItem(new HealthPotion(x, y));
+            if (Math.random() >= 0.6) map.addItem(new HealthPotion(x, y, z));
         }
     }
 

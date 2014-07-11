@@ -9,8 +9,8 @@ package com.angrynerds.tedsdream.gameobjects.items;
  */
 public class HealthPotion extends Item {
 
-    public HealthPotion(float x, float y) {
-        super(x, y, "items/potion_01.png");
+    public HealthPotion(float x, float y,float z) {
+        super(x, y, z, "items/potion_01.png");
     }
 
 }

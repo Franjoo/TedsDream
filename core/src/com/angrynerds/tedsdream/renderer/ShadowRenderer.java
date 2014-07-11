@@ -40,7 +40,7 @@ public class ShadowRenderer {
         batch.begin();
 //        batch.draw(tex, object.getX() - 100, object.getY() - 50, object.getWidth(), object.getHeight());
 
-        batch.draw(tex, object.getX()-30, object.getY()-30, 75, 50);
+        batch.draw(tex, object.getX()-30, object.getZ()-30, 75, 50);
 
         batch.end();
     }

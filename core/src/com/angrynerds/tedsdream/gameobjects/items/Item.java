@@ -16,9 +16,10 @@ public class Item extends GameObject {
 
     public TextureRegion region;
 
-    public Item(float x, float y, String path){
+    public Item(float x, float y, float z, String path){
         this.x = x;
         this.y = y;
+        this.z = z;
 
         region = new TextureRegion(new Texture(Gdx.files.internal(path)));
     }
@@ -28,7 +29,7 @@ public class Item extends GameObject {
 
     public void render(SpriteBatch batch){
         batch.begin();
-        batch.draw(region,x,y);
+        batch.draw(region,x,z);
         batch.end();
     }
 
